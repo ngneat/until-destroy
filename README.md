@@ -11,11 +11,11 @@
 ```ts
 import { TakeUntilDestroy } from "ngx-take-until-destroy";
 
+@TakeUntilDestroy
 @Component({
   selector: 'app-inbox',
   templateUrl: './inbox.component.html'
 })
-@TakeUntilDestroy
 export class InboxComponent implements OnDestroy {
   componentDestroyed$: Subject<boolean>;
 
