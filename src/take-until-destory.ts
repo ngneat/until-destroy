@@ -17,7 +17,7 @@ function isFunction( value ) {
  */
 export function TakeUntilDestroy<T extends { new( ...args: any[] ): {} }>( constructor: T ) {
   let originalDestroy = constructor.prototype.ngOnDestroy;
-  
+
   if( !isFunction(originalDestroy) ) {
     console.warn(`${constructor.name} is using @TakeUntilDestroy but does not implement OnDestroy`);
   }
