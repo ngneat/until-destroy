@@ -1,4 +1,3 @@
-[![npm](https://img.shields.io/npm/dt/ngx-take-until-destroy.svg)]()
 [![Build Status](https://semaphoreci.com/api/v1/netanel7799/ngx-take-until-destroy/branches/master/badge.svg)](https://semaphoreci.com/netanel7799/ngx-take-until-destroy)
 [![npm](https://img.shields.io/npm/l/ngx-take-until-destroy.svg)]()
 # 🤓 Angular - Unsubscribe For Pros 💪
