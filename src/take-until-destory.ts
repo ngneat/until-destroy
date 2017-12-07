@@ -23,6 +23,10 @@ export function TakeUntilDestroy<T extends { new( ...args: any[] ): {} }>( const
   }
 
   return class extends constructor {
+
+
+    constructor(...args: any[]) { super(...args); }
+
     /**
      *
      * @type {Subject<any>}
