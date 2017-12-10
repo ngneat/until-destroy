@@ -1,6 +1,6 @@
 {
   "name": "ngx-take-until-destroy",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "dist/index.js",
   "module": "dist/es5/index.js",
   "es2015": "dist/index.js",
