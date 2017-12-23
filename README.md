@@ -17,7 +17,7 @@ import { TakeUntilDestroy } from "ngx-take-until-destroy";
   templateUrl: './inbox.component.html'
 })
 export class InboxComponent implements OnDestroy {
-  componentDestroyed$: Subject<any>;
+  componentDestroyed$: Subject<boolean>;
 
   ngOnInit( ) {
     Observable.interval(1000)
