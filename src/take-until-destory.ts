@@ -37,7 +37,7 @@ export function TakeUntilDestroy(destroyMethodName = 'ngOnDestroy') {
        *
        * @returns {Observable<boolean>}
        */
-      get componentDestroyed$() {
+      get destroyed$() {
         this._takeUntilDestroy$ = this._takeUntilDestroy$ || new Subject();
         return this._takeUntilDestroy$.asObservable();
       }

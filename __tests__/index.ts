@@ -34,7 +34,7 @@ describe('@TakeUntilDestroy', () => {
   it('should emit when calling on destroy', () => {
     @TakeUntilDestroy()
     class Test {
-      componentDestroyed$: Subject<boolean>;
+      destroyed$: Subject<boolean>;
   
       ngOnDestroy() {
       }
@@ -42,7 +42,7 @@ describe('@TakeUntilDestroy', () => {
   
     const component1: Test = new Test();
     
-    component1.componentDestroyed$.subscribe(mockObserver);
+    component1.destroyed$.subscribe(mockObserver);
     component1.ngOnDestroy();
     expect(mockObserver.next).toHaveBeenCalledTimes(1);
     expect(mockObserver.complete).toHaveBeenCalledTimes(1);
@@ -51,7 +51,7 @@ describe('@TakeUntilDestroy', () => {
   it('should not destroy other instances', () => {
     @TakeUntilDestroy()
     class Test {
-      componentDestroyed$: Subject<boolean>;
+      destroyed$: Subject<boolean>;
   
       ngOnDestroy() {
       }
@@ -60,8 +60,8 @@ describe('@TakeUntilDestroy', () => {
     const component1: Test = new Test();
     const component2: Test = new Test();
 
-    component1.componentDestroyed$.subscribe(mockObserver);
-    component2.componentDestroyed$.subscribe(mockObserver2);
+    component1.destroyed$.subscribe(mockObserver);
+    component2.destroyed$.subscribe(mockObserver2);
     component1.ngOnDestroy();
     expect(mockObserver.next).toHaveBeenCalledTimes(1);
     expect(mockObserver.complete).toHaveBeenCalledTimes(1);
@@ -72,7 +72,7 @@ describe('@TakeUntilDestroy', () => {
   it('should work with classes that are not components', () => {
     @TakeUntilDestroy('destroy')
     class Test {
-      componentDestroyed$: Subject<boolean>;
+      destroyed$: Subject<boolean>;
       testProp = 'TakeUntilDestroy';
   
       destroy() {
@@ -82,7 +82,7 @@ describe('@TakeUntilDestroy', () => {
 
     const instance: Test = new Test();
 
-    instance.componentDestroyed$.subscribe(mockObserver);
+    instance.destroyed$.subscribe(mockObserver);
     expect(instance.testProp).toBe('TakeUntilDestroy');
     instance.destroy();
     expect(mockObserver.next).toHaveBeenCalledTimes(1);
@@ -102,7 +102,7 @@ describe('@TakeUntilDestroy', () => {
 
     @TakeUntilDestroy('destroy')
     class Test extends  Parent{
-      componentDestroyed$: Subject<boolean>;
+      destroyed$: Subject<boolean>;
       testProp = 'TakeUntilDestroy';
 
       constructor() {
@@ -117,7 +117,7 @@ describe('@TakeUntilDestroy', () => {
 
     const instance: Test = new Test();
 
-    instance.componentDestroyed$.subscribe(mockObserver);
+    instance.destroyed$.subscribe(mockObserver);
     expect(instance.prop).toBe('prop');
     expect(instance.testProp).toBe('TakeUntilDestroy');
     instance.destroy();

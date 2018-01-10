@@ -17,11 +17,11 @@ import { TakeUntilDestroy } from "ngx-take-until-destroy";
   templateUrl: './inbox.component.html'
 })
 export class InboxComponent implements OnDestroy {
-  componentDestroyed$: Subject<boolean>;
+  destroyed$: Subject<boolean>;
 
   ngOnInit( ) {
     Observable.interval(1000)
-      .takeUntil(this.componentDestroyed$)
+      .takeUntil(this.destroyed$)
       .subscribe(val => console.log(val))
   }
 
@@ -39,11 +39,11 @@ export class InboxComponent implements OnDestroy {
 ```ts
 @TakeUntilDestroy('destroy')
 export class Widget {
-  componentDestroyed$: Subject<boolean>;
+  destroyed$: Subject<boolean>;
 
   constructor( ) {
     Observable.interval(1000)
-      .takeUntil(this.componentDestroyed$)
+      .takeUntil(this.destroyed$)
       .subscribe(console.log)
   }
 
