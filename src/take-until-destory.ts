@@ -11,42 +11,45 @@ function isFunction( value ) {
 }
 
 /**
- *
- * @param {Function} constructor
- * @constructor
+ * 
+ * @param destroyMethodName 
  */
-export function TakeUntilDestroy<T extends { new( ...args: any[] ): {} }>( constructor: T ) {
-  let originalDestroy = constructor.prototype.ngOnDestroy;
+export function TakeUntilDestroy(destroyMethodName = 'ngOnDestroy') {
 
-  if( !isFunction(originalDestroy) ) {
-    console.warn(`${constructor.name} is using @TakeUntilDestroy but does not implement OnDestroy`);
-  }
-
-  return class extends constructor {
-
-    /**
-     *
-     * @type {Subject<any>}
-     * @private
-     */
-    _takeUntilDestroy$: Subject<boolean> = new Subject();
-
-    /**
-     *
-     * @returns {Observable<boolean>}
-     */
-    get componentDestroyed$() {
-      this._takeUntilDestroy$ = this._takeUntilDestroy$ || new Subject();
-      return this._takeUntilDestroy$.asObservable();
+  return function<T extends { new( ...args: any[] ): {} }>(constructor: T) {
+       
+    const originalDestroy = constructor.prototype[destroyMethodName];
+  
+    if( !isFunction(originalDestroy) ) {
+      console.warn(`${constructor.name} is using @TakeUntilDestroy but does not implement ${destroyMethodName}`);
     }
-
-    /**
-     * Call the super ngOnDestroy method and clean the observers
-     */
-    ngOnDestroy() {
-      isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
-      this._takeUntilDestroy$.next(true);
-      this._takeUntilDestroy$.complete();
+  
+    return class extends constructor {
+  
+      /**
+       *
+       * @type {Subject<any>}
+       * @private
+       */
+      _takeUntilDestroy$: Subject<boolean> = new Subject();
+  
+      /**
+       *
+       * @returns {Observable<boolean>}
+       */
+      get componentDestroyed$() {
+        this._takeUntilDestroy$ = this._takeUntilDestroy$ || new Subject();
+        return this._takeUntilDestroy$.asObservable();
+      }
+  
+      /**
+       * Call the super destroyMethodName method and clean the observers
+       */
+      [destroyMethodName]() {
+        isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
+        this._takeUntilDestroy$.next(true);
+        this._takeUntilDestroy$.complete();
+      }
     }
   }
 }

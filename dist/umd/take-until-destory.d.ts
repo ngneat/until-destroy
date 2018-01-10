@@ -2,15 +2,11 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from "rxjs/Observable";
 /**
  *
- * @param {Function} constructor
- * @constructor
+ * @param destroyMethodName
  */
-export declare function TakeUntilDestroy<T extends {
-    new (...args: any[]): {};
-}>(constructor: T): {
+export declare function TakeUntilDestroy(destroyMethodName?: string): <T extends new (...args: any[]) => {}>(constructor: T) => {
     new (...args: any[]): {
         _takeUntilDestroy$: Subject<boolean>;
         readonly componentDestroyed$: Observable<boolean>;
-        ngOnDestroy(): void;
     };
 } & T;

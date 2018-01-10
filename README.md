@@ -11,7 +11,7 @@
 ```ts
 import { TakeUntilDestroy } from "ngx-take-until-destroy";
 
-@TakeUntilDestroy
+@TakeUntilDestroy()
 @Component({
   selector: 'app-inbox',
   templateUrl: './inbox.component.html'
@@ -30,6 +30,24 @@ export class InboxComponent implements OnDestroy {
   // even if the method is added by the @TakeUntilDestroy decorator
   ngOnDestroy() {
     // You can also do whatever you need here
+  }
+
+}
+```
+
+### Use with any class
+```ts
+@TakeUntilDestroy('destroy')
+export class Widget {
+  componentDestroyed$: Subject<boolean>;
+
+  constructor( ) {
+    Observable.interval(1000)
+      .takeUntil(this.componentDestroyed$)
+      .subscribe(console.log)
+  }
+
+  destroy() {
   }
 
 }

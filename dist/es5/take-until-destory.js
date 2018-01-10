@@ -21,52 +21,50 @@ function isFunction(value) {
 }
 /**
  *
- * @param {Function} constructor
- * @constructor
+ * @param destroyMethodName
  */
-function TakeUntilDestroy(constructor) {
-    var originalDestroy = constructor.prototype.ngOnDestroy;
-    if (!isFunction(originalDestroy)) {
-        console.warn(constructor.name + " is using @TakeUntilDestroy but does not implement OnDestroy");
-    }
-    return /** @class */ (function (_super) {
-        __extends(class_1, _super);
-        function class_1() {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            var _this = _super.apply(this, args) || this;
-            /**
-             *
-             * @type {Subject<any>}
-             * @private
-             */
-            _this._takeUntilDestroy$ = new Subject_1.Subject();
-            return _this;
+function TakeUntilDestroy(destroyMethodName) {
+    if (destroyMethodName === void 0) { destroyMethodName = 'ngOnDestroy'; }
+    return function (constructor) {
+        var originalDestroy = constructor.prototype[destroyMethodName];
+        if (!isFunction(originalDestroy)) {
+            console.warn(constructor.name + " is using @TakeUntilDestroy but does not implement " + destroyMethodName);
         }
-        Object.defineProperty(class_1.prototype, "componentDestroyed$", {
+        return /** @class */ (function (_super) {
+            __extends(class_1, _super);
+            function class_1() {
+                var _this = _super !== null && _super.apply(this, arguments) || this;
+                /**
+                 *
+                 * @type {Subject<any>}
+                 * @private
+                 */
+                _this._takeUntilDestroy$ = new Subject_1.Subject();
+                return _this;
+            }
+            Object.defineProperty(class_1.prototype, "componentDestroyed$", {
+                /**
+                 *
+                 * @returns {Observable<boolean>}
+                 */
+                get: function () {
+                    this._takeUntilDestroy$ = this._takeUntilDestroy$ || new Subject_1.Subject();
+                    return this._takeUntilDestroy$.asObservable();
+                },
+                enumerable: true,
+                configurable: true
+            });
             /**
-             *
-             * @returns {Observable<boolean>}
+             * Call the super destroyMethodName method and clean the observers
              */
-            get: function () {
-                this._takeUntilDestroy$ = this._takeUntilDestroy$ || new Subject_1.Subject();
-                return this._takeUntilDestroy$.asObservable();
-            },
-            enumerable: true,
-            configurable: true
-        });
-        /**
-         * Call the super ngOnDestroy method and clean the observers
-         */
-        class_1.prototype.ngOnDestroy = function () {
-            isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
-            this._takeUntilDestroy$.next(true);
-            this._takeUntilDestroy$.complete();
-        };
-        return class_1;
-    }(constructor));
+            class_1.prototype[destroyMethodName] = function () {
+                isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
+                this._takeUntilDestroy$.next(true);
+                this._takeUntilDestroy$.complete();
+            };
+            return class_1;
+        }(constructor));
+    };
 }
 exports.TakeUntilDestroy = TakeUntilDestroy;
 //# sourceMappingURL=take-until-destory.js.map
