@@ -9,7 +9,7 @@
 
 ## Usage
 ```ts
-import { TakeUntilDestroy } from "ngx-take-until-destroy";
+import { TakeUntilDestroy, OnDestroy } from "ngx-take-until-destroy";
 
 @TakeUntilDestroy()
 @Component({
@@ -17,7 +17,7 @@ import { TakeUntilDestroy } from "ngx-take-until-destroy";
   templateUrl: './inbox.component.html'
 })
 export class InboxComponent implements OnDestroy {
-  destroyed$: Subject<boolean>;
+  readonly destroyed$: Observable<boolean>;
 
   ngOnInit( ) {
     Observable.interval(1000)
@@ -46,7 +46,8 @@ export class Widget {
       .takeUntil(this.destroyed$)
       .subscribe(console.log)
   }
-
+  
+  // The name needs to be the same as the decorator parameter
   destroy() {
   }
 

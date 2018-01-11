@@ -51,7 +51,7 @@ var __extends = (this && this.__extends) || (function () {
                     _this._takeUntilDestroy$ = new Subject_1.Subject();
                     return _this;
                 }
-                Object.defineProperty(class_1.prototype, "componentDestroyed$", {
+                Object.defineProperty(class_1.prototype, "destroyed$", {
                     /**
                      *
                      * @returns {Observable<boolean>}

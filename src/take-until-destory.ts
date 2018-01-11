@@ -1,6 +1,11 @@
 import { Subject } from 'rxjs/Subject';
 import { Observable } from "rxjs/Observable";
 
+export interface OnDestroy {
+  readonly destroyed$: Observable<boolean>;
+  ngOnDestroy(): void;
+}
+
 /**
  *
  * @param value
