@@ -39,7 +39,7 @@ export class InboxComponent implements OnDestroy {
 ```ts
 @TakeUntilDestroy('destroy')
 export class Widget {
-  destroyed$: Observable<boolean>;
+  readonly destroyed$: Observable<boolean>;
 
   constructor( ) {
     Observable.interval(1000)
