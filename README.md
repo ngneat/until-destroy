@@ -1,5 +1,7 @@
+[![npm](https://img.shields.io/npm/dt/ngx-take-until-destroy.svg)]()
 [![Build Status](https://semaphoreci.com/api/v1/netanel7799/ngx-take-until-destroy/branches/master/badge.svg)](https://semaphoreci.com/netanel7799/ngx-take-until-destroy)
 [![npm](https://img.shields.io/npm/l/ngx-take-until-destroy.svg)]()
+[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 # 🤓 Angular - Unsubscribe For Pros 💪
 
 ##### Declarative way to unsubscribe from observables when the component destroyed
