@@ -9,6 +9,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 /**
  *
  * @param value
@@ -64,4 +65,11 @@ export function TakeUntilDestroy(destroyMethodName) {
         }(constructor));
     };
 }
+export var untilDestroyed = function (that) { return function (source) {
+    if (!('destroyed$' in that)) {
+        console.warn("'destroyed$' property does not exist on " + that.constructor.name + ". Did you decorate the class with '@TakeUntilDestroy()'?");
+        return source;
+    }
+    return source.pipe(takeUntil(that.destroyed$));
+}; };
 //# sourceMappingURL=take-until-destory.js.map

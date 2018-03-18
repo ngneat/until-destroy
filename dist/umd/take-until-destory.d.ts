@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs/Subject';
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 export interface OnDestroy {
-    readonly destroyed$: Observable<boolean>;
+    readonly destroyed$?: Observable<boolean>;
     ngOnDestroy(): void;
 }
 /**
@@ -14,3 +14,4 @@ export declare function TakeUntilDestroy(destroyMethodName?: string): <T extends
         readonly destroyed$: Observable<boolean>;
     };
 } & T;
+export declare const untilDestroyed: (that: any) => <T>(source: Observable<T>) => Observable<T>;

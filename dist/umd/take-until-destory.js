@@ -14,12 +14,13 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "rxjs/Subject"], factory);
+        define(["require", "exports", "rxjs/Subject", "rxjs/operators"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Subject_1 = require("rxjs/Subject");
+    var operators_1 = require("rxjs/operators");
     /**
      *
      * @param value
@@ -76,5 +77,12 @@ var __extends = (this && this.__extends) || (function () {
         };
     }
     exports.TakeUntilDestroy = TakeUntilDestroy;
+    exports.untilDestroyed = function (that) { return function (source) {
+        if (!('destroyed$' in that)) {
+            console.warn("'destroyed$' property does not exist on " + that.constructor.name + ". Did you decorate the class with '@TakeUntilDestroy()'?");
+            return source;
+        }
+        return source.pipe(operators_1.takeUntil(that.destroyed$));
+    }; };
 });
 //# sourceMappingURL=take-until-destory.js.map
