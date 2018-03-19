@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Subject_1 = require("rxjs/Subject");
+var operators_1 = require("rxjs/operators");
 /**
  *
  * @param value
@@ -42,7 +43,7 @@ function TakeUntilDestroy(destroyMethodName) {
                 _this._takeUntilDestroy$ = new Subject_1.Subject();
                 return _this;
             }
-            Object.defineProperty(class_1.prototype, "componentDestroyed$", {
+            Object.defineProperty(class_1.prototype, "destroyed$", {
                 /**
                  *
                  * @returns {Observable<boolean>}
@@ -67,4 +68,11 @@ function TakeUntilDestroy(destroyMethodName) {
     };
 }
 exports.TakeUntilDestroy = TakeUntilDestroy;
+exports.untilDestroyed = function (that) { return function (source) {
+    if (!('destroyed$' in that)) {
+        console.warn("'destroyed$' property does not exist on " + that.constructor.name + ". Did you decorate the class with '@TakeUntilDestroy()'?");
+        return source;
+    }
+    return source.pipe(operators_1.takeUntil(that.destroyed$));
+}; };
 //# sourceMappingURL=take-until-destory.js.map

@@ -1,5 +1,11 @@
 import { Subject } from 'rxjs/Subject';
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
+import { takeUntil } from 'rxjs/operators';
+
+export interface OnDestroy {
+  readonly destroyed$?: Observable<boolean>;
+  ngOnDestroy(): void;
+}
 
 /**
  *
@@ -11,28 +17,28 @@ function isFunction( value ) {
 }
 
 /**
- * 
- * @param destroyMethodName 
+ *
+ * @param destroyMethodName
  */
 export function TakeUntilDestroy(destroyMethodName = 'ngOnDestroy') {
 
   return function<T extends { new( ...args: any[] ): {} }>(constructor: T) {
-       
+
     const originalDestroy = constructor.prototype[destroyMethodName];
-  
+
     if( !isFunction(originalDestroy) ) {
       console.warn(`${constructor.name} is using @TakeUntilDestroy but does not implement ${destroyMethodName}`);
     }
-  
+
     return class extends constructor {
-  
+
       /**
        *
        * @type {Subject<any>}
        * @private
        */
       _takeUntilDestroy$: Subject<boolean> = new Subject();
-  
+
       /**
        *
        * @returns {Observable<boolean>}
@@ -41,7 +47,7 @@ export function TakeUntilDestroy(destroyMethodName = 'ngOnDestroy') {
         this._takeUntilDestroy$ = this._takeUntilDestroy$ || new Subject();
         return this._takeUntilDestroy$.asObservable();
       }
-  
+
       /**
        * Call the super destroyMethodName method and clean the observers
        */
@@ -53,3 +59,12 @@ export function TakeUntilDestroy(destroyMethodName = 'ngOnDestroy') {
     }
   }
 }
+
+export const untilDestroyed = that => <T>(source: Observable<T>) => {
+  if (!('destroyed$' in that)) {
+    console.warn(`'destroyed$' property does not exist on ${that.constructor.name}. Did you decorate the class with '@TakeUntilDestroy()'?`);
+    return source;
+  }
+
+  return source.pipe(takeUntil<T>(that.destroyed$));
+};

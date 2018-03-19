@@ -1,6 +1,6 @@
 {
   "name": "ngx-take-until-destroy",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "main": "dist/index.js",
   "module": "dist/es5/index.js",
   "es2015": "dist/index.js",
@@ -37,7 +37,7 @@
   "devDependencies": {
     "@types/jest": "^22.0.1",
     "jest": "^22.0.5",
-    "rxjs": "^5.3.0",
+    "rxjs": "^5.5.0",
     "ts-jest": "^22.0.1",
     "typescript": "^2.6.1"
   }

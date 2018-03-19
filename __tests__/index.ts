@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs/Subject';
-import { TakeUntilDestroy } from '../src/take-until-destory';
+import { TakeUntilDestroy, untilDestroyed } from '../src/take-until-destory';
 
 const mockObserver = {
   next: jest.fn(),
@@ -23,7 +23,7 @@ describe('@TakeUntilDestroy', () => {
     const consoleSpy = jest.spyOn(console, 'warn');
     @TakeUntilDestroy()
     class Test {
-      
+
     }
 
     new Test()['ngOnDestroy']();
@@ -35,13 +35,13 @@ describe('@TakeUntilDestroy', () => {
     @TakeUntilDestroy()
     class Test {
       destroyed$: Subject<boolean>;
-  
+
       ngOnDestroy() {
       }
     }
-  
+
     const component1: Test = new Test();
-    
+
     component1.destroyed$.subscribe(mockObserver);
     component1.ngOnDestroy();
     expect(mockObserver.next).toHaveBeenCalledTimes(1);
@@ -52,11 +52,11 @@ describe('@TakeUntilDestroy', () => {
     @TakeUntilDestroy()
     class Test {
       destroyed$: Subject<boolean>;
-  
+
       ngOnDestroy() {
       }
     }
-  
+
     const component1: Test = new Test();
     const component2: Test = new Test();
 
@@ -74,7 +74,7 @@ describe('@TakeUntilDestroy', () => {
     class Test {
       destroyed$: Subject<boolean>;
       testProp = 'TakeUntilDestroy';
-  
+
       destroy() {
         this.testProp = null;
       }
@@ -128,4 +128,51 @@ describe('@TakeUntilDestroy', () => {
   });
 
 
+});
+
+
+describe('untilDestroyed operator', () => {
+
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('should warn when class is not decorated', () => {
+    const consoleSpy = jest.spyOn(console, 'warn');
+
+    class Test {
+      obs = new Subject();
+      obs$ = this.obs.asObservable();
+    };
+
+    const instance = new Test();
+
+    instance.obs$
+      .pipe(untilDestroyed(instance))
+      .subscribe();
+
+    expect(consoleSpy).toHaveBeenCalled();
+  });
+
+  it('should unsubscribe when destroyed$', () => {
+    @TakeUntilDestroy()
+    class Test {
+      obs = new Subject();
+      obs$ = this.obs.asObservable();
+
+      ngOnInit() {
+        this.obs$
+          .pipe(untilDestroyed(this))
+          .subscribe(mockObserver);
+      }
+
+      ngOnDestroy() {}
+    };
+
+    const instance = new Test();
+    instance.ngOnInit();
+    instance.ngOnDestroy();
+
+    expect(mockObserver.complete).toHaveBeenCalledTimes(1);
+  });
 });

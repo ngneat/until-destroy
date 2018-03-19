@@ -1,1 +1,1 @@
-export { TakeUntilDestroy } from './take-until-destory';
+export { TakeUntilDestroy, OnDestroy } from './take-until-destory';
