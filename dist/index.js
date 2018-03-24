@@ -1,2 +1,2 @@
-export { TakeUntilDestroy } from './take-until-destory';
+export { TakeUntilDestroy, untilDestroyed } from './take-until-destory';
 //# sourceMappingURL=index.js.map
