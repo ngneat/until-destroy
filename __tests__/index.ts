@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs/Subject';
-import { TakeUntilDestroy, untilDestroyed } from '../src/take-until-destory';
+import { TakeUntilDestroy, untilDestroyed } from '../src/take-until-destroy';
 
 const mockObserver = {
   next: jest.fn(),

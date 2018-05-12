@@ -75,4 +75,4 @@ exports.untilDestroyed = function (that) { return function (source) {
     }
     return source.pipe(operators_1.takeUntil(that.destroyed$));
 }; };
-//# sourceMappingURL=take-until-destory.js.map
+//# sourceMappingURL=take-until-destroy.js.map
