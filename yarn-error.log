@@ -1,63 +1,29 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js
+  /usr/local/bin/node /Users/netanelbasal/.yarn/bin/yarn.js commit
 
 PATH: 
-  C:\Program Files\cmder\bin;C:\Program Files\cmder\vendor\conemu-maximus5\ConEmu\Scripts;C:\Program Files\cmder\bin;C:\Program Files\cmder\vendor\conemu-maximus5\ConEmu\Scripts;C:\Program Files\cmder\bin;C:\Program Files\cmder\vendor\conemu-maximus5\ConEmu\Scripts;C:\Program Files\cmder\vendor\conemu-maximus5;C:\Program Files\cmder\vendor\conemu-maximus5\ConEmu;C:\ProgramData\Oracle\Java\javapath;C:\Program Files\Java\jdk1.8.0_112;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files\apache-maven-3.3.9\bin;C:\Program Files\PostgreSQL\pg96\bin;C:\Program Files\sonar-scanner-2.8\bin;C:\Program Files\Amazon\AWSCLI\;C:\Program Files (x86)\Brackets\command;C:\Program Files (x86)\Skype\Phone\;C:\Program Files\nodejs\;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files (x86)\Yarn\bin\;C:\Users\kmathy\AppData\Local\Programs\Python\Python36\Scripts\;C:\Users\kmathy\AppData\Local\Programs\Python\Python36\;C:\Users\kmathy\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Heroku\bin;C:\Users\kmathy\AppData\Roaming\npm;C:\Users\kmathy\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Microsoft VS Code\bin;C:\Users\kmathy\AppData\Local\Yarn\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\share\vim\vim74;C:\Program Files\cmder\;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\share\vim\vim74;C:\Program Files\cmder\;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\share\vim\vim74;C:\Program Files\cmder\
+  /Users/netanelbasal/.yarn/bin:/Users/netanelbasal/.config/yarn/global/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/netanelbasal/.yarn/bin:/Users/netanelbasal/.config/yarn/global/node_modules/.bin
 
 Yarn version: 
-  1.5.1
+  1.6.0
 
 Node version: 
-  8.9.1
+  9.0.0
 
 Platform: 
-  win32 x64
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/netanelbasal/www/ngx-take-until-destroy/package.json: Unexpected end of JSON input
+      at JSON.parse (<anonymous>)
+      at /Users/netanelbasal/.yarn/lib/cli.js:1130:59
+      at Generator.next (<anonymous>)
+      at step (/Users/netanelbasal/.yarn/lib/cli.js:98:30)
+      at /Users/netanelbasal/.yarn/lib/cli.js:109:13
+      at <anonymous>
 
 npm manifest: 
-  {
-    "name": "ngx-take-until-destroy",
-    "version": "2.2.1",
-    "main": "dist/index.js",
-    "module": "dist/es5/index.js",
-    "es2015": "dist/index.js",
-    "description": "Class decorator that adds takeUntil component destroyed",
-    "license": "MIT",
-    "scripts": {
-      "clearDist": "rm -rf ./dist",
-      "clear": "npm run clearDist",
-      "compile": "tsc --p tsconfig.es5.json && tsc --p tsconfig.es2015.json && tsc --p tsconfig.umd.json",
-      "precompile": "npm run clearDist",
-      "prepublish": "npm test && clear && npm run compile",
-      "test": "jest"
-    },
-    "typings": "./dist/index.d.ts",
-    "files": [
-      "dist"
-    ],
-    "maintainers": [
-      "Netanel Basal"
-    ],
-    "repository": {
-      "url": "https://github.com/NetanelBasal/ngx-take-until-destroy"
-    },
-    "jest": {
-      "moduleFileExtensions": [
-        "ts",
-        "js"
-      ],
-      "transform": {
-        "\\.(ts)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-      },
-      "testRegex": "/__tests__/.*\\.(ts|js)$"
-    },
-    "devDependencies": {
-      "@types/jest": "^22.0.1",
-      "jest": "^22.0.5",
-      "rxjs": "^6.0.0",
-      "ts-jest": "^22.0.1",
-      "typescript": "^2.6.1"
-    }
-  }
+  
 
 yarn manifest: 
   No manifest
@@ -3421,19 +3387,3 @@ Lockfile:
       cliui "^2.1.0"
       decamelize "^1.0.0"
       window-size "0.1.0"
-
-Trace: 
-  Error: Command failed.
-  Exit code: 1
-  Command: C:\WINDOWS\system32\cmd.exe
-  Arguments: /d /s /c npm test && clear && npm run compile
-  Directory: C:\Users\kmathy\Documents\Tools\ngx-take-until-destroy
-  Output:
-  
-      at ProcessTermError.MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)
-      at new ProcessTermError (C:\Program Files (x86)\Yarn\lib\cli.js:226:113)
-      at ChildProcess.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:30281:17)
-      at emitTwo (events.js:126:13)
-      at ChildProcess.emit (events.js:214:7)
-      at maybeClose (internal/child_process.js:925:16)
-      at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)
