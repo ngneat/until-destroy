@@ -1,5 +1,4 @@
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 export interface OnDestroy {
@@ -12,7 +11,7 @@ export interface OnDestroy {
  * @param value
  * @returns {boolean}
  */
-function isFunction( value ) {
+function isFunction(value) {
   return typeof value === 'function';
 }
 
@@ -22,11 +21,11 @@ function isFunction( value ) {
  */
 export function TakeUntilDestroy(destroyMethodName = 'ngOnDestroy') {
 
-  return function<T extends { new( ...args: any[] ): {} }>(constructor: T) {
+  return function <T extends { new(...args: any[]): {} }>(constructor: T) {
 
     const originalDestroy = constructor.prototype[destroyMethodName];
 
-    if( !isFunction(originalDestroy) ) {
+    if (!isFunction(originalDestroy)) {
       console.warn(`${constructor.name} is using @TakeUntilDestroy but does not implement ${destroyMethodName}`);
     }
 
