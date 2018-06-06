@@ -1,0 +1,44 @@
+{
+  "name": "ngx-take-until-destroy",
+  "version": "3.0.0",
+  "main": "dist/index.js",
+  "module": "dist/es5/index.js",
+  "es2015": "dist/index.js",
+  "description": "Class decorator that adds takeUntil component destroyed",
+  "license": "MIT",
+  "scripts": {
+    "clearDist": "rm -rf ./dist",
+    "clear": "npm run clearDist",
+    "compile": "tsc --p tsconfig.es5.json && tsc --p tsconfig.es2015.json && tsc --p tsconfig.umd.json",
+    "precompile": "npm run clearDist",
+    "prepublish": "npm test && clear && npm run compile",
+    "test": "jest"
+  },
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "maintainers": [
+    "Netanel Basal"
+  ],
+  "repository": {
+    "url": "https://github.com/NetanelBasal/ngx-take-until-destroy"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "\\.(ts)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "/__tests__/.*\\.(ts|js)$"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.0.1",
+    "jest": "^22.0.5",
+    "rxjs": "^6.2.0",
+    "ts-jest": "^22.0.1",
+    "typescript": "^2.6.1"
+  }
+}
