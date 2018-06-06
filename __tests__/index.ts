@@ -1,4 +1,5 @@
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
+
 import { TakeUntilDestroy, untilDestroyed } from '../src/take-until-destroy';
 
 const mockObserver = {
@@ -96,12 +97,12 @@ describe('@TakeUntilDestroy', () => {
     class Parent {
       prop;
       constructor(protected prop) {
-         this.prop = prop;
+        this.prop = prop;
       }
     }
 
     @TakeUntilDestroy('destroy')
-    class Test extends  Parent{
+    class Test extends Parent {
       destroyed$: Subject<boolean>;
       testProp = 'TakeUntilDestroy';
 
@@ -166,7 +167,7 @@ describe('untilDestroyed operator', () => {
           .subscribe(mockObserver);
       }
 
-      ngOnDestroy() {}
+      ngOnDestroy() { }
     };
 
     const instance = new Test();
