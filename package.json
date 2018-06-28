@@ -11,7 +11,6 @@
     "clear": "npm run clearDist",
     "compile": "tsc --p tsconfig.es5.json && tsc --p tsconfig.es2015.json && tsc --p tsconfig.umd.json",
     "precompile": "npm run clearDist",
-    "prepublish": "npm test && clear && npm run compile",
     "test": "jest"
   },
   "typings": "./dist/index.d.ts",
