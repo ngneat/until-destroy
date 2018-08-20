@@ -55,3 +55,5 @@ export class Widget {
   destroy() {}
 }
 ```
+
+[Live example](https://stackblitz.com/edit/ngx-take-until-destroy)
