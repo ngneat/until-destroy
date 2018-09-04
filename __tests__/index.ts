@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 
-import { untilDestroyed } from '../src/take-until-destroy';
+import { untilDestroyed, TakeUntilDestroy } from '../src/take-until-destroy';
 
 const mockObserver = {
   next: jest.fn(),
@@ -20,10 +20,12 @@ describe('@TakeUntilDestroy', () => {
   });
 
   it('should emit when calling on destroy', () => {
+    @TakeUntilDestroy()
     class Test {
       obs = new Subject();
       obs$ = this.obs.asObservable();
-      ngOnDestroy() {}
+      ngOnDestroy() {
+      }
     }
 
     const component1: Test = new Test();
@@ -52,6 +54,24 @@ describe('@TakeUntilDestroy', () => {
     expect(mockObserver.complete).toHaveBeenCalledTimes(1);
     expect(mockObserver2.next).not.toHaveBeenCalledTimes(1);
     expect(mockObserver2.complete).not.toHaveBeenCalledTimes(1);
+  });
+
+  it('should work with multiple observables', () => {
+    class Test {
+      obs = new Subject();
+      obs$ = this.obs.asObservable();
+      obs2 = new Subject();
+      obs2$ = this.obs.asObservable();
+      ngOnDestroy() {}
+    }
+
+    const component1: Test = new Test();
+    const complete = jest.fn();
+    const complete2 = jest.fn();
+    component1.obs$.pipe(untilDestroyed(component1)).subscribe(null, null, complete);
+    component1.obs2$.pipe(untilDestroyed(component1)).subscribe(null, null, complete2);
+    component1.ngOnDestroy();
+    expect(complete).toHaveBeenCalledTimes(1);
   });
 
   it('should work with classes that are not components', () => {

@@ -16,18 +16,26 @@ export const untilDestroyed = (
 ) => <T>(source: Observable<T>) => {
   const originalDestroy = componentInstance[destroyMethodName];
 
-  componentInstance['__takeUntilDestroy'] = new Subject();
-  componentInstance[destroyMethodName] = function() {
-    isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
-    componentInstance['__takeUntilDestroy'].next(true);
-    componentInstance['__takeUntilDestroy'].complete();
-  };
+  componentInstance['__takeUntilDestroy'] =
+    componentInstance._takeUntilDestroy$ ||
+    componentInstance['__takeUntilDestroy'] ||
+    new Subject();
+
+  if (!componentInstance.istud) {
+    componentInstance[destroyMethodName] = function() {
+      console.log(2);
+      isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
+      componentInstance['__takeUntilDestroy'].next(true);
+      componentInstance['__takeUntilDestroy'].complete();
+    };
+  }
 
   return source.pipe(takeUntil<T>(componentInstance['__takeUntilDestroy']));
 };
 
 export function TakeUntilDestroy(destroyMethodName = 'ngOnDestroy') {
   return function<T extends { new (...args: any[]): {} }>(constructor: T) {
+    constructor.prototype.istud = () => true;
     const originalDestroy = constructor.prototype[destroyMethodName];
 
     if (!isFunction(originalDestroy)) {
