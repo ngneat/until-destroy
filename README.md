@@ -56,4 +56,4 @@ export class Widget {
 }
 ```
 
-[Live example](https://stackblitz.com/edit/ngx-take-until-destroy)
+[Live example](https://stackblitz.com/edit/ngx-take-until-demo)
