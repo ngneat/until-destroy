@@ -23,7 +23,6 @@ export const untilDestroyed = (
 
   if (!componentInstance.istud) {
     componentInstance[destroyMethodName] = function() {
-      console.log(2);
       isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
       componentInstance['__takeUntilDestroy'].next(true);
       componentInstance['__takeUntilDestroy'].complete();
