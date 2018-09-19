@@ -5,7 +5,7 @@ function createObserver() {
   return {
     next: jest.fn(),
     error: jest.fn(),
-    complete: jest.fn()
+    complete: jest.fn(),
   };
 }
 
@@ -16,8 +16,10 @@ describe('untilDestroyed', () => {
 
     class Test {
       obs;
+
       ngOnDestroy() {}
-      subscribe(spy) {
+
+      subscribe( spy ) {
         this.obs = new Subject().pipe(untilDestroyed(this)).subscribe(spy);
       }
     }
@@ -37,10 +39,12 @@ describe('untilDestroyed', () => {
     const spy = createObserver();
     const spy2 = createObserver();
     const spy3 = createObserver();
+
     class Test {
       obs = new Subject().pipe(untilDestroyed(this)).subscribe(spy);
       obs2 = new Subject().pipe(untilDestroyed(this)).subscribe(spy2);
       obs3 = new Subject().pipe(untilDestroyed(this)).subscribe(spy3);
+
       ngOnDestroy() {}
     }
 
@@ -53,12 +57,15 @@ describe('untilDestroyed', () => {
 
   it('should work with classes that are not components', () => {
     const spy = createObserver();
+
     class Test {
       obs = new Subject().pipe(untilDestroyed(this, 'destroy')).subscribe(spy);
+
       destroy() {
         console.log('called');
       }
     }
+
     const instance = new Test();
     instance.destroy();
     expect(spy.complete).toHaveBeenCalledTimes(1);
@@ -69,6 +76,7 @@ describe('it should work anywhere', () => {
   const spy = createObserver();
   const spy2 = createObserver();
   const spy3 = createObserver();
+
   class LoginComponent {
     dummy = new Subject().pipe(untilDestroyed(this)).subscribe(spy);
 
@@ -90,5 +98,25 @@ describe('it should work anywhere', () => {
     expect(spy.complete).toHaveBeenCalledTimes(1);
     expect(spy2.complete).toHaveBeenCalledTimes(1);
     expect(spy3.complete).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('inheritance', () => {
+  it('should work with subclass', () => {
+    const spy = createObserver();
+
+    class Parent {
+
+      ngOnDestroy() {}
+    }
+
+    class Child extends Parent {
+      constructor() { super();}
+      obs = new Subject().pipe(untilDestroyed(this)).subscribe(spy);
+    }
+
+    const instance = new Child();
+    instance.ngOnDestroy();
+    expect(spy.complete).toHaveBeenCalledTimes(1);
   });
 });
