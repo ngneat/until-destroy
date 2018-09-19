@@ -1,6 +1,6 @@
 {
   "name": "ngx-take-until-destroy",
-  "version": "3.0.0",
+  "version": "5.0.0",
   "main": "dist/index.js",
   "module": "dist/es5/index.js",
   "es2015": "dist/index.js",
@@ -11,7 +11,6 @@
     "clear": "npm run clearDist",
     "compile": "tsc --p tsconfig.es5.json && tsc --p tsconfig.es2015.json && tsc --p tsconfig.umd.json",
     "precompile": "npm run clearDist",
-    "prepublish": "npm test && clear && npm run compile",
     "test": "jest"
   },
   "typings": "./dist/index.d.ts",
@@ -37,8 +36,11 @@
   "devDependencies": {
     "@types/jest": "^22.0.1",
     "jest": "^22.0.5",
-    "rxjs": "^6.2.0",
-    "ts-jest": "^22.0.1",
+    "rxjs": "6.2.2",
+    "ts-jest": "^22.4.6",
     "typescript": "^2.6.1"
+  },
+  "dependencies": {
+    "@types/node": "^10.1.4"
   }
 }

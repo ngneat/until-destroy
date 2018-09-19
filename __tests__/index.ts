@@ -1,179 +1,94 @@
 import { Subject } from 'rxjs';
+import { untilDestroyed } from '../src/take-until-destroy';
 
-import { TakeUntilDestroy, untilDestroyed } from '../src/take-until-destroy';
-
-const mockObserver = {
-  next: jest.fn(),
-  error: jest.fn(),
-  complete: jest.fn()
+function createObserver() {
+  return {
+    next: jest.fn(),
+    error: jest.fn(),
+    complete: jest.fn()
+  };
 }
 
-const mockObserver2 = {
-  next: jest.fn(),
-  error: jest.fn(),
-  complete: jest.fn()
-}
-
-describe('@TakeUntilDestroy', () => {
-
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
-
-  it('should warn when not implement on destroy', () => {
-    const consoleSpy = jest.spyOn(console, 'warn');
-    @TakeUntilDestroy()
-    class Test {
-
-    }
-
-    new Test()['ngOnDestroy']();
-    expect(consoleSpy).toHaveBeenCalled();
-  });
-
-
-  it('should emit when calling on destroy', () => {
-    @TakeUntilDestroy()
-    class Test {
-      destroyed$: Subject<boolean>;
-
-      ngOnDestroy() {
-      }
-    }
-
-    const component1: Test = new Test();
-
-    component1.destroyed$.subscribe(mockObserver);
-    component1.ngOnDestroy();
-    expect(mockObserver.next).toHaveBeenCalledTimes(1);
-    expect(mockObserver.complete).toHaveBeenCalledTimes(1);
-  });
-
+describe('untilDestroyed', () => {
   it('should not destroy other instances', () => {
-    @TakeUntilDestroy()
-    class Test {
-      destroyed$: Subject<boolean>;
+    const spy = createObserver();
+    const spy2 = createObserver();
 
-      ngOnDestroy() {
+    class Test {
+      obs;
+      ngOnDestroy() {}
+      subscribe(spy) {
+        this.obs = new Subject().pipe(untilDestroyed(this)).subscribe(spy);
       }
     }
 
-    const component1: Test = new Test();
-    const component2: Test = new Test();
-
-    component1.destroyed$.subscribe(mockObserver);
-    component2.destroyed$.subscribe(mockObserver2);
+    const component1 = new Test();
+    const component2 = new Test();
+    component1.subscribe(spy);
+    component2.subscribe(spy2);
     component1.ngOnDestroy();
-    expect(mockObserver.next).toHaveBeenCalledTimes(1);
-    expect(mockObserver.complete).toHaveBeenCalledTimes(1);
-    expect(mockObserver2.next).not.toHaveBeenCalledTimes(1);
-    expect(mockObserver2.complete).not.toHaveBeenCalledTimes(1);
+    expect(spy.complete).toHaveBeenCalledTimes(1);
+    expect(spy2.complete).not.toHaveBeenCalled();
+    component2.ngOnDestroy();
+    expect(spy2.complete).toHaveBeenCalledTimes(1);
+  });
+
+  it('should work with multiple observables', () => {
+    const spy = createObserver();
+    const spy2 = createObserver();
+    const spy3 = createObserver();
+    class Test {
+      obs = new Subject().pipe(untilDestroyed(this)).subscribe(spy);
+      obs2 = new Subject().pipe(untilDestroyed(this)).subscribe(spy2);
+      obs3 = new Subject().pipe(untilDestroyed(this)).subscribe(spy3);
+      ngOnDestroy() {}
+    }
+
+    const instance = new Test();
+    instance.ngOnDestroy();
+    expect(spy.complete).toHaveBeenCalledTimes(1);
+    expect(spy2.complete).toHaveBeenCalledTimes(1);
+    expect(spy3.complete).toHaveBeenCalledTimes(1);
   });
 
   it('should work with classes that are not components', () => {
-    @TakeUntilDestroy('destroy')
+    const spy = createObserver();
     class Test {
-      destroyed$: Subject<boolean>;
-      testProp = 'TakeUntilDestroy';
-
+      obs = new Subject().pipe(untilDestroyed(this, 'destroy')).subscribe(spy);
       destroy() {
-        this.testProp = null;
+        console.log('called');
       }
     }
-
-    const instance: Test = new Test();
-
-    instance.destroyed$.subscribe(mockObserver);
-    expect(instance.testProp).toBe('TakeUntilDestroy');
+    const instance = new Test();
     instance.destroy();
-    expect(mockObserver.next).toHaveBeenCalledTimes(1);
-    expect(mockObserver.complete).toHaveBeenCalledTimes(1);
-    expect(instance.testProp).toBe(null);
+    expect(spy.complete).toHaveBeenCalledTimes(1);
   });
-
-
-  it('should work with super classes', () => {
-
-    class Parent {
-      prop;
-      constructor(protected prop) {
-        this.prop = prop;
-      }
-    }
-
-    @TakeUntilDestroy('destroy')
-    class Test extends Parent {
-      destroyed$: Subject<boolean>;
-      testProp = 'TakeUntilDestroy';
-
-      constructor() {
-        super('prop');
-      }
-
-      destroy() {
-        this.testProp = null;
-        this.prop = null;
-      }
-    }
-
-    const instance: Test = new Test();
-
-    instance.destroyed$.subscribe(mockObserver);
-    expect(instance.prop).toBe('prop');
-    expect(instance.testProp).toBe('TakeUntilDestroy');
-    instance.destroy();
-    expect(mockObserver.next).toHaveBeenCalledTimes(1);
-    expect(mockObserver.complete).toHaveBeenCalledTimes(1);
-    expect(instance.testProp).toBe(null);
-    expect(instance.prop).toBe(null);
-  });
-
-
 });
 
+describe('it should work anywhere', () => {
+  const spy = createObserver();
+  const spy2 = createObserver();
+  const spy3 = createObserver();
+  class LoginComponent {
+    dummy = new Subject().pipe(untilDestroyed(this)).subscribe(spy);
 
-describe('untilDestroyed operator', () => {
+    constructor() {
+      new Subject().pipe(untilDestroyed(this)).subscribe(spy2);
+    }
 
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
+    ngOnInit() {
+      new Subject().pipe(untilDestroyed(this)).subscribe(spy3);
+    }
 
-  it('should warn when class is not decorated', () => {
-    const consoleSpy = jest.spyOn(console, 'warn');
+    ngOnDestroy() {}
+  }
 
-    class Test {
-      obs = new Subject();
-      obs$ = this.obs.asObservable();
-    };
-
-    const instance = new Test();
-
-    instance.obs$
-      .pipe(untilDestroyed(instance))
-      .subscribe();
-
-    expect(consoleSpy).toHaveBeenCalled();
-  });
-
-  it('should unsubscribe when destroyed$', () => {
-    @TakeUntilDestroy()
-    class Test {
-      obs = new Subject();
-      obs$ = this.obs.asObservable();
-
-      ngOnInit() {
-        this.obs$
-          .pipe(untilDestroyed(this))
-          .subscribe(mockObserver);
-      }
-
-      ngOnDestroy() { }
-    };
-
-    const instance = new Test();
+  it('should unsubscribe', () => {
+    const instance = new LoginComponent();
     instance.ngOnInit();
     instance.ngOnDestroy();
-
-    expect(mockObserver.complete).toHaveBeenCalledTimes(1);
+    expect(spy.complete).toHaveBeenCalledTimes(1);
+    expect(spy2.complete).toHaveBeenCalledTimes(1);
+    expect(spy3.complete).toHaveBeenCalledTimes(1);
   });
 });
