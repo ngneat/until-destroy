@@ -45,8 +45,7 @@ export class Widget {
   constructor() {
     interval(1000)
       .pipe(
-        untilDestroyed(this),
-        'destroy'
+        untilDestroyed(this, 'destroy')
       )
       .subscribe(console.log);
   }
