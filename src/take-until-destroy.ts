@@ -14,9 +14,9 @@ export const untilDestroyed = (
     componentInstance['__takeUntilDestroy'] || new Subject();
 
   componentInstance[destroyMethodName] = function() {
-    isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
     componentInstance['__takeUntilDestroy'].next(true);
     componentInstance['__takeUntilDestroy'].complete();
+    isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
   };
 
   return source.pipe(takeUntil<T>(componentInstance['__takeUntilDestroy']));
