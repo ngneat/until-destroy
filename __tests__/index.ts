@@ -108,7 +108,7 @@ describe('it should throw', () => {
     );
   });
 
-  it.only('should work with super', () => {
+  it('should work with super', () => {
     class A {
       ngOnDestroy() {}
     }
