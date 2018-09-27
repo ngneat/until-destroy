@@ -107,4 +107,20 @@ describe('it should throw', () => {
       `LoginComponent is using untilDestroyed but doesn't implement ngOnDestroy`
     );
   });
+
+  it.only('should work with super', () => {
+    class A {
+      ngOnDestroy() {}
+    }
+
+    class B extends A {
+      dummy = new Subject().pipe(untilDestroyed(this)).subscribe(spy);
+    }
+
+    expect(function() {
+      new B();
+    }).not.toThrow(
+      `B is using untilDestroyed but doesn't implement ngOnDestroy`
+    );
+  });
 });
