@@ -92,3 +92,19 @@ describe('it should work anywhere', () => {
     expect(spy3.complete).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('it should throw', () => {
+  const spy = createObserver();
+
+  class LoginComponent {
+    dummy = new Subject().pipe(untilDestroyed(this)).subscribe(spy);
+  }
+
+  it('should throw when destroy method doesnt exist', () => {
+    expect(function() {
+      new LoginComponent();
+    }).toThrow(
+      `LoginComponent is using untilDestroyed but doesn't implement ngOnDestroy`
+    );
+  });
+});

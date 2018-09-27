@@ -10,6 +10,13 @@ export const untilDestroyed = (
   destroyMethodName = 'ngOnDestroy'
 ) => <T>(source: Observable<T>) => {
   const originalDestroy = componentInstance[destroyMethodName];
+  if (isFunction(originalDestroy) === false) {
+    throw new Error(
+      `${
+        componentInstance.constructor.name
+      } is using untilDestroyed but doesn't implement ${destroyMethodName}`
+    );
+  }
   componentInstance['__takeUntilDestroy'] =
     componentInstance['__takeUntilDestroy'] || new Subject();
 

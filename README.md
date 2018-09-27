@@ -31,7 +31,7 @@ export class InboxComponent implements OnInit, OnDestroy {
   // Otherwise 'ng build --prod' will optimize away any calls to ngOnDestroy,
   // even if the method is added by the untilDestroyed opertator
   ngOnDestroy() {
-    
+    // To protect you, we'll throw an error if it doesn't present.
   }
 }
 ```
@@ -44,9 +44,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 export class Widget {
   constructor() {
     interval(1000)
-      .pipe(
-        untilDestroyed(this, 'destroy')
-      )
+      .pipe(untilDestroyed(this, 'destroy'))
       .subscribe(console.log);
   }
 
