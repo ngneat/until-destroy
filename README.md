@@ -27,9 +27,7 @@ export class InboxComponent implements OnInit, OnDestroy {
       .subscribe(val => console.log(val));
   }
 
-  // This method must be present, even if empty!
-  // Otherwise 'ng build --prod' will optimize away any calls to ngOnDestroy,
-  // even if the method is added by the untilDestroyed opertator
+  // This method must be present, even if empty.
   ngOnDestroy() {
     // To protect you, we'll throw an error if it doesn't present.
   }
