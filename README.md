@@ -29,7 +29,7 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   // This method must be present, even if empty.
   ngOnDestroy() {
-    // To protect you, we'll throw an error if it doesn't present.
+    // To protect you, we'll throw an error if it doesn't exist.
   }
 }
 ```
