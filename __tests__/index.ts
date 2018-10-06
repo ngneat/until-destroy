@@ -101,6 +101,38 @@ describe('it should work anywhere', () => {
   });
 });
 
+describe('it should throw', () => {
+  const spy = createObserver();
+
+  class LoginComponent {
+    dummy = new Subject().pipe(untilDestroyed(this)).subscribe(spy);
+  }
+
+  it('should throw when destroy method doesnt exist', () => {
+    expect(function() {
+      new LoginComponent();
+    }).toThrow(
+      `LoginComponent is using untilDestroyed but doesn't implement ngOnDestroy`
+    );
+  });
+
+  it('should work with super', () => {
+    class A {
+      ngOnDestroy() {}
+    }
+
+    class B extends A {
+      dummy = new Subject().pipe(untilDestroyed(this)).subscribe(spy);
+    }
+
+    expect(function() {
+      new B();
+    }).not.toThrow(
+      `B is using untilDestroyed but doesn't implement ngOnDestroy`
+    );
+  });
+});
+
 describe('inheritance', () => {
   it('should work with subclass', () => {
     const spy = createObserver();
