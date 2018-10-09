@@ -1,6 +1,6 @@
 {
   "name": "ngx-take-until-destroy",
-  "version": "5.2.1",
+  "version": "5.2.3",
   "description": "RxJS operator that unsubscribes when component destroyed",
   "license": "MIT",
   "scripts": {
