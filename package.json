@@ -4,7 +4,7 @@
   "description": "RxJS operator that unsubscribes when component destroyed",
   "license": "MIT",
   "scripts": {
-    "build": "ng-packagr -p package.json",
+    "build": "ng-packagr -p package.json && rm dist/ngx-take-until-destroy.metadata.json",
     "test": "jest --env=node"
   },
   "ngPackage": {
