@@ -1,1 +1,1 @@
-export { untilDestroyed } from './take-until-destroy';
+export { untilComponentDestroyed, untilDestroyed } from './take-until-destroy';

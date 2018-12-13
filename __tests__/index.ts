@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs';
-import { untilDestroyed } from '../src/take-until-destroy';
+import { untilComponentDestroyed, untilDestroyed } from '../src/take-until-destroy';
 
 function createObserver() {
   return {
@@ -150,5 +150,35 @@ describe('inheritance', () => {
     const instance = new Child();
     instance.ngOnDestroy();
     expect(spy.complete).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('untilComponentDestroyed', () => {
+
+  const spy = createObserver();
+  const spy2 = createObserver();
+  const spy3 = createObserver();
+
+  class LoginComponent {
+    dummy = new Subject().pipe(untilComponentDestroyed(this)).subscribe(spy);
+
+    constructor() {
+      new Subject().pipe(untilComponentDestroyed(this)).subscribe(spy2);
+    }
+
+    ngOnInit() {
+      new Subject().pipe(untilComponentDestroyed(this)).subscribe(spy3);
+    }
+
+    ngOnDestroy() {}
+  }
+
+  it('should unsubscribe', () => {
+    const instance = new LoginComponent();
+    instance.ngOnInit();
+    instance.ngOnDestroy();
+    expect(spy.complete).toHaveBeenCalledTimes(1);
+    expect(spy2.complete).toHaveBeenCalledTimes(1);
+    expect(spy3.complete).toHaveBeenCalledTimes(1);
   });
 });

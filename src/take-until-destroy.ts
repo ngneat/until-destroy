@@ -1,5 +1,6 @@
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {OnDestroy} from '@angular/core';
 
 function isFunction(value) {
   return typeof value === 'function';
@@ -28,3 +29,5 @@ export const untilDestroyed = (
   }
   return source.pipe(takeUntil<T>(componentInstance['__takeUntilDestroy']));
 };
+
+export const untilComponentDestroyed = (componentInstance: OnDestroy) => untilDestroyed(componentInstance);
