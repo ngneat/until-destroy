@@ -34,6 +34,21 @@ export class InboxComponent implements OnInit, OnDestroy {
 }
 ```
 
+## Usage
+
+```ts
+import { AutoUnsubscribe } from 'ngx-take-until-destroy';
+
+@Component({...})
+class MyComponent implements OnDestroy {
+  @AutoUnsubscribe()
+  stream$ = new Observable(...);
+
+  // This method must be present, even if empty
+  ngOnDestroy() {}
+}
+```
+
 ### Use with any class
 
 ```ts
