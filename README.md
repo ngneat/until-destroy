@@ -42,7 +42,7 @@ import { AutoUnsubscribe } from 'ngx-take-until-destroy';
 @Component({...})
 class MyComponent implements OnDestroy {
   @AutoUnsubscribe()
-  stream$ = new Observable(...);
+  stream$ = interval(1000); // You can safely subscribe to this everywhere
 
   // This method must be present, even if empty
   ngOnDestroy() {}
