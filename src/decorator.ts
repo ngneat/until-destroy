@@ -27,7 +27,7 @@ export function AutoUnsubscribe(destroyMethodName?: string): PropertyDecorator {
       Object.defineProperty(target, propKey, {
         enumerable: true,
         configurable: true,
-        value: originalProp.pipe(untilDestroyed(target)),
+        value: (originalProp as Observable<any>).pipe(untilDestroyed(target)),
       });
     }
   };
