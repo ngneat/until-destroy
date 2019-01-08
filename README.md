@@ -34,7 +34,7 @@ export class InboxComponent implements OnInit, OnDestroy {
 }
 ```
 
-## Usage
+### Use with decorator
 
 ```ts
 import { AutoUnsubscribe } from 'ngx-take-until-destroy';
