@@ -34,6 +34,22 @@ export class InboxComponent implements OnInit, OnDestroy {
 }
 ```
 
+### Use with decorator
+
+```ts
+import { AutoUnsubscribe } from 'ngx-take-until-destroy';
+
+@Component({...})
+class MyComponent implements OnDestroy {
+  @AutoUnsubscribe()
+  stream$ = interval(1000); // Now you can safely subscribe to it from anywhere
+
+  // This method must be present, even if empty.
+  ngOnDestroy() {}
+}
+```
+```
+
 ### Use with any class
 
 ```ts
