@@ -1,2 +1,2 @@
 export { untilDestroyed } from './take-until-destroy';
-export { AutoUnsubscribe } from './decorator';
+export { WithUntilDestroyed as AutoUnsubscribe } from './decorator';

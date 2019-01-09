@@ -18,7 +18,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-inbox',
-  templateUrl: './inbox.component.html'
+  templateUrl: './inbox.component.html',
 })
 export class InboxComponent implements OnInit, OnDestroy {
   ngOnInit() {
@@ -37,11 +37,11 @@ export class InboxComponent implements OnInit, OnDestroy {
 ### Use with decorator
 
 ```ts
-import { AutoUnsubscribe } from 'ngx-take-until-destroy';
+import { WithUntilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({...})
 class MyComponent implements OnDestroy {
-  @AutoUnsubscribe()
+  @WithUntilDestroyed()
   stream$ = interval(1000); // You can safely subscribe to this everywhere
 
   // This method must be present, even if empty

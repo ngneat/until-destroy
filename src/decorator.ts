@@ -1,13 +1,15 @@
+import { isObservable, Observable } from 'rxjs';
+
 import { untilDestroyed } from './take-until-destroy';
 
 /**
- * Autamatically unsubscribes from pipe when component destroyed.
+ * Automatically unsubscribes from pipe when component destroyed.
  *
  * @example
  * ```ts
  * @Component({...})
  * class MyComponent implements OnDestroy {
- *   @AutoUnsubscribe()
+ *   @WithUntilDestroyed()
  *   stream$ = new Observable(...);
  *
  *   // OnDestroy method is required by Angular Compiler
@@ -19,15 +21,34 @@ import { untilDestroyed } from './take-until-destroy';
  *
  * Do not forget to implement {@link OnDestroy} life-cycle hook.
  */
-export function AutoUnsubscribe(destroyMethodName?: string): PropertyDecorator {
+export function WithUntilDestroyed(
+  destroyMethodName?: string,
+): PropertyDecorator {
   return (target, propKey) => {
-    const originalProp = target[propKey];
+    let val: Observable<any>;
+
+    function getter() {
+      return val;
+    }
+
+    function setter(newVal) {
+      if (isObservable(newVal)) {
+        val = newVal.pipe(untilDestroyed(target, destroyMethodName));
+      } else {
+        throw Error(
+          `WithUntilDestroyed: Property ${String(propKey)} on ${
+            target.constructor.name
+          } is not Observable!`,
+        );
+      }
+    }
 
     if (delete target[propKey]) {
       Object.defineProperty(target, propKey, {
         enumerable: true,
         configurable: true,
-        value: (originalProp as Observable<any>).pipe(untilDestroyed(target)),
+        set: setter,
+        get: getter,
       });
     }
   };
