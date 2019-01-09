@@ -22,7 +22,7 @@ describe('@WithUntilDestroyed decorator', () => {
 
     class Test {
       @WithUntilDestroyed('destroy')
-      notObservable = EMPTY;
+      stream$ = EMPTY;
 
       destroy() {}
     }
