@@ -1,8 +1,7 @@
 import { EMPTY, Subject } from 'rxjs';
 
-import * as untilDestroyedObj from '../src/take-until-destroy';
-
 import { WithUntilDestroyed } from '../src/decorator';
+import * as untilDestroyedObj from '../src/take-until-destroy';
 
 describe('@WithUntilDestroyed decorator', () => {
   it('should throw when applied on non Observable prop', () => {
@@ -14,7 +13,7 @@ describe('@WithUntilDestroyed decorator', () => {
     expect(() => new Test()).toThrowError();
   });
 
-  it('should call `untilDestroyed()` with target prototype and `destroyMethodName` on setter', () => {
+  it('should call `untilDestroyed()` with instance and `destroyMethodName` on setter', () => {
     const untilDestroyedSpy = spyOn(
       untilDestroyedObj,
       'untilDestroyed',
@@ -29,9 +28,9 @@ describe('@WithUntilDestroyed decorator', () => {
 
     expect(untilDestroyedSpy).not.toHaveBeenCalled();
 
-    new Test();
+    const test = new Test();
 
-    expect(untilDestroyedSpy).toHaveBeenCalledWith(Test.prototype, 'destroy');
+    expect(untilDestroyedSpy).toHaveBeenCalledWith(test, 'destroy');
   });
 
   it('should unsubscribe when `destroyMethodName` was called', () => {
