@@ -33,7 +33,7 @@ export function WithUntilDestroyed(
 
     function setter(newVal) {
       if (isObservable(newVal)) {
-        val = newVal.pipe(untilDestroyed(target, destroyMethodName));
+        val = newVal.pipe(untilDestroyed(this, destroyMethodName));
       } else {
         throw Error(
           `WithUntilDestroyed: Property ${String(propKey)} on ${
