@@ -34,20 +34,6 @@ export class InboxComponent implements OnInit, OnDestroy {
 }
 ```
 
-### Use with decorator
-
-```ts
-import { WithUntilDestroyed } from 'ngx-take-until-destroy';
-
-@Component({...})
-class MyComponent implements OnDestroy {
-  @WithUntilDestroyed()
-  stream$ = interval(1000); // You can safely subscribe to this everywhere
-
-  // This method must be present, even if empty
-  ngOnDestroy() {}
-}
-```
 
 ### Use with any class
 
