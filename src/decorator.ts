@@ -21,19 +21,22 @@ import { untilDestroyed } from './take-until-destroy';
  *
  * Do not forget to implement {@link OnDestroy} life-cycle hook.
  */
-export function WithUntilDestroyed(
-  destroyMethodName?: string,
-): PropertyDecorator {
-  return (target, propKey) => {
-    let val: Observable<any>;
+export function WithUntilDestroyed(destroyMethodName?: string): PropertyDecorator {
+  return function(target, propKey) {
+    const valKey = `__WithUntilDestroyed:${String(propKey)}__`;
 
     function getter() {
-      return val;
+      return this[valKey];
     }
 
     function setter(newVal) {
       if (isObservable(newVal)) {
-        val = newVal.pipe(untilDestroyed(this, destroyMethodName));
+        delete this[valKey];
+        Object.defineProperty(this, valKey, {
+          configurable: true,
+          enumerable: false,
+          value: newVal.pipe(untilDestroyed(this, destroyMethodName)),
+        });
       } else {
         throw Error(
           `WithUntilDestroyed: Property ${String(propKey)} on ${

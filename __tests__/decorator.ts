@@ -1,4 +1,4 @@
-import { EMPTY, Subject } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 
 import { WithUntilDestroyed } from '../src/decorator';
 import * as untilDestroyedObj from '../src/take-until-destroy';
@@ -57,5 +57,19 @@ describe('@WithUntilDestroyed decorator', () => {
     test.subject.next('event');
 
     expect(callback).not.toHaveBeenCalled();
+  });
+
+  it('should not share value between instances', () => {
+    class Test {
+      @WithUntilDestroyed()
+      stream$ = new Observable();
+
+      ngOnDestroy() {}
+    }
+
+    const t1 = new Test();
+    const t2 = new Test();
+
+    expect(t1.stream$).not.toBe(t2.stream$);
   });
 });
