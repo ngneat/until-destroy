@@ -47,7 +47,7 @@ export class Widget {
       .subscribe(console.log);
   }
 
-  // The name needs to be the same as the decorator parameter
+  // The name needs to be the same as the second parameter
   destroy() {}
 }
 ```
