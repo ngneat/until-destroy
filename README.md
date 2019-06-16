@@ -7,6 +7,8 @@
 
 ##### Declarative way to unsubscribe from observables when the component destroyed
 
+**Not tested with Ivy**
+
 ## Installation
 
 `npm install ngx-take-until-destroy --save`
