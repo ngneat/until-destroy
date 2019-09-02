@@ -32,15 +32,15 @@
     "rxjs": "^6.0.0"
   },
   "devDependencies": {
-    "@angular/compiler": "^6.1.9",
-    "@angular/compiler-cli": "^6.1.9",
-    "@angular/core": "^6.1.9",
-    "@types/jest": "^22.0.1",
-    "@types/node": "^10.1.4",
-    "jest": "^22.0.5",
-    "ng-packagr": "^4.2.0",
-    "rxjs": "6.2.2",
-    "ts-jest": "^22.4.6",
-    "typescript": "^2.7.2"
+    "@angular/compiler": "8.2.4",
+    "@angular/compiler-cli": "^8.2.4",
+    "@angular/core": "^8.2.4",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.3",
+    "jest": "^24.9.0",
+    "ng-packagr": "^5.5.0",
+    "rxjs": "6.5.2",
+    "ts-jest": "^24.0.2",
+    "typescript": "3.5.3"
   }
 }

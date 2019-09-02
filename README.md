@@ -7,8 +7,6 @@
 
 ##### Declarative way to unsubscribe from observables when the component destroyed
 
-**Not tested with Ivy**
-
 ## Installation
 
 `npm install ngx-take-until-destroy --save`
@@ -55,3 +53,25 @@ export class Widget {
 ```
 
 [Live example](https://stackblitz.com/edit/ngx-take-until-demo)
+
+### Usage with Ivy renderer
+
+Given the following code:
+
+```ts
+import { untilDestroyed } from 'ngx-take-until-destroy';
+
+@Component({
+  selector: 'app-inbox',
+  templateUrl: './inbox.component.html',
+})
+export class InboxComponent implements OnInit, OnDestroy {
+  ngOnInit() {
+    interval(1000)
+      .pipe(untilDestroyed(this))
+      .subscribe(val => console.log(val));
+  }
+}
+```
+
+You don't have to declare the `ngOnDestroy` method anymore if `enableIvy` compiler option is truthy. But you still have to declare custom methods when `untilDestroyed` is used with non-directive/component classes.
