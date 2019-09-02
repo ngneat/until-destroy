@@ -102,6 +102,36 @@ describe('it should work anywhere', () => {
   });
 });
 
+describe('it should throw on non-directive/component classes', () => {
+  it('should throw when destroy method doesnt exist', () => {
+    const spy = createObserver();
+
+    class Test {
+      dummy = new Subject().pipe(untilDestroyed(this, 'destroy')).subscribe(spy);
+    }
+
+    expect(function() {
+      new Test();
+    }).toThrow(`Test is using untilDestroyed but doesn't implement destroy`);
+  });
+
+  it('should work with super', () => {
+    const spy = createObserver();
+
+    class A {
+      destroy() {}
+    }
+
+    class B extends A {
+      dummy = new Subject().pipe(untilDestroyed(this, 'destroy')).subscribe(spy);
+    }
+
+    expect(function() {
+      new B();
+    }).not.toThrow(`B is using untilDestroyed but doesn't implement destroy`);
+  });
+});
+
 describe('inheritance', () => {
   it('should work with subclass', () => {
     const spy = createObserver();

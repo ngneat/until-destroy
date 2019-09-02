@@ -14,6 +14,15 @@ const TAKE_UNTIL_DESTROY = '__takeUntilDestroy';
 
 function overrideNonDirectiveInstanceMethod(instance: any, destroyMethodName: string): void {
   const originalDestroy = instance[destroyMethodName];
+
+  if (isFunction(originalDestroy) === false) {
+    throw new Error(
+      `${
+        instance.constructor.name
+      } is using untilDestroyed but doesn't implement ${destroyMethodName}`
+    );
+  }
+
   if (!instance[TAKE_UNTIL_DESTROY]) {
     instance[TAKE_UNTIL_DESTROY] = new Subject<void>();
     instance[destroyMethodName] = function() {
