@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "paths": {
       "ngx-take-until-destroy": [
-        "./dist"
+        "dist"
       ]
     },
     "target": "es5",

@@ -7,7 +7,10 @@
     "ng": "ng",
     "lint": "ng lint",
     "test": "ng test --runInBand",
-    "build": "ng-packagr -p src/package.json && rm dist/ngx-take-until-destroy.metadata.json"
+    "build": "ng-packagr -p src/package.json && rm dist/ngx-take-until-destroy.metadata.json",
+    "build:integration": "ng build --project integration --prod",
+    "serve:integration": "ng serve --project integration",
+    "serve:integration:static": "angular-http-server --path dist-integration -p 4200 -o"
   },
   "private": true,
   "maintainers": [
@@ -25,6 +28,7 @@
     "@angular/platform-browser-dynamic": "^8.2.4",
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.3",
+    "angular-http-server": "^1.9.0",
     "codelyzer": "^5.1.0",
     "jest": "^24.9.0",
     "ng-packagr": "^5.5.0",

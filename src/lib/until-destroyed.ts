@@ -1,13 +1,7 @@
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { DESTROY, isFunction } from './internals';
-
-function createSubjectOnTheInstance(instance: any): void {
-  if (!instance[DESTROY]) {
-    instance[DESTROY] = new Subject<void>();
-  }
-}
+import { DESTROY, isFunction, createSubjectOnTheInstance, completeSubjectOnTheInstance } from './internals';
 
 function overrideNonDirectiveInstanceMethod(instance: any, destroyMethodName: string): void {
   const originalDestroy = instance[destroyMethodName];
@@ -21,10 +15,10 @@ function overrideNonDirectiveInstanceMethod(instance: any, destroyMethodName: st
   }
 
   createSubjectOnTheInstance(instance);
+
   instance[destroyMethodName] = function() {
     isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
-    instance[DESTROY].next();
-    instance[DESTROY].complete();
+    completeSubjectOnTheInstance(this);
   };
 }
 

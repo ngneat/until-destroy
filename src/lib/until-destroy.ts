@@ -5,7 +5,7 @@ import {
   ɵDirectiveDef as DirectiveDef
 } from '@angular/core';
 
-import { DESTROY, isFunction, UntilDestroyOptions } from './internals';
+import { isFunction, UntilDestroyOptions, completeSubjectOnTheInstance } from './internals';
 
 function unsubscribe(property: any): void {
   property && isFunction(property.unsubscribe) && property.unsubscribe();
@@ -41,10 +41,7 @@ export function UntilDestroy({
 
       // It's important to use `this` instead of caching instance
       // that may lead to memory leaks
-      if (this[DESTROY]) {
-        this[DESTROY].next();
-        this[DESTROY].complete();
-      }
+      completeSubjectOnTheInstance(this);
 
       // Check if subscriptions are pushed to some array
       if (arrayName) {
