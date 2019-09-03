@@ -1,4 +1,4 @@
-export function isFunction(target: unknown): target is () => void {
+export function isFunction(target: unknown) {
   return typeof target === 'function';
 }
 
