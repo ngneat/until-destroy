@@ -7,4 +7,5 @@ export const DESTROY = '__destroy';
 export interface UntilDestroyOptions {
   blackList?: string[];
   arrayName?: string;
+  checkProperties?: boolean;
 }

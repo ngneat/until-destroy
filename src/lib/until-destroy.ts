@@ -4,7 +4,6 @@ import {
   ɵComponentDef as ComponentDef,
   ɵDirectiveDef as DirectiveDef
 } from '@angular/core';
-import { Subject } from 'rxjs';
 
 import { DESTROY, isFunction, UntilDestroyOptions } from './internals';
 
@@ -26,7 +25,8 @@ function getDef<T>(
 
 export function UntilDestroy({
   blackList,
-  arrayName
+  arrayName,
+  checkProperties
 }: UntilDestroyOptions = {}): ClassDecorator {
   return (target: any) => {
     const type: DirectiveType<unknown> | ComponentType<unknown> = target;
@@ -52,12 +52,14 @@ export function UntilDestroy({
       }
 
       // Loop through the properties and find subscriptions
-      for (const property in this) {
-        if (blackList && blackList.includes(property)) {
-          continue;
-        }
+      if (checkProperties) {
+        for (const property in this) {
+          if (blackList && blackList.includes(property)) {
+            continue;
+          }
 
-        unsubscribe(this[property]);
+          unsubscribe(this[property]);
+        }
       }
     };
   };

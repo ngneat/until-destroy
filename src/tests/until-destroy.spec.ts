@@ -8,7 +8,7 @@ import { UntilDestroy } from '..';
 
 describe('UntilDestroy decorator alone', () => {
   it('should unsubscribe from the subscription property', () => {
-    @UntilDestroy()
+    @UntilDestroy({ checkProperties: true })
     class TestComponent {
       static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
         vars: 0,
@@ -32,7 +32,7 @@ describe('UntilDestroy decorator alone', () => {
   });
 
   it('should not unsubscribe from the blacklisted subscription', () => {
-    @UntilDestroy({ blackList: ['subjectSubscription'] })
+    @UntilDestroy({ blackList: ['subjectSubscription'], checkProperties: true })
     class TestComponent {
       static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
         vars: 0,

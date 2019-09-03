@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/ng-packagr/package.schema.json",
   "name": "ngx-take-until-destroy",
-  "version": "5.4.0",
+  "version": "6.0.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NetanelBasal/ngx-take-until-destroy.git"
