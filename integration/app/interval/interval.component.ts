@@ -1,6 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from 'ngx-take-until-destroy';
-
 import { fromEvent } from 'rxjs';
 import { pluck, debounceTime } from 'rxjs/operators';
 
@@ -16,7 +15,7 @@ export class IntervalComponent implements OnDestroy {
 
   subscription = fromEvent<MouseEvent>(document, 'mousemove')
     .pipe(
-      debounceTime(50),
+      debounceTime(200),
       pluck<MouseEvent, number>('clientX')
     )
     .subscribe(clientX => {

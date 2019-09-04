@@ -56,6 +56,8 @@ export class Widget {
 
 ### Usage with Ivy renderer
 
+#### `untilDestroyed` operator
+
 Given the following code:
 
 ```ts
@@ -65,7 +67,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   selector: 'app-inbox',
   templateUrl: './inbox.component.html',
 })
-export class InboxComponent implements OnInit, OnDestroy {
+export class InboxComponent implements OnInit {
   ngOnInit() {
     interval(1000)
       .pipe(untilDestroyed(this))
@@ -75,3 +77,47 @@ export class InboxComponent implements OnInit, OnDestroy {
 ```
 
 You don't have to declare the `ngOnDestroy` method anymore if `enableIvy` compiler option is truthy. But you still have to declare custom methods when `untilDestroyed` is used with non-directive/component classes.
+
+#### `UntilDestroy` decorator
+
+`ngx-take-until-destroy` exposes the `UntilDestroy` decorator that provides the ability to store subscriptions in class properties. Let's look at the example below:
+
+```ts
+import { UntilDestroy, untilDestroyed } from 'ngx-take-until-destroy';
+
+// NOTE: `UntilDestroy` decorator has to be before `Component` in JIT mode!
+@UntilDestroy({ checkProperties: true })
+@Component({
+  selector: 'app-inbox',
+  templateUrl: './inbox.component.html'
+})
+export class InboxComponent {
+  subscription = interval(1000)
+    .pipe(untilDestroyed(this))
+    .subscribe(val => console.log(val));
+}
+```
+
+`subscription` will be unsubscribed automatically when the component gets destroyed. We can also store subscriptions in array:
+
+```ts
+import { UntilDestroy, untilDestroyed } from 'ngx-take-until-destroy';
+import { Subscription } from 'rxjs';
+
+@UntilDestroy({ arrayName: 'subscriptions' })
+@Component({
+  selector: 'app-inbox',
+  templateUrl: './inbox.component.html'
+})
+export class InboxComponent {
+  subscriptions: Subscription[] = [];
+
+  constructor() {
+    const subscription = interval(1000)
+      .pipe(untilDestroyed(this))
+      .subscribe(val => console.log(val));
+
+    this.subscriptions.push(subscription);
+  }
+}
+```
