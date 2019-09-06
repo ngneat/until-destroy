@@ -10,19 +10,20 @@ describe('UntilDestroy decorator alone', () => {
   it('should unsubscribe from the subscription property', () => {
     @UntilDestroy({ checkProperties: true })
     class TestComponent {
+      static ngFactoryDef = () => new TestComponent();
+
       static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
         vars: 0,
         consts: 0,
         type: TestComponent,
         selectors: [[]],
-        factory: () => new TestComponent(),
         template: () => {}
       });
 
       subscription = interval(1000).subscribe();
     }
 
-    const component = TestComponent.ngComponentDef.factory();
+    const component = TestComponent.ngFactoryDef();
 
     expect(component.subscription.closed).toBeFalsy();
 
@@ -34,12 +35,13 @@ describe('UntilDestroy decorator alone', () => {
   it('should not unsubscribe from the blacklisted subscription', () => {
     @UntilDestroy({ blackList: ['subjectSubscription'], checkProperties: true })
     class TestComponent {
+      static ngFactoryDef = () => new TestComponent();
+
       static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
         vars: 0,
         consts: 0,
         type: TestComponent,
         selectors: [[]],
-        factory: () => new TestComponent(),
         template: () => {}
       });
 
@@ -47,7 +49,7 @@ describe('UntilDestroy decorator alone', () => {
       subjectSubscription = new Subject().subscribe();
     }
 
-    const component = TestComponent.ngComponentDef.factory();
+    const component = TestComponent.ngFactoryDef();
 
     expect(component.intervalSubscription.closed).toBeFalsy();
     expect(component.subjectSubscription.closed).toBeFalsy();
@@ -63,19 +65,20 @@ describe('UntilDestroy decorator alone', () => {
   it('should unsubscribe from the array of subscriptions', () => {
     @UntilDestroy({ arrayName: 'subscriptions' })
     class TestComponent {
+      static ngFactoryDef = () => new TestComponent();
+
       static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
         vars: 0,
         consts: 0,
         type: TestComponent,
         selectors: [[]],
-        factory: () => new TestComponent(),
         template: () => {}
       });
 
       subscriptions = [interval(1000).subscribe(), new Subject().subscribe()];
     }
 
-    const component = TestComponent.ngComponentDef.factory();
+    const component = TestComponent.ngFactoryDef();
 
     component.subscriptions.forEach(subscription => {
       expect(subscription.closed).toBeFalsy();

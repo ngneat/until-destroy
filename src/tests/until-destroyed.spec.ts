@@ -147,12 +147,13 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
 
     @UntilDestroy()
     class TestComponent {
+      static ngFactoryDef = () => new TestComponent();
+
       static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
         vars: 0,
         consts: 0,
         type: TestComponent,
         selectors: [[]],
-        factory: () => new TestComponent(),
         template: () => {}
       });
 
@@ -161,7 +162,7 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
       }
     }
 
-    const component = TestComponent.ngComponentDef.factory();
+    const component = TestComponent.ngFactoryDef();
     TestComponent.ngComponentDef.onDestroy!.call(component);
 
     expect(spy.complete).toHaveBeenCalledTimes(1);
