@@ -10,8 +10,6 @@ describe('UntilDestroy decorator alone', () => {
   it('should unsubscribe from the subscription property', () => {
     @UntilDestroy({ checkProperties: true })
     class TestComponent {
-      static ngFactoryDef = () => new TestComponent();
-
       static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
         vars: 0,
         consts: 0,
@@ -21,6 +19,8 @@ describe('UntilDestroy decorator alone', () => {
       });
 
       subscription = interval(1000).subscribe();
+
+      static ngFactoryDef = () => new TestComponent();
     }
 
     const component = TestComponent.ngFactoryDef();
@@ -35,8 +35,6 @@ describe('UntilDestroy decorator alone', () => {
   it('should not unsubscribe from the blacklisted subscription', () => {
     @UntilDestroy({ blackList: ['subjectSubscription'], checkProperties: true })
     class TestComponent {
-      static ngFactoryDef = () => new TestComponent();
-
       static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
         vars: 0,
         consts: 0,
@@ -47,6 +45,8 @@ describe('UntilDestroy decorator alone', () => {
 
       intervalSubscription = interval(1000).subscribe();
       subjectSubscription = new Subject().subscribe();
+
+      static ngFactoryDef = () => new TestComponent();
     }
 
     const component = TestComponent.ngFactoryDef();
@@ -65,8 +65,6 @@ describe('UntilDestroy decorator alone', () => {
   it('should unsubscribe from the array of subscriptions', () => {
     @UntilDestroy({ arrayName: 'subscriptions' })
     class TestComponent {
-      static ngFactoryDef = () => new TestComponent();
-
       static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
         vars: 0,
         consts: 0,
@@ -76,6 +74,8 @@ describe('UntilDestroy decorator alone', () => {
       });
 
       subscriptions = [interval(1000).subscribe(), new Subject().subscribe()];
+
+      static ngFactoryDef = () => new TestComponent();
     }
 
     const component = TestComponent.ngFactoryDef();

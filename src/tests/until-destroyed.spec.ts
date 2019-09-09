@@ -147,8 +147,6 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
 
     @UntilDestroy()
     class TestComponent {
-      static ngFactoryDef = () => new TestComponent();
-
       static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
         vars: 0,
         consts: 0,
@@ -160,6 +158,8 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
       constructor() {
         new Subject().pipe(untilDestroyed(this)).subscribe(spy);
       }
+
+      static ngFactoryDef = () => new TestComponent();
     }
 
     const component = TestComponent.ngFactoryDef();

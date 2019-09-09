@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UntilDestroy } from 'ngx-take-until-destroy';
 import { fromEvent } from 'rxjs';
-import { pluck } from 'rxjs/operators';
+import { pluck, finalize } from 'rxjs/operators';
 
 @UntilDestroy({ arrayName: 'subscriptions' })
 @Component({
@@ -13,7 +13,10 @@ export class DocumentClickComponent {
 
   subscriptions = [
     fromEvent<KeyboardEvent>(document, 'click')
-      .pipe(pluck<KeyboardEvent, number>('clientX'))
+      .pipe(
+        pluck<KeyboardEvent, number>('clientX'),
+        finalize(() => console.log('DocumentClick fromEvent stream has completed'))
+      )
       .subscribe(clientX => {
         console.log(`You've clicked on the document and clientX is ${clientX}`);
         this.clientX = clientX;
