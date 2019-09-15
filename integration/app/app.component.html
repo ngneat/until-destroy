@@ -1,0 +1,5 @@
+<app-interval *ngIf="shown"></app-interval>
+<app-interval *ngIf="shown"></app-interval>
+<app-document-click *ngIf="shown"></app-document-click>
+<ng-container *ngIf="shown" http></ng-container>
+<button (click)="shown = !shown">Toggle all components and directives</button>

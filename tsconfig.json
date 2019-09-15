@@ -1,24 +1,22 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "ngx-take-until-destroy": [
+        "dist"
+      ]
+    },
     "target": "es5",
-    "noImplicitAny": false,
-    "sourceMap": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "declaration": true,
     "outDir": "dist/",
     "lib": [
       "dom",
-      "es2015",
       "es2017"
-    ]
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "test"
-  ]
+    ],
+    "moduleResolution": "node",
+    "strict": true,
+    "sourceMap": true,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  }
 }

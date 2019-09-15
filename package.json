@@ -1,46 +1,41 @@
 {
   "name": "ngx-take-until-destroy",
-  "version": "5.4.0",
+  "version": "0.0.0",
   "description": "RxJS operator that unsubscribes when component destroyed",
   "license": "MIT",
   "scripts": {
-    "build": "ng-packagr -p package.json && rm dist/ngx-take-until-destroy.metadata.json",
-    "test": "jest --env=node"
+    "ng": "ng",
+    "lint": "ng lint",
+    "test": "ng test --runInBand",
+    "test:watch": "ng test --runInBand --watch",
+    "build": "ng-packagr -p src/package.json && rm dist/ngx-take-until-destroy.metadata.json",
+    "build:integration": "ng build --project integration --prod",
+    "serve:integration": "ng serve --project integration",
+    "serve:integration:static": "angular-http-server --path dist-integration -p 4200 -o"
   },
-  "ngPackage": {
-    "lib": {
-      "entryFile": "public_api.ts"
-    }
-  },
+  "private": true,
   "maintainers": [
     "Netanel Basal"
   ],
-  "repository": {
-    "url": "https://github.com/NetanelBasal/ngx-take-until-destroy"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "transform": {
-      "\\.(ts)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "/__tests__/.*\\.(ts|js)$"
-  },
-  "peerDependencies": {
-    "rxjs": "^6.0.0"
-  },
   "devDependencies": {
-    "@angular/compiler": "^6.1.9",
-    "@angular/compiler-cli": "^6.1.9",
-    "@angular/core": "^6.1.9",
-    "@types/jest": "^22.0.1",
-    "@types/node": "^10.1.4",
-    "jest": "^22.0.5",
-    "ng-packagr": "^4.2.0",
-    "rxjs": "6.2.2",
-    "ts-jest": "^22.4.6",
-    "typescript": "^2.7.2"
+    "@angular-builders/jest": "^8.2.0",
+    "@angular-devkit/build-angular": "^0.803.2",
+    "@angular/cli": "9.0.0-next.3",
+    "@angular/common": "^9.0.0-next.5",
+    "@angular/compiler": "^9.0.0-next.5",
+    "@angular/compiler-cli": "^9.0.0-next.5",
+    "@angular/core": "^9.0.0-next.5",
+    "@angular/platform-browser": "^9.0.0-next.5",
+    "@angular/platform-browser-dynamic": "^9.0.0-next.5",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.3",
+    "angular-http-server": "^1.9.0",
+    "codelyzer": "^5.1.0",
+    "jest": "^24.9.0",
+    "ng-packagr": "^5.5.0",
+    "rxjs": "^6.5.2",
+    "tslint": "^5.19.0",
+    "typescript": "3.5.3",
+    "zone.js": "^0.10.2"
   }
 }

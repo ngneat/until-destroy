@@ -1,0 +1,26 @@
+{
+  "$schema": "../node_modules/ng-packagr/package.schema.json",
+  "name": "ngx-take-until-destroy",
+  "version": "6.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NetanelBasal/ngx-take-until-destroy.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/NetanelBasal/ngx-take-until-destroy#readme",
+  "bugs": {
+    "url": "https://github.com/NetanelBasal/ngx-take-until-destroy/issues"
+  },
+  "sideEffects": true,
+  "peerDependencies": {
+    "@angular/core": ">=8.0.0",
+    "rxjs": ">=6.4.0"
+  },
+  "ngPackage": {
+    "lib": {
+      "flatModuleFile": "ngx-take-until-destroy",
+      "entryFile": "index.ts"
+    },
+    "dest": "../dist"
+  }
+}
