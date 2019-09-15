@@ -1,11 +1,15 @@
 import {
   ɵComponentType as ComponentType,
-  ɵDirectiveType as DirectiveType,
-  ɵComponentDef as ComponentDef,
-  ɵDirectiveDef as DirectiveDef
+  ɵDirectiveType as DirectiveType
 } from '@angular/core';
 
-import { isFunction, UntilDestroyOptions, completeSubjectOnTheInstance } from './internals';
+import {
+  getDef,
+  isFunction,
+  UntilDestroyOptions,
+  completeSubjectOnTheInstance,
+  DECORATOR_APPLIED
+} from './internals';
 
 function unsubscribe(property: any): void {
   property && isFunction(property.unsubscribe) && property.unsubscribe();
@@ -13,14 +17,6 @@ function unsubscribe(property: any): void {
 
 function unsubscribeIfPropertyIsArrayLike(property: any[]): void {
   Array.isArray(property) && property.forEach(unsubscribe);
-}
-
-function getDef<T>(
-  type: DirectiveType<T> | ComponentType<T>
-): DirectiveDef<T> | ComponentDef<T> {
-  return (
-    (type as DirectiveType<T>).ngDirectiveDef || (type as ComponentType<T>).ngComponentDef
-  );
 }
 
 export function UntilDestroy({
@@ -59,5 +55,7 @@ export function UntilDestroy({
         }
       }
     };
+
+    (def as any)[DECORATOR_APPLIED] = true;
   };
 }

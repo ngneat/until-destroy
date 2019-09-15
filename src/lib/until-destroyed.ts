@@ -1,16 +1,20 @@
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { DESTROY, isFunction, createSubjectOnTheInstance, completeSubjectOnTheInstance } from './internals';
+import {
+  DESTROY,
+  isFunction,
+  createSubjectOnTheInstance,
+  completeSubjectOnTheInstance,
+  ensureDirectiveIsDecorated
+} from './internals';
 
 function overrideNonDirectiveInstanceMethod(instance: any, destroyMethodName: string): void {
   const originalDestroy = instance[destroyMethodName];
 
   if (isFunction(originalDestroy) === false) {
     throw new Error(
-      `${
-        instance.constructor.name
-      } is using untilDestroyed but doesn't implement ${destroyMethodName}`
+      `${instance.constructor.name} is using untilDestroyed but doesn't implement ${destroyMethodName}`
     );
   }
 
@@ -29,6 +33,7 @@ export function untilDestroyed(instance: any, destroyMethodName?: string) {
     if (typeof destroyMethodName === 'string') {
       overrideNonDirectiveInstanceMethod(instance, destroyMethodName);
     } else {
+      ensureDirectiveIsDecorated(instance);
       createSubjectOnTheInstance(instance);
     }
 

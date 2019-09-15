@@ -7,6 +7,7 @@
     "ng": "ng",
     "lint": "ng lint",
     "test": "ng test --runInBand",
+    "test:watch": "ng test --runInBand --watch",
     "build": "ng-packagr -p src/package.json && rm dist/ngx-take-until-destroy.metadata.json",
     "build:integration": "ng build --project integration --prod",
     "serve:integration": "ng serve --project integration",

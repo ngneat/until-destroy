@@ -167,4 +167,42 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
 
     expect(spy.complete).toHaveBeenCalledTimes(1);
   });
+
+  it('should apply symbol to decorated class definition', () => {
+    @UntilDestroy()
+    class TestComponent {
+      static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
+        vars: 0,
+        consts: 0,
+        type: TestComponent,
+        selectors: [[]],
+        template: () => {}
+      });
+    }
+
+    const ownPropertySymbols = Object.getOwnPropertySymbols(TestComponent.ngComponentDef);
+    const decoratorAppliedSymbol = ownPropertySymbols.find(
+      symbol => symbol.toString() === 'Symbol(__decoratorApplied)'
+    );
+
+    expect(decoratorAppliedSymbol).toBeDefined();
+  });
+
+  it('should throw if directive/component not decorator with UntilDestroy', () => {
+    class TestComponent {
+      static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
+        vars: 0,
+        consts: 0,
+        type: TestComponent,
+        selectors: [[]],
+        template: () => {}
+      });
+
+      subscription = new Subject().pipe(untilDestroyed(this)).subscribe();
+
+      static ngFactoryDef = () => new TestComponent();
+    }
+
+    expect(() => TestComponent.ngFactoryDef()).toThrow();
+  });
 });
