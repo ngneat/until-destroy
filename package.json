@@ -1,21 +1,29 @@
 {
-  "name": "ngx-take-until-destroy",
+  "name": "until-destroy-playground",
   "version": "0.0.0",
-  "description": "RxJS operator that unsubscribes when component destroyed",
+  "description": "RxJS operator that unsubscribes when Angular component is destroyed",
   "license": "MIT",
   "scripts": {
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors init",
     "ng": "ng",
     "lint": "ng lint",
     "test": "ng test --runInBand",
     "test:watch": "ng test --runInBand --watch",
-    "build": "ng-packagr -p src/package.json && rm dist/ngx-take-until-destroy.metadata.json",
+    "build": "ng-packagr -p src/package.json",
     "build:integration": "ng build --project integration --prod",
     "serve:integration": "ng serve --project integration",
     "serve:integration:static": "angular-http-server --path dist-integration -p 4200 -o"
   },
-  "private": true,
   "maintainers": [
-    "Netanel Basal"
+    "Netanel Basal",
+    "Artur Androsovych"
+  ],
+  "keywords": [
+    "Angular easy unsubscribe",
+    "RxJS easy unsubscribe",
+    "RxJS operator unsubscribe",
+    "Angular unsubscribe"
   ],
   "devDependencies": {
     "@angular-builders/jest": "^8.2.0",
@@ -36,6 +44,7 @@
     "rxjs": "^6.5.2",
     "tslint": "^5.19.0",
     "typescript": "3.5.3",
-    "zone.js": "^0.10.2"
+    "zone.js": "^0.10.2",
+    "all-contributors-cli": "^6.8.1"
   }
 }

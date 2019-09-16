@@ -3,7 +3,7 @@ module.exports = {
     window: {}
   },
   cacheDirectory: '<rootDir>/.cache',
-  displayName: 'ngx-take-until-destroy',
+  displayName: 'until-destroy',
   testMatch: ['<rootDir>/src/**/*.spec.ts'],
   testPathIgnorePatterns: ['node_modules']
 };

@@ -1,5 +1,5 @@
 import { interval, Subject } from 'rxjs';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { untilDestroyed } from '@ngneat/until-destroy';
 
 export class IntervalService {
   interval$ = new Subject<number>();

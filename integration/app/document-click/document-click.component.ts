@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UntilDestroy } from 'ngx-take-until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { fromEvent } from 'rxjs';
 import { pluck, finalize } from 'rxjs/operators';
 

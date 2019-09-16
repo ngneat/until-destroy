@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { fromEvent } from 'rxjs';
 import { pluck, debounceTime, finalize } from 'rxjs/operators';
 
@@ -31,9 +31,7 @@ export class IntervalComponent implements OnDestroy {
     this.intervalService.interval$
       .pipe(
         untilDestroyed(this),
-        finalize(() =>
-          console.log('IntervalComponent intervalService.interval$ stream has completed')
-        )
+        finalize(() => console.log('IntervalComponent intervalService.interval$ stream has completed'))
       )
       .subscribe(value => {
         console.log(`IntervalService emitted value inside component ${value}`);

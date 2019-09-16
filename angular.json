@@ -3,11 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-take-until-destroy": {
+    "until-destroy": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "library",
-      "prefix": "ngx-take-until-destroy",
+      "prefix": "until-destroy",
       "architect": {
         "test": {
           "builder": "@angular-builders/jest:run",
@@ -18,13 +18,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.lib.json",
-              "tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/tsconfig.lib.json", "tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -44,9 +39,7 @@
             "polyfills": "integration/polyfills.ts",
             "tsConfig": "integration/tsconfig.app.json",
             "preserveSymlinks": true,
-            "assets": [
-              "integration/assets"
-            ]
+            "assets": ["integration/assets"]
           },
           "configurations": {
             "production": {
@@ -89,5 +82,5 @@
       }
     }
   },
-  "defaultProject": "ngx-take-until-destroy"
+  "defaultProject": "until-destroy"
 }

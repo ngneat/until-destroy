@@ -2,16 +2,11 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "ngx-take-until-destroy": [
-        "dist"
-      ]
+      "@ngneat/until-destroy": ["src/public_api.ts"]
     },
     "target": "es5",
     "outDir": "dist/",
-    "lib": [
-      "dom",
-      "es2017"
-    ],
+    "lib": ["dom", "es2017"],
     "moduleResolution": "node",
     "strict": true,
     "sourceMap": true,
