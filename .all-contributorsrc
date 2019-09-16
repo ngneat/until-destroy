@@ -20,6 +20,18 @@
         "doc",
         "ideas"
       ]
+    },
+    {
+      "login": "arturovt",
+      "name": "Artur Androsovych",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/7337691?v=4",
+      "profile": "https://medium.com/@overthesanity",
+      "contributions": [
+        "code",
+        "example",
+        "ideas",
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7

@@ -1,5 +1,5 @@
 # 🦁 Unsubscribe For Pros
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 
 > A neat way to unsubscribe from observables when the component destroyed
 
@@ -104,6 +104,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://www.netbasal.com"><img src="https://avatars1.githubusercontent.com/u/6745730?v=4" width="100px;" alt="Netanel Basal"/><br /><sub><b>Netanel Basal</b></sub></a><br /><a href="https://github.com/ngneat/until-destroy/commits?author=NetanelBasal" title="Code">💻</a> <a href="https://github.com/ngneat/until-destroy/commits?author=NetanelBasal" title="Documentation">📖</a> <a href="#ideas-NetanelBasal" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://medium.com/@overthesanity"><img src="https://avatars1.githubusercontent.com/u/7337691?v=4" width="100px;" alt="Artur Androsovych"/><br /><sub><b>Artur Androsovych</b></sub></a><br /><a href="https://github.com/ngneat/until-destroy/commits?author=arturovt" title="Code">💻</a> <a href="#example-arturovt" title="Examples">💡</a> <a href="#ideas-arturovt" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-arturovt" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
   </tr>
 </table>
 
