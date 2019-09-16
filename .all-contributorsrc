@@ -32,6 +32,15 @@
         "ideas",
         "infra"
       ]
+    },
+    {
+      "login": "KrzysztofKarol",
+      "name": "Krzysztof Karol",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/12470911?v=4",
+      "profile": "https://github.com/KrzysztofKarol",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7
