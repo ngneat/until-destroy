@@ -39,7 +39,10 @@ You can set the `arrayName` property if you want to unsubscribe from each subscr
 @UntilDestroy({ arrayName: 'subscriptions' })
 @Component({})
 export class HomeComponent {
-  subscriptions = [fromEvent(document, 'click').subscribe(), fromEvent(document, 'mousemove').subscribe()];
+  subscriptions = [
+    fromEvent(document, 'click').subscribe(), 
+    fromEvent(document, 'mousemove').subscribe()
+  ];
 
   // You can still use the opertator
   ngOnInit() {
