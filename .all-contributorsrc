@@ -41,6 +41,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "gund",
+      "name": "Alex Malkevich",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/3644678?v=4",
+      "profile": "https://github.com/gund",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
