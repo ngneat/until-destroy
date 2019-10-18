@@ -147,9 +147,9 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
 
     @UntilDestroy()
     class TestComponent {
-      static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
+      static ɵcmp: ComponentDef<TestComponent> = defineComponent({
         vars: 0,
-        consts: 0,
+        decls: 0,
         type: TestComponent,
         selectors: [[]],
         template: () => {}
@@ -159,11 +159,11 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
         new Subject().pipe(untilDestroyed(this)).subscribe(spy);
       }
 
-      static ngFactoryDef = () => new TestComponent();
+      static ɵfac = () => new TestComponent();
     }
 
-    const component = TestComponent.ngFactoryDef();
-    TestComponent.ngComponentDef.onDestroy!.call(component);
+    const component = TestComponent.ɵfac();
+    TestComponent.ɵcmp.onDestroy!.call(component);
 
     expect(spy.complete).toHaveBeenCalledTimes(1);
   });
@@ -171,16 +171,16 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
   it('should apply symbol to decorated class definition', () => {
     @UntilDestroy()
     class TestComponent {
-      static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
+      static ɵcmp: ComponentDef<TestComponent> = defineComponent({
         vars: 0,
-        consts: 0,
+        decls: 0,
         type: TestComponent,
         selectors: [[]],
         template: () => {}
       });
     }
 
-    const ownPropertySymbols = Object.getOwnPropertySymbols(TestComponent.ngComponentDef);
+    const ownPropertySymbols = Object.getOwnPropertySymbols(TestComponent.ɵcmp);
     const decoratorAppliedSymbol = ownPropertySymbols.find(
       symbol => symbol.toString() === 'Symbol(__decoratorApplied)'
     );
@@ -190,9 +190,9 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
 
   it('should throw if directive/component not decorator with UntilDestroy', () => {
     class TestComponent {
-      static ngComponentDef: ComponentDef<TestComponent> = defineComponent({
+      static ɵcmp: ComponentDef<TestComponent> = defineComponent({
         vars: 0,
-        consts: 0,
+        decls: 0,
         type: TestComponent,
         selectors: [[]],
         template: () => {}
@@ -200,9 +200,9 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
 
       subscription = new Subject().pipe(untilDestroyed(this)).subscribe();
 
-      static ngFactoryDef = () => new TestComponent();
+      static ɵfac = () => new TestComponent();
     }
 
-    expect(() => TestComponent.ngFactoryDef()).toThrow();
+    expect(() => TestComponent.ɵfac()).toThrow();
   });
 });

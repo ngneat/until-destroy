@@ -51,10 +51,12 @@ export function completeSubjectOnTheInstance(instance: any): void {
   }
 }
 
+/**
+ * As directive and component definitions are considered private API,
+ * so those properties are prefixed with Angular's marker for "private"
+ */
 export function getDef<T>(
   type: DirectiveType<T> | ComponentType<T>
 ): DirectiveDef<T> | ComponentDef<T> {
-  return (
-    (type as DirectiveType<T>).ngDirectiveDef || (type as ComponentType<T>).ngComponentDef
-  );
+  return (type as DirectiveType<T>).ɵdir || (type as ComponentType<T>).ɵcmp;
 }
