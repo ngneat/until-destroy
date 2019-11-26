@@ -118,12 +118,14 @@ describe('until-destroy runtime behavior', () => {
       disposed = false;
 
       constructor() {
-        new Subject().pipe(
-          untilDestroyed(this),
-          finalize(() => {
-            this.disposed = true;
-          })
-        ).subscribe();
+        new Subject()
+          .pipe(
+            untilDestroyed(this),
+            finalize(() => {
+              this.disposed = true;
+            })
+          )
+          .subscribe();
       }
     }
 
@@ -138,5 +140,5 @@ describe('until-destroy runtime behavior', () => {
     expect(fixture.componentInstance.disposed).toBeFalsy();
     fixture.destroy();
     expect(fixture.componentInstance.disposed).toBeTruthy();
-  })
+  });
 });

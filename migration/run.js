@@ -6,14 +6,21 @@ const fs = require('fs');
 
 const base = `src/app`;
 
-glob(`${base}/**/*.ts`, {}, function (er, files) {
-  files.forEach((path) => {
-    fs.readFile(path, 'utf8', function (err, text) {
+glob(`${base}/**/*.ts`, {}, function(er, files) {
+  files.forEach(path => {
+    fs.readFile(path, 'utf8', function(err, text) {
       if (hasUntilDestroy.test(text)) {
         console.log(`Replaced ${path}`);
-        const result = text.replace(/((?:@\w*\([^]*\)[\n\s\r\t]*)(?=([\n\s\r\t]*export[\s\r\t]*class))\2)/, '@UntilDestroy()\n$1')
-          .replace(catchImport, `import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';`);
-        fs.writeFile(path, result, 'utf8', function (err) {
+        const result = text
+          .replace(
+            /((?:@\w*\([^]*\)[\n\s\r\t]*)(?=([\n\s\r\t]*export[\s\r\t]*class))\2)/,
+            '@UntilDestroy()\n$1'
+          )
+          .replace(
+            catchImport,
+            `import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';`
+          );
+        fs.writeFile(path, result, 'utf8', function(err) {
           if (err) return console.log(err);
         });
       }
