@@ -14,13 +14,24 @@ Run the tests:
 
 ```bash
 npm test
-npm run e2e
+```
+
+Run the tests in watch mode:
+
+```bash
+npm run test:watch
 ```
 
 Run the playground app:
 
 ```bash
-npm start
+npm run serve:integration
+```
+
+Run the playground integration tests:
+
+```bash
+npm run test:integration
 ```
 
 ## Building
