@@ -1,10 +1,10 @@
 import { ɵivyEnabled as ivyEnabled, Component, Directive } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Subject, of } from 'rxjs';
+import { Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 describe('until-destroy runtime behavior', () => {
   it('ivy has to be enabled', () => {
@@ -109,4 +109,34 @@ describe('until-destroy runtime behavior', () => {
     fixture.destroy();
     expect(fixture.componentInstance.disposed).toBeTruthy();
   });
+
+  it('should complete the stream using the "untilDestroyed" operator', () => {
+    // Arrange
+    @UntilDestroy()
+    @Component({ template: '' })
+    class MockComponent {
+      disposed = false;
+
+      constructor() {
+        new Subject().pipe(
+          untilDestroyed(this),
+          finalize(() => {
+            this.disposed = true;
+          })
+        ).subscribe();
+      }
+    }
+
+    // Act
+    TestBed.configureTestingModule({
+      declarations: [MockComponent]
+    });
+
+    const fixture = TestBed.createComponent(MockComponent);
+
+    // Assert
+    expect(fixture.componentInstance.disposed).toBeFalsy();
+    fixture.destroy();
+    expect(fixture.componentInstance.disposed).toBeTruthy();
+  })
 });
