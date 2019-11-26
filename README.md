@@ -40,7 +40,7 @@ You can set the `arrayName` property if you want to unsubscribe from each subscr
 @Component({})
 export class HomeComponent {
   subscriptions = [
-    fromEvent(document, 'click').subscribe(), 
+    fromEvent(document, 'click').subscribe(),
     fromEvent(document, 'mousemove').subscribe()
   ];
 
@@ -116,6 +116,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

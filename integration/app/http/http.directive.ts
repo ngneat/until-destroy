@@ -9,7 +9,11 @@ import { switchMap, catchError, finalize } from 'rxjs/operators';
 export class HttpDirective {
   subscription = interval(2000)
     .pipe(
-      switchMap(() => this.http.get('https://jsonplaceholder.typicode.com/users').pipe(catchError(() => of([])))),
+      switchMap(() =>
+        this.http
+          .get('https://jsonplaceholder.typicode.com/users')
+          .pipe(catchError(() => of([])))
+      ),
       finalize(() => console.log('HttpDirective stream has completed'))
     )
     .subscribe(response => {

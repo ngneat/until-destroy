@@ -31,7 +31,9 @@ export class IntervalComponent implements OnDestroy {
     this.intervalService.interval$
       .pipe(
         untilDestroyed(this),
-        finalize(() => console.log('IntervalComponent intervalService.interval$ stream has completed'))
+        finalize(() =>
+          console.log('IntervalComponent intervalService.interval$ stream has completed')
+        )
       )
       .subscribe(value => {
         console.log(`IntervalService emitted value inside component ${value}`);
