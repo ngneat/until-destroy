@@ -1,4 +1,5 @@
 import {
+  InjectableType,
   ɵComponentType as ComponentType,
   ɵDirectiveType as DirectiveType
 } from '@angular/core';
@@ -8,7 +9,8 @@ import {
   isFunction,
   UntilDestroyOptions,
   completeSubjectOnTheInstance,
-  DECORATOR_APPLIED
+  isInjectableType,
+  markAsDecorated
 } from './internals';
 
 function unsubscribe(property: any): void {
@@ -19,43 +21,60 @@ function unsubscribeIfPropertyIsArrayLike(property: any[]): void {
   Array.isArray(property) && property.forEach(unsubscribe);
 }
 
-export function UntilDestroy({
-  blackList,
-  arrayName,
-  checkProperties
-}: UntilDestroyOptions = {}): ClassDecorator {
-  return (target: any) => {
-    const type: DirectiveType<unknown> | ComponentType<unknown> = target;
-    const def = getDef(type);
+function decorateNgOnDestroy(
+  ngOnDestroy: (() => void) | null | undefined,
+  { arrayName, checkProperties, blackList }: UntilDestroyOptions
+) {
+  return function(this: any) {
+    // Invoke the original `ngOnDestroy` if it exists
+    ngOnDestroy && ngOnDestroy.call(this);
 
-    // Cache the original `ngOnDestroy`
-    const onDestroy: (() => void) | null = def.onDestroy;
+    // It's important to use `this` instead of caching instance
+    // that may lead to memory leaks
+    completeSubjectOnTheInstance(this);
 
-    def.onDestroy = function(this: any) {
-      // Invoke the original `ngOnDestroy` if it exists
-      onDestroy && onDestroy.call(this);
+    // Check if subscriptions are pushed to some array
+    if (arrayName) {
+      return unsubscribeIfPropertyIsArrayLike(this[arrayName]);
+    }
 
-      // It's important to use `this` instead of caching instance
-      // that may lead to memory leaks
-      completeSubjectOnTheInstance(this);
-
-      // Check if subscriptions are pushed to some array
-      if (arrayName) {
-        return unsubscribeIfPropertyIsArrayLike(this[arrayName]);
-      }
-
-      // Loop through the properties and find subscriptions
-      if (checkProperties) {
-        for (const property in this) {
-          if (blackList && blackList.includes(property)) {
-            continue;
-          }
-
-          unsubscribe(this[property]);
+    // Loop through the properties and find subscriptions
+    if (checkProperties) {
+      for (const property in this) {
+        if (blackList && blackList.includes(property)) {
+          continue;
         }
-      }
-    };
 
-    (def as any)[DECORATOR_APPLIED] = true;
+        unsubscribe(this[property]);
+      }
+    }
+  };
+}
+
+/**
+ * Services do not have definitions, thus we just have to override the
+ * prototype property in Ivy
+ */
+function decorateProvider(type: InjectableType<unknown>, options: UntilDestroyOptions): void {
+  type.prototype.ngOnDestroy = decorateNgOnDestroy(type.prototype.ngOnDestroy, options);
+  markAsDecorated(type);
+}
+
+function decorateDirective(
+  type: DirectiveType<unknown> | ComponentType<unknown>,
+  options: UntilDestroyOptions
+): void {
+  const def = getDef(type);
+  def.onDestroy = decorateNgOnDestroy(def.onDestroy, options);
+  markAsDecorated(def);
+}
+
+export function UntilDestroy(options: UntilDestroyOptions = {}): ClassDecorator {
+  return (target: any) => {
+    if (isInjectableType(target)) {
+      decorateProvider(target, options);
+    } else {
+      decorateDirective(target, options);
+    }
   };
 }

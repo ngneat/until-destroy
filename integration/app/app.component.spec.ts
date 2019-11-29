@@ -1,4 +1,4 @@
-import { ɵivyEnabled as ivyEnabled, Component, Directive } from '@angular/core';
+import { ɵivyEnabled as ivyEnabled, Component, Directive, Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
@@ -140,5 +140,84 @@ describe('until-destroy runtime behavior', () => {
     expect(fixture.componentInstance.disposed).toBeFalsy();
     fixture.destroy();
     expect(fixture.componentInstance.disposed).toBeTruthy();
+  });
+
+  it('should unsubscribe from the provider property', () => {
+    // Arrange
+    @UntilDestroy({ checkProperties: true })
+    @Injectable()
+    class MockService {
+      disposed = false;
+
+      subscription = new Subject()
+        .pipe(
+          finalize(() => {
+            this.disposed = true;
+          })
+        )
+        .subscribe();
+    }
+
+    @Component({
+      template: '',
+      providers: [MockService]
+    })
+    class MockComponent {
+      constructor(mockService: MockService) {}
+    }
+
+    // Act
+    TestBed.configureTestingModule({
+      declarations: [MockComponent]
+    });
+
+    const fixture = TestBed.createComponent(MockComponent);
+    const service = fixture.componentRef.injector.get(MockService);
+
+    // Assert
+    expect(service.disposed).toBeFalsy();
+    fixture.destroy();
+    expect(service.disposed).toBeTruthy();
+  });
+
+  it('should complete the stream on provider', () => {
+    // Arrange
+    @UntilDestroy()
+    @Injectable()
+    class MockService {
+      disposed = false;
+
+      constructor() {
+        new Subject()
+          .pipe(
+            untilDestroyed(this),
+            finalize(() => {
+              this.disposed = true;
+            })
+          )
+          .subscribe();
+      }
+    }
+
+    @Component({
+      template: '',
+      providers: [MockService]
+    })
+    class MockComponent {
+      constructor(mockService: MockService) {}
+    }
+
+    // Act
+    TestBed.configureTestingModule({
+      declarations: [MockComponent]
+    });
+
+    const fixture = TestBed.createComponent(MockComponent);
+    const service = fixture.componentRef.injector.get(MockService);
+
+    // Assert
+    expect(service.disposed).toBeFalsy();
+    fixture.destroy();
+    expect(service.disposed).toBeTruthy();
   });
 });

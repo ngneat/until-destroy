@@ -1,4 +1,5 @@
 import {
+  InjectableType,
   ɵComponentType as ComponentType,
   ɵDirectiveType as DirectiveType,
   ɵComponentDef as ComponentDef,
@@ -18,7 +19,13 @@ export const DESTROY: unique symbol = Symbol('__destroy');
 /**
  * Applied to definitions and informs that class is decorated
  */
-export const DECORATOR_APPLIED: unique symbol = Symbol('__decoratorApplied');
+const DECORATOR_APPLIED: unique symbol = Symbol('__decoratorApplied');
+
+export function markAsDecorated(
+  providerOrDef: InjectableType<unknown> | DirectiveDef<unknown> | ComponentDef<unknown>
+): void {
+  (providerOrDef as any)[DECORATOR_APPLIED] = true;
+}
 
 export interface UntilDestroyOptions {
   blackList?: string[];
@@ -26,14 +33,15 @@ export interface UntilDestroyOptions {
   checkProperties?: boolean;
 }
 
-export function ensureDirectiveIsDecorated(instance: any): never | void {
-  const def = getDef(instance.constructor);
-  const missingDecorator = !(def as any)[DECORATOR_APPLIED];
+export function ensureClassIsDecorated(instance: any): never | void {
+  const constructor = instance.constructor;
+  const providerOrDef = isInjectableType(constructor) ? constructor : getDef(constructor);
+  const missingDecorator = !(providerOrDef as any)[DECORATOR_APPLIED];
 
   if (missingDecorator) {
     throw new Error(
       'untilDestroyed operator cannot be used inside directives or ' +
-        'components that are not decorated with UntilDestroy decorator'
+        'components or providers that are not decorated with UntilDestroy decorator'
     );
   }
 }
@@ -59,4 +67,12 @@ export function getDef<T>(
   type: DirectiveType<T> | ComponentType<T>
 ): DirectiveDef<T> | ComponentDef<T> {
   return (type as DirectiveType<T>).ɵdir || (type as ComponentType<T>).ɵcmp;
+}
+
+/**
+ * Determines whether the provided `target` is some function
+ * decorated with `@Injectable()`
+ */
+export function isInjectableType(target: any): target is InjectableType<unknown> {
+  return !!target.ɵprov;
 }
