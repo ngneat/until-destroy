@@ -6,7 +6,7 @@ import {
   isFunction,
   createSubjectOnTheInstance,
   completeSubjectOnTheInstance,
-  ensureDirectiveIsDecorated
+  ensureClassIsDecorated
 } from './internals';
 
 function overrideNonDirectiveInstanceMethod(instance: any, destroyMethodName: string): void {
@@ -28,12 +28,12 @@ function overrideNonDirectiveInstanceMethod(instance: any, destroyMethodName: st
 
 export function untilDestroyed(instance: any, destroyMethodName?: string) {
   return <T>(source: Observable<T>) => {
-    // If `destroyMethodName` is passed then the developers uses
-    // this operator outside of component/directive
+    // If `destroyMethodName` is passed then the developer applies
+    // this operator to something non-related to Angular DI system
     if (typeof destroyMethodName === 'string') {
       overrideNonDirectiveInstanceMethod(instance, destroyMethodName);
     } else {
-      ensureDirectiveIsDecorated(instance);
+      ensureClassIsDecorated(instance);
       createSubjectOnTheInstance(instance);
     }
 

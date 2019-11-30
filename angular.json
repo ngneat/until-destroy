@@ -32,6 +32,7 @@
             "polyfills": "integration/polyfills.ts",
             "tsConfig": "integration/tsconfig.app.json",
             "preserveSymlinks": true,
+            "aot": true,
             "assets": ["integration/assets"]
           },
           "configurations": {

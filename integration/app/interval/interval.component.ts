@@ -26,8 +26,6 @@ export class IntervalComponent implements OnDestroy {
   private intervalService = new IntervalService();
 
   constructor() {
-    console.clear();
-
     this.intervalService.interval$
       .pipe(
         untilDestroyed(this),
