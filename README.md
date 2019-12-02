@@ -4,8 +4,10 @@
 
 ## Use with Ivy
 
-```
+```bash
 npm install @ngneat/until-destroy
+# Or if you use yarn
+yarn add @ngneat/until-destroy
 ```
 
 ```ts
@@ -27,7 +29,7 @@ You can set the `checkProperties` option to `true` if you want to unsubscribe fr
 ```ts
 @UntilDestroy({ checkProperties: true })
 @Component({})
-export class HomeComponent implements OnDestroy {
+export class HomeComponent {
   // We'll dispose it on destroy
   subscription = fromEvent(document, 'mousemove').subscribe();
 }
@@ -51,10 +53,36 @@ export class HomeComponent {
 }
 ```
 
+### Use with Non-Singleton Services
+
+```ts
+@UntilDestroy()
+@Injectable()
+export class InboxService {
+  constructor() {
+    interval(1000)
+      .pipe(untilDestroyed(this))
+      .subscribe();
+  }
+}
+
+@Component({
+  providers: [InboxService]
+})
+export class InboxComponent {
+  constructor(inboxService: InboxService) {}
+}
+```
+
+All options, described above, are also applicable to providers.
+**Note:** The decorator and operator should be used only with component or directive providers. Don't use it with application-level singletons (a.k.a. `providedIn: 'root'`) and lazy modules providers.
+
 ## Use with View Engine
 
-```
+```bash
 npm install ngx-take-until-destroy
+# Or if you use yarn
+yarn add ngx-take-until-destroy
 ```
 
 ```ts
@@ -75,7 +103,7 @@ export class InboxComponent implements OnDestroy {
 }
 ```
 
-### Use with any class
+### Use with Any Class
 
 ```ts
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -92,7 +120,7 @@ export class Widget {
 }
 ```
 
-## Migration from ViewEngine to Ivy
+## Migration from View Engine to Ivy
 
 To make it easier for you to migrate, we've built a [script](https://github.com/NetanelBasal/ngx-take-until-destroy/blob/master/migration/run.js) that will update the imports path, and add the decorator for you. You need to run it manually on your project.
 
