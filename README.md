@@ -75,7 +75,6 @@ export class InboxComponent {
 ```
 
 All options, described above, are also applicable to providers.
-**Note:** The decorator and operator should be used only with component or directive providers. Don't use it with application-level singletons (a.k.a. `providedIn: 'root'`) and lazy modules providers.
 
 ## Use with View Engine
 
