@@ -65,7 +65,7 @@ function decorateDirective(
   options: UntilDestroyOptions
 ): void {
   const def = getDef(type);
-  def.onDestroy = decorateNgOnDestroy(def.onDestroy, options);
+  (def as any).onDestroy = decorateNgOnDestroy(def.onDestroy, options);
   markAsDecorated(def);
 }
 

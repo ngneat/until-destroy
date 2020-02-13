@@ -16,7 +16,7 @@
     "test:integration:watch": "ng test --project integration --runInBand --watch",
     "build": "ng-packagr -p src/package.json",
     "build:integration": "ng build --project integration --prod",
-    "serve:integration": "ng serve --project integration",
+    "serve:integration": "ng serve --project integration --port 8889",
     "serve:integration:static": "angular-http-server --path dist-integration -p 4200 -o",
     "format": "prettier --write \"**/*.{js,ts,html,md,json}\""
   },
@@ -32,14 +32,14 @@
   ],
   "devDependencies": {
     "@angular-builders/jest": "^8.2.0",
-    "@angular-devkit/build-angular": "^0.900.0-rc.3",
-    "@angular/cli": "^9.0.0-rc.3",
-    "@angular/common": "^9.0.0-rc.3",
-    "@angular/compiler": "^9.0.0-rc.3",
-    "@angular/compiler-cli": "^9.0.0-rc.3",
-    "@angular/core": "^9.0.0-rc.3",
-    "@angular/platform-browser": "^9.0.0-rc.3",
-    "@angular/platform-browser-dynamic": "^9.0.0-rc.3",
+    "@angular-devkit/build-angular": "~0.900.1",
+    "@angular/cli": "~9.0.1",
+    "@angular/common": "9.0.1",
+    "@angular/compiler": "9.0.1",
+    "@angular/compiler-cli": "9.0.1",
+    "@angular/core": "9.0.1",
+    "@angular/platform-browser": "9.0.1",
+    "@angular/platform-browser-dynamic": "9.0.1",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
     "@types/jest": "^24.0.18",
@@ -49,11 +49,11 @@
     "husky": "^3.1.0",
     "jest": "^24.9.0",
     "lint-staged": "^9.4.3",
-    "ng-packagr": "^9.0.0-rc.2",
+    "ng-packagr": "9.0.0",
     "prettier": "^1.19.1",
     "rxjs": "^6.5.2",
-    "typescript": "~3.6.4",
-    "zone.js": "^0.10.2"
+    "typescript": "~3.7.5",
+    "zone.js": "0.10.2"
   },
   "husky": {
     "hooks": {
