@@ -76,7 +76,7 @@ export class InboxComponent {
 
 All options, described above, are also applicable to providers.
 
-## Use with View Engine
+## Use with View Engine (Pre Ivy)
 
 ```bash
 npm install ngx-take-until-destroy
