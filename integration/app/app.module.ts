@@ -7,6 +7,7 @@ import { HttpDirective } from './http/http.directive';
 import { IntervalComponent } from './interval/interval.component';
 import { ConnectionDirective } from './connection/connection.directive';
 import { DocumentClickComponent } from './document-click/document-click.component';
+import { IssueSixtyOneComponent } from './issue-sixty-one/issue-sixty-one.component';
 import { IssueSixtySixComponent } from './issue-sixty-six/issue-sixty-six.component';
 
 @NgModule({
@@ -17,6 +18,7 @@ import { IssueSixtySixComponent } from './issue-sixty-six/issue-sixty-six.compon
     IntervalComponent,
     ConnectionDirective,
     DocumentClickComponent,
+    IssueSixtyOneComponent,
     IssueSixtySixComponent
   ],
   bootstrap: [AppComponent]

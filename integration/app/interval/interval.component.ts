@@ -17,7 +17,7 @@ export class IntervalComponent implements OnDestroy {
     .pipe(
       debounceTime(200),
       pluck<MouseEvent, number>('clientX'),
-      finalize(() => console.log('IntervalComponent fromEvent stream has completed'))
+      finalize(() => console.log('IntervalComponent fromEvent has been unsubscribed'))
     )
     .subscribe(clientX => {
       console.log(`Mouse clientX position is ${clientX}`);
@@ -30,7 +30,7 @@ export class IntervalComponent implements OnDestroy {
       .pipe(
         untilDestroyed(this),
         finalize(() =>
-          console.log('IntervalComponent intervalService.interval$ stream has completed')
+          console.log('IntervalComponent intervalService.interval$ has been unsubscribed')
         )
       )
       .subscribe(value => {
