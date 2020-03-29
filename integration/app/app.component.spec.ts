@@ -1,7 +1,7 @@
 import { ɵivyEnabled as ivyEnabled, Component, Directive, Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Subject, interval } from 'rxjs';
+import { Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
