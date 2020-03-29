@@ -56,6 +56,9 @@ export function completeSubjectOnTheInstance(instance: any): void {
   if (instance[DESTROY]) {
     instance[DESTROY].next();
     instance[DESTROY].complete();
+    // We also have to re-assign this property thus in the future
+    // we will be able to create new subject on the same instance.
+    instance[DESTROY] = null;
   }
 }
 

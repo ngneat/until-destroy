@@ -1,7 +1,7 @@
 import { ɵivyEnabled as ivyEnabled, Component, Directive, Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
+import { Subject, interval } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -219,5 +219,62 @@ describe('until-destroy runtime behavior', () => {
     expect(service.disposed).toBeFalsy();
     fixture.destroy();
     expect(service.disposed).toBeTruthy();
+  });
+
+  it('should be able to re-use methods of the singleton service multiple times', () => {
+    // Arrange
+    let disposedTimes = 0;
+    let startCalledTimes = 0;
+    let originalStopCalledTimes = 0;
+
+    @Injectable()
+    class IssueSixtySixService {
+      start(): void {
+        startCalledTimes++;
+
+        new Subject()
+          .pipe(
+            untilDestroyed(this, 'stop'),
+            finalize(() => disposedTimes++)
+          )
+          .subscribe();
+      }
+
+      stop(): void {
+        originalStopCalledTimes++;
+      }
+    }
+
+    @Component({ template: '' })
+    class IssueSixtySixComponent {
+      constructor(private issueSixtySixService: IssueSixtySixService) {}
+
+      start(): void {
+        this.issueSixtySixService.start();
+      }
+
+      stop(): void {
+        this.issueSixtySixService.stop();
+      }
+    }
+
+    // Act
+    TestBed.configureTestingModule({
+      declarations: [IssueSixtySixComponent],
+      providers: [IssueSixtySixService]
+    });
+
+    const fixture = TestBed.createComponent(IssueSixtySixComponent);
+
+    fixture.componentInstance.start();
+    fixture.componentInstance.stop();
+
+    fixture.componentInstance.start();
+    fixture.componentInstance.stop();
+
+    // Assert
+    expect(disposedTimes).toBe(2);
+    expect(startCalledTimes).toBe(2);
+    expect(originalStopCalledTimes).toBe(2);
   });
 });

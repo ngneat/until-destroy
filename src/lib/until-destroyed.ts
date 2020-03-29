@@ -23,6 +23,10 @@ function overrideNonDirectiveInstanceMethod(instance: any, destroyMethodName: st
   instance[destroyMethodName] = function() {
     isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
     completeSubjectOnTheInstance(this);
+    // We also have to re-assign this property back to the original value,
+    // thus in the future if `untilDestroyed` is called for the same instance
+    // again, we will be able to get the original method again and not the patched one.
+    instance[destroyMethodName] = originalDestroy;
   };
 }
 
