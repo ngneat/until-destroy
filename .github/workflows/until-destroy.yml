@@ -1,0 +1,42 @@
+name: '@ngneat/until-destroy'
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: true
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v1
+        id: npm-cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-npm
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.12
+
+      - name: Install dependencies
+        # If checksum for the `package-lock.json` hasn't changed then we shouldn't run
+        # `npm ci` because it will hit the `postinstall` hook
+        # that will run `ngcc` compiler accordingly.
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test
+
+      - name: Run integration tests
+        run: npm run test:integration
+
+      - name: Build library
+        run: npm run build
+
+      - name: Build integration app in production mode
+        run: npm run build:integration
