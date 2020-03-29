@@ -2,6 +2,8 @@
 
 > A neat way to unsubscribe from observables when the component destroyed
 
+![@ngneat/until-destroy](https://github.com/ngneat/until-destroy/workflows/@ngneat/until-destroy/badge.svg)
+
 ## Use with Ivy
 
 ```bash
