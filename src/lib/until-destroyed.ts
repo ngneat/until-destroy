@@ -23,15 +23,16 @@ function overrideNonDirectiveInstanceMethod(instance: any, destroyMethodName: st
   instance[destroyMethodName] = function() {
     isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
     completeSubjectOnTheInstance(this);
-    // We also have to re-assign this property back to the original value,
-    // thus in the future if `untilDestroyed` is called for the same instance
-    // again, we will be able to get the original method again and not the patched one.
+    // We have to re-assign this property back to the original value.
+    // If the `untilDestroyed` operator is called for the same instance
+    // multiple times, then we will be able to get the original
+    // method again and not the patched one.
     instance[destroyMethodName] = originalDestroy;
   };
 }
 
-export function untilDestroyed(instance: any, destroyMethodName?: string) {
-  return <T>(source: Observable<T>) => {
+export function untilDestroyed<T>(instance: T, destroyMethodName?: keyof T) {
+  return <U>(source: Observable<U>) => {
     // If `destroyMethodName` is passed then the developer applies
     // this operator to something non-related to Angular DI system
     if (typeof destroyMethodName === 'string') {
@@ -41,6 +42,6 @@ export function untilDestroyed(instance: any, destroyMethodName?: string) {
       createSubjectOnTheInstance(instance);
     }
 
-    return source.pipe(takeUntil<T>(instance[DESTROY]));
+    return source.pipe(takeUntil<U>((instance as any)[DESTROY]));
   };
 }

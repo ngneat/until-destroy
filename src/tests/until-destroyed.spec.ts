@@ -90,10 +90,13 @@ describe('untilDestroyed operator with non-directive/component classes', () => {
   });
 
   describe('it should throw on non-directive/component classes', () => {
-    it('should throw when destroy method doesnt exist', () => {
+    it('should throw when destroy method does not exist', () => {
       const spy = createObserver();
 
       class Test {
+        // Here we explicitly set `@ts-ignore` since the compiler will throw
+        // because of non-existing method.
+        // @ts-ignore
         dummy = new Subject().pipe(untilDestroyed(this, 'destroy')).subscribe(spy);
       }
 
