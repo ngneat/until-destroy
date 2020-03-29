@@ -5,6 +5,7 @@
     "target": "es2015",
     "types": ["node"]
   },
+  "files": ["main.ts", "polyfills.ts"],
   "exclude": ["**/*.spec.ts"],
   "angularCompilerOptions": {
     "enableIvy": true
