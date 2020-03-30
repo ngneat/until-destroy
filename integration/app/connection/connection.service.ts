@@ -9,7 +9,7 @@ export class ConnectionService {
   subscription = new Subject()
     .pipe(
       finalize(() => {
-        console.log('The first ConnectionService stream has completed');
+        console.log('The first ConnectionService subject has been unsubscribed');
       })
     )
     .subscribe();
@@ -19,7 +19,7 @@ export class ConnectionService {
       .pipe(
         untilDestroyed(this),
         finalize(() => {
-          console.log('The second ConnectionService stream has completed');
+          console.log('The second ConnectionService subject has been unsubscribed');
         })
       )
       .subscribe();

@@ -15,7 +15,7 @@ export class DocumentClickComponent {
     fromEvent<KeyboardEvent>(document, 'click')
       .pipe(
         pluck<KeyboardEvent, number>('clientX'),
-        finalize(() => console.log('DocumentClick fromEvent stream has completed'))
+        finalize(() => console.log('DocumentClick fromEvent has been unsubscribed'))
       )
       .subscribe(clientX => {
         console.log(`You've clicked on the document and clientX is ${clientX}`);

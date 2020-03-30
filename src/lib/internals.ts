@@ -85,7 +85,7 @@ export function completeSubjectOnTheInstance(instance: any, symbol: symbol): voi
 export function getDef<T>(
   type: DirectiveType<T> | ComponentType<T>
 ): DirectiveDef<T> | ComponentDef<T> {
-  return (type as DirectiveType<T>).ɵdir || (type as ComponentType<T>).ɵcmp;
+  return (type as ComponentType<T>).ɵcmp || (type as DirectiveType<T>).ɵdir;
 }
 
 /**

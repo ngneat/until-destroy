@@ -221,6 +221,55 @@ describe('until-destroy runtime behavior', () => {
     expect(service.disposed).toBeTruthy();
   });
 
+  describe('https://github.com/ngneat/until-destroy/issues/61', () => {
+    it('should unsubscribe from streams if component inherits another directive or component', () => {
+      // Arrange
+      let baseDirectiveSubjectUnsubscribed = false,
+        mockComponentSubjectUnsubscribed = false;
+
+      @Directive()
+      abstract class BaseDirective {
+        constructor() {
+          new Subject()
+            .pipe(
+              untilDestroyed(this),
+              finalize(() => (baseDirectiveSubjectUnsubscribed = true))
+            )
+            .subscribe();
+        }
+      }
+
+      @UntilDestroy()
+      @Component({ template: '' })
+      class MockComponent extends BaseDirective {
+        constructor() {
+          super();
+
+          new Subject()
+            .pipe(
+              untilDestroyed(this),
+              finalize(() => (mockComponentSubjectUnsubscribed = true))
+            )
+            .subscribe();
+        }
+      }
+
+      // Act
+      TestBed.configureTestingModule({
+        declarations: [MockComponent]
+      });
+
+      const fixture = TestBed.createComponent(MockComponent);
+
+      // Assert
+      expect(baseDirectiveSubjectUnsubscribed).toBeFalsy();
+      expect(mockComponentSubjectUnsubscribed).toBeFalsy();
+      fixture.destroy();
+      expect(baseDirectiveSubjectUnsubscribed).toBeTruthy();
+      expect(mockComponentSubjectUnsubscribed).toBeTruthy();
+    });
+  });
+
   describe('https://github.com/ngneat/until-destroy/issues/66', () => {
     it('should be able to re-use methods of the singleton service multiple times', () => {
       // Arrange
