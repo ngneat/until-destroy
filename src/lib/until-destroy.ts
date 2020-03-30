@@ -6,6 +6,7 @@ import {
 
 import {
   getDef,
+  getSymbol,
   isFunction,
   UntilDestroyOptions,
   completeSubjectOnTheInstance,
@@ -31,7 +32,7 @@ function decorateNgOnDestroy(
 
     // It's important to use `this` instead of caching instance
     // that may lead to memory leaks
-    completeSubjectOnTheInstance(this);
+    completeSubjectOnTheInstance(this, getSymbol());
 
     // Check if subscriptions are pushed to some array
     if (arrayName) {

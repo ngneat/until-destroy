@@ -221,60 +221,136 @@ describe('until-destroy runtime behavior', () => {
     expect(service.disposed).toBeTruthy();
   });
 
-  it('should be able to re-use methods of the singleton service multiple times', () => {
-    // Arrange
-    let disposedTimes = 0;
-    let startCalledTimes = 0;
-    let originalStopCalledTimes = 0;
+  describe('https://github.com/ngneat/until-destroy/issues/66', () => {
+    it('should be able to re-use methods of the singleton service multiple times', () => {
+      // Arrange
+      let disposedTimes = 0;
+      let startCalledTimes = 0;
+      let originalStopCalledTimes = 0;
 
-    @Injectable()
-    class IssueSixtySixService {
-      start(): void {
-        startCalledTimes++;
+      @Injectable()
+      class IssueSixtySixService {
+        start(): void {
+          startCalledTimes++;
 
-        new Subject()
-          .pipe(
-            untilDestroyed(this, 'stop'),
-            finalize(() => disposedTimes++)
-          )
-          .subscribe();
+          new Subject()
+            .pipe(
+              untilDestroyed(this, 'stop'),
+              finalize(() => disposedTimes++)
+            )
+            .subscribe();
+        }
+
+        stop(): void {
+          originalStopCalledTimes++;
+        }
       }
 
-      stop(): void {
-        originalStopCalledTimes++;
+      @Component({ template: '' })
+      class IssueSixtySixComponent {
+        constructor(private issueSixtySixService: IssueSixtySixService) {}
+
+        start(): void {
+          this.issueSixtySixService.start();
+        }
+
+        stop(): void {
+          this.issueSixtySixService.stop();
+        }
       }
-    }
 
-    @Component({ template: '' })
-    class IssueSixtySixComponent {
-      constructor(private issueSixtySixService: IssueSixtySixService) {}
+      // Act
+      TestBed.configureTestingModule({
+        declarations: [IssueSixtySixComponent],
+        providers: [IssueSixtySixService]
+      });
 
-      start(): void {
-        this.issueSixtySixService.start();
-      }
+      const fixture = TestBed.createComponent(IssueSixtySixComponent);
 
-      stop(): void {
-        this.issueSixtySixService.stop();
-      }
-    }
+      fixture.componentInstance.start();
+      fixture.componentInstance.stop();
 
-    // Act
-    TestBed.configureTestingModule({
-      declarations: [IssueSixtySixComponent],
-      providers: [IssueSixtySixService]
+      fixture.componentInstance.start();
+      fixture.componentInstance.stop();
+
+      // Assert
+      expect(disposedTimes).toBe(2);
+      expect(startCalledTimes).toBe(2);
+      expect(originalStopCalledTimes).toBe(2);
     });
 
-    const fixture = TestBed.createComponent(IssueSixtySixComponent);
+    it('should not use the single subject for different streams when `destroyMethodName` is provided', () => {
+      // Arrange
+      @Injectable()
+      class IssueSixtySixService {
+        firstSubjectUnsubscribed = false;
+        secondSubjectUnsubscribed = false;
 
-    fixture.componentInstance.start();
-    fixture.componentInstance.stop();
+        startFirst(): void {
+          new Subject()
+            .pipe(
+              untilDestroyed(this, 'stopFirst'),
+              finalize(() => (this.firstSubjectUnsubscribed = true))
+            )
+            .subscribe();
+        }
 
-    fixture.componentInstance.start();
-    fixture.componentInstance.stop();
+        stopFirst(): void {}
 
-    // Assert
-    expect(disposedTimes).toBe(2);
-    expect(startCalledTimes).toBe(2);
-    expect(originalStopCalledTimes).toBe(2);
+        startSecond(): void {
+          new Subject()
+            .pipe(
+              untilDestroyed(this, 'stopSecond'),
+              finalize(() => (this.secondSubjectUnsubscribed = true))
+            )
+            .subscribe();
+        }
+
+        stopSecond(): void {}
+      }
+
+      @Component({ template: '' })
+      class IssueSixtySixComponent {
+        constructor(private issueSixtySixService: IssueSixtySixService) {}
+
+        startFirst(): void {
+          this.issueSixtySixService.startFirst();
+        }
+
+        stopFirst(): void {
+          this.issueSixtySixService.stopFirst();
+        }
+
+        startSecond(): void {
+          this.issueSixtySixService.startSecond();
+        }
+
+        stopSecond(): void {
+          this.issueSixtySixService.stopSecond();
+        }
+      }
+
+      // Act
+      TestBed.configureTestingModule({
+        declarations: [IssueSixtySixComponent],
+        providers: [IssueSixtySixService]
+      });
+
+      const fixture = TestBed.createComponent(IssueSixtySixComponent);
+      const issueSixtySixService = TestBed.inject(IssueSixtySixService);
+
+      fixture.componentInstance.startFirst();
+      fixture.componentInstance.startSecond();
+      fixture.componentInstance.stopFirst();
+
+      // Arrange
+      expect(issueSixtySixService.firstSubjectUnsubscribed).toBeTruthy();
+      // Ensure that they listen to different subjects and all streams
+      // are not completed together.
+      expect(issueSixtySixService.secondSubjectUnsubscribed).toBeFalsy();
+
+      fixture.componentInstance.stopSecond();
+      expect(issueSixtySixService.secondSubjectUnsubscribed).toBeTruthy();
+    });
   });
 });
