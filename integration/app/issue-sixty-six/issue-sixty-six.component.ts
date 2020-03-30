@@ -9,7 +9,7 @@ export class IssueSixtySixService {
     interval(1000)
       .pipe(
         untilDestroyed(this, 'stop'),
-        finalize(() => console.log('IssueSixtySixService interval stream has completed'))
+        finalize(() => console.log('IssueSixtySixService interval has been unsubscribed'))
       )
       .subscribe(value => console.log(`IssueSixtySixService has emitted value ${value}`));
   }

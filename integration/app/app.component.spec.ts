@@ -221,60 +221,111 @@ describe('until-destroy runtime behavior', () => {
     expect(service.disposed).toBeTruthy();
   });
 
-  it('should be able to re-use methods of the singleton service multiple times', () => {
-    // Arrange
-    let disposedTimes = 0;
-    let startCalledTimes = 0;
-    let originalStopCalledTimes = 0;
+  describe('https://github.com/ngneat/until-destroy/issues/66', () => {
+    it('should be able to re-use methods of the singleton service multiple times', () => {
+      // Arrange
+      let disposedTimes = 0;
+      let startCalledTimes = 0;
+      let originalStopCalledTimes = 0;
 
-    @Injectable()
-    class IssueSixtySixService {
-      start(): void {
-        startCalledTimes++;
+      @Injectable()
+      class IssueSixtySixService {
+        start(): void {
+          startCalledTimes++;
 
-        new Subject()
-          .pipe(
-            untilDestroyed(this, 'stop'),
-            finalize(() => disposedTimes++)
-          )
-          .subscribe();
+          new Subject()
+            .pipe(
+              untilDestroyed(this, 'stop'),
+              finalize(() => disposedTimes++)
+            )
+            .subscribe();
+        }
+
+        stop(): void {
+          originalStopCalledTimes++;
+        }
       }
 
-      stop(): void {
-        originalStopCalledTimes++;
+      @Component({ template: '' })
+      class IssueSixtySixComponent {
+        constructor(private issueSixtySixService: IssueSixtySixService) {}
+
+        start(): void {
+          this.issueSixtySixService.start();
+        }
+
+        stop(): void {
+          this.issueSixtySixService.stop();
+        }
       }
-    }
 
-    @Component({ template: '' })
-    class IssueSixtySixComponent {
-      constructor(private issueSixtySixService: IssueSixtySixService) {}
+      // Act
+      TestBed.configureTestingModule({
+        declarations: [IssueSixtySixComponent],
+        providers: [IssueSixtySixService]
+      });
 
-      start(): void {
-        this.issueSixtySixService.start();
-      }
+      const fixture = TestBed.createComponent(IssueSixtySixComponent);
 
-      stop(): void {
-        this.issueSixtySixService.stop();
-      }
-    }
+      fixture.componentInstance.start();
+      fixture.componentInstance.stop();
 
-    // Act
-    TestBed.configureTestingModule({
-      declarations: [IssueSixtySixComponent],
-      providers: [IssueSixtySixService]
+      fixture.componentInstance.start();
+      fixture.componentInstance.stop();
+
+      // Assert
+      expect(disposedTimes).toBe(2);
+      expect(startCalledTimes).toBe(2);
+      expect(originalStopCalledTimes).toBe(2);
     });
+  });
 
-    const fixture = TestBed.createComponent(IssueSixtySixComponent);
+  describe('https://github.com/ngneat/until-destroy/issues/61', () => {
+    it('should unsubscribe from streams if component inherits another directive or component', () => {
+      // Arrange
+      let baseDirectiveSubjectUnsubscribed = false,
+        mockComponentSubjectUnsubscribed = false;
 
-    fixture.componentInstance.start();
-    fixture.componentInstance.stop();
+      @Directive()
+      abstract class BaseDirective {
+        constructor() {
+          new Subject()
+            .pipe(
+              untilDestroyed(this),
+              finalize(() => (baseDirectiveSubjectUnsubscribed = true))
+            )
+            .subscribe();
+        }
+      }
 
-    fixture.componentInstance.start();
-    fixture.componentInstance.stop();
+      @UntilDestroy()
+      @Component({ template: '' })
+      class MockComponent extends BaseDirective {
+        constructor() {
+          super();
 
-    // Assert
-    expect(disposedTimes).toBe(2);
-    expect(startCalledTimes).toBe(2);
-    expect(originalStopCalledTimes).toBe(2);
+          new Subject()
+            .pipe(
+              untilDestroyed(this),
+              finalize(() => (mockComponentSubjectUnsubscribed = true))
+            )
+            .subscribe();
+        }
+      }
+
+      // Act
+      TestBed.configureTestingModule({
+        declarations: [MockComponent]
+      });
+
+      const fixture = TestBed.createComponent(MockComponent);
+
+      // Assert
+      expect(baseDirectiveSubjectUnsubscribed).toBeFalsy();
+      expect(mockComponentSubjectUnsubscribed).toBeFalsy();
+      fixture.destroy();
+      expect(baseDirectiveSubjectUnsubscribed).toBeTruthy();
+      expect(mockComponentSubjectUnsubscribed).toBeTruthy();
+    });
   });
 });

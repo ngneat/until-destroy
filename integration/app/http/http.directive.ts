@@ -7,14 +7,14 @@ import { switchMap, catchError, finalize } from 'rxjs/operators';
 @UntilDestroy({ checkProperties: true })
 @Directive({ selector: '[http]' })
 export class HttpDirective {
-  subscription = interval(2000)
+  subscription = interval(1000)
     .pipe(
       switchMap(() =>
         this.http
           .get('https://jsonplaceholder.typicode.com/users')
           .pipe(catchError(() => of([])))
       ),
-      finalize(() => console.log('HttpDirective stream has completed'))
+      finalize(() => console.log('HttpDirective interval has been unsubscribed'))
     )
     .subscribe(response => {
       console.log('HttpDirective got such response via HTTP: ', response);
