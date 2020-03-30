@@ -221,6 +221,55 @@ describe('until-destroy runtime behavior', () => {
     expect(service.disposed).toBeTruthy();
   });
 
+  describe('https://github.com/ngneat/until-destroy/issues/61', () => {
+    it('should unsubscribe from streams if component inherits another directive or component', () => {
+      // Arrange
+      let baseDirectiveSubjectUnsubscribed = false,
+        mockComponentSubjectUnsubscribed = false;
+
+      @Directive()
+      abstract class BaseDirective {
+        constructor() {
+          new Subject()
+            .pipe(
+              untilDestroyed(this),
+              finalize(() => (baseDirectiveSubjectUnsubscribed = true))
+            )
+            .subscribe();
+        }
+      }
+
+      @UntilDestroy()
+      @Component({ template: '' })
+      class MockComponent extends BaseDirective {
+        constructor() {
+          super();
+
+          new Subject()
+            .pipe(
+              untilDestroyed(this),
+              finalize(() => (mockComponentSubjectUnsubscribed = true))
+            )
+            .subscribe();
+        }
+      }
+
+      // Act
+      TestBed.configureTestingModule({
+        declarations: [MockComponent]
+      });
+
+      const fixture = TestBed.createComponent(MockComponent);
+
+      // Assert
+      expect(baseDirectiveSubjectUnsubscribed).toBeFalsy();
+      expect(mockComponentSubjectUnsubscribed).toBeFalsy();
+      fixture.destroy();
+      expect(baseDirectiveSubjectUnsubscribed).toBeTruthy();
+      expect(mockComponentSubjectUnsubscribed).toBeTruthy();
+    });
+  });
+
   describe('https://github.com/ngneat/until-destroy/issues/66', () => {
     it('should be able to re-use methods of the singleton service multiple times', () => {
       // Arrange
@@ -278,54 +327,79 @@ describe('until-destroy runtime behavior', () => {
       expect(startCalledTimes).toBe(2);
       expect(originalStopCalledTimes).toBe(2);
     });
-  });
 
-  describe('https://github.com/ngneat/until-destroy/issues/61', () => {
-    it('should unsubscribe from streams if component inherits another directive or component', () => {
+    it('should not use the single subject for different streams when `destroyMethodName` is provided', () => {
       // Arrange
-      let baseDirectiveSubjectUnsubscribed = false,
-        mockComponentSubjectUnsubscribed = false;
+      @Injectable()
+      class IssueSixtySixService {
+        firstSubjectUnsubscribed = false;
+        secondSubjectUnsubscribed = false;
 
-      @Directive()
-      abstract class BaseDirective {
-        constructor() {
+        startFirst(): void {
           new Subject()
             .pipe(
-              untilDestroyed(this),
-              finalize(() => (baseDirectiveSubjectUnsubscribed = true))
+              untilDestroyed(this, 'stopFirst'),
+              finalize(() => (this.firstSubjectUnsubscribed = true))
             )
             .subscribe();
         }
-      }
 
-      @UntilDestroy()
-      @Component({ template: '' })
-      class MockComponent extends BaseDirective {
-        constructor() {
-          super();
+        stopFirst(): void {}
 
+        startSecond(): void {
           new Subject()
             .pipe(
-              untilDestroyed(this),
-              finalize(() => (mockComponentSubjectUnsubscribed = true))
+              untilDestroyed(this, 'stopSecond'),
+              finalize(() => (this.secondSubjectUnsubscribed = true))
             )
             .subscribe();
+        }
+
+        stopSecond(): void {}
+      }
+
+      @Component({ template: '' })
+      class IssueSixtySixComponent {
+        constructor(private issueSixtySixService: IssueSixtySixService) {}
+
+        startFirst(): void {
+          this.issueSixtySixService.startFirst();
+        }
+
+        stopFirst(): void {
+          this.issueSixtySixService.stopFirst();
+        }
+
+        startSecond(): void {
+          this.issueSixtySixService.startSecond();
+        }
+
+        stopSecond(): void {
+          this.issueSixtySixService.stopSecond();
         }
       }
 
       // Act
       TestBed.configureTestingModule({
-        declarations: [MockComponent]
+        declarations: [IssueSixtySixComponent],
+        providers: [IssueSixtySixService]
       });
 
-      const fixture = TestBed.createComponent(MockComponent);
+      const fixture = TestBed.createComponent(IssueSixtySixComponent);
+      const issueSixtySixService = TestBed.inject(IssueSixtySixService);
 
-      // Assert
-      expect(baseDirectiveSubjectUnsubscribed).toBeFalsy();
-      expect(mockComponentSubjectUnsubscribed).toBeFalsy();
-      fixture.destroy();
-      expect(baseDirectiveSubjectUnsubscribed).toBeTruthy();
-      expect(mockComponentSubjectUnsubscribed).toBeTruthy();
+      fixture.componentInstance.startFirst();
+      fixture.componentInstance.startSecond();
+      fixture.componentInstance.stopFirst();
+
+      // Arrange
+      expect(issueSixtySixService.firstSubjectUnsubscribed).toBeTruthy();
+      // Ensure that they listen to different subjects and all streams
+      // are not completed together.
+      expect(issueSixtySixService.secondSubjectUnsubscribed).toBeFalsy();
+
+      fixture.componentInstance.stopSecond();
+      expect(issueSixtySixService.secondSubjectUnsubscribed).toBeTruthy();
     });
   });
 });

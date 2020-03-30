@@ -5,16 +5,39 @@ import { finalize } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class IssueSixtySixService {
-  start(): void {
+  startFirst(): void {
     interval(1000)
       .pipe(
-        untilDestroyed(this, 'stop'),
-        finalize(() => console.log('IssueSixtySixService interval has been unsubscribed'))
+        untilDestroyed(this, 'stopFirst'),
+        finalize(() =>
+          console.log(
+            'IssueSixtySixService.startFirst() interval stream has been unsubscribed'
+          )
+        )
       )
-      .subscribe(value => console.log(`IssueSixtySixService has emitted value ${value}`));
+      .subscribe(value =>
+        console.log(`IssueSixtySixService.startFirst() has emitted value ${value}`)
+      );
   }
 
-  stop(): void {}
+  stopFirst(): void {}
+
+  startSecond(): void {
+    interval(1000)
+      .pipe(
+        untilDestroyed(this, 'stopSecond'),
+        finalize(() =>
+          console.log(
+            'IssueSixtySixService.startSecond() interval stream has been unsubscribed'
+          )
+        )
+      )
+      .subscribe(value =>
+        console.log(`IssueSixtySixService.startSecond() has emitted value ${value}`)
+      );
+  }
+
+  stopSecond(): void {}
 }
 
 @Component({
@@ -24,11 +47,19 @@ export class IssueSixtySixService {
 export class IssueSixtySixComponent {
   constructor(private issueSixtySixService: IssueSixtySixService) {}
 
-  start(): void {
-    this.issueSixtySixService.start();
+  startFirst(): void {
+    this.issueSixtySixService.startFirst();
   }
 
-  stop(): void {
-    this.issueSixtySixService.stop();
+  stopFirst(): void {
+    this.issueSixtySixService.stopFirst();
+  }
+
+  startSecond(): void {
+    this.issueSixtySixService.startSecond();
+  }
+
+  stopSecond(): void {
+    this.issueSixtySixService.stopSecond();
   }
 }
