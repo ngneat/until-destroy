@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { HttpDirective } from './http/http.directive';
@@ -11,7 +12,19 @@ import { IssueSixtyOneComponent } from './issue-sixty-one/issue-sixty-one.compon
 import { IssueSixtySixComponent } from './issue-sixty-six/issue-sixty-six.component';
 
 @NgModule({
-  imports: [BrowserModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    RouterModule.forRoot([
+      {
+        path: 'issue-78',
+        loadChildren: () =>
+          import('./issue-seventy-eight/issue-seventy-eight.module').then(
+            m => m.IssueSeventyEight
+          )
+      }
+    ])
+  ],
   declarations: [
     AppComponent,
     HttpDirective,

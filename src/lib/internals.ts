@@ -22,6 +22,9 @@ const DESTROY: unique symbol = Symbol('__destroy');
  */
 const DECORATOR_APPLIED: unique symbol = Symbol('__decoratorApplied');
 
+const NG_COMPONENT_DEF = 'ɵcmp';
+const NG_DIRECTIVE_DEF = 'ɵdir';
+
 /**
  * If we use the `untilDestroyed` operator multiple times inside the single
  * instance providing different `destroyMethodName`, then all streams will
@@ -35,6 +38,12 @@ export function getSymbol<T>(destroyMethodName?: keyof T): symbol {
   } else {
     return DESTROY;
   }
+}
+
+export function missingDecorator(
+  providerOrDef: InjectableType<unknown> | DirectiveDef<unknown> | ComponentDef<unknown>
+): boolean {
+  return !(providerOrDef as any)[DECORATOR_APPLIED];
 }
 
 export function markAsDecorated(
@@ -52,9 +61,8 @@ export interface UntilDestroyOptions {
 export function ensureClassIsDecorated(instance: any): never | void {
   const constructor = instance.constructor;
   const providerOrDef = isInjectableType(constructor) ? constructor : getDef(constructor);
-  const missingDecorator = !(providerOrDef as any)[DECORATOR_APPLIED];
 
-  if (missingDecorator) {
+  if (missingDecorator(providerOrDef)) {
     throw new Error(
       'untilDestroyed operator cannot be used inside directives or ' +
         'components or providers that are not decorated with UntilDestroy decorator'
@@ -85,7 +93,18 @@ export function completeSubjectOnTheInstance(instance: any, symbol: symbol): voi
 export function getDef<T>(
   type: DirectiveType<T> | ComponentType<T>
 ): DirectiveDef<T> | ComponentDef<T> {
-  return (type as ComponentType<T>).ɵcmp || (type as DirectiveType<T>).ɵdir;
+  return (
+    (type as ComponentType<T>)[NG_COMPONENT_DEF] ||
+    (type as DirectiveType<T>)[NG_DIRECTIVE_DEF]
+  );
+}
+
+export function getDefName<T>(type: DirectiveType<T> | ComponentType<T>) {
+  if (type.hasOwnProperty(NG_COMPONENT_DEF)) {
+    return NG_COMPONENT_DEF;
+  } else {
+    return NG_DIRECTIVE_DEF;
+  }
 }
 
 /**

@@ -11,7 +11,9 @@ import {
   UntilDestroyOptions,
   completeSubjectOnTheInstance,
   isInjectableType,
-  markAsDecorated
+  markAsDecorated,
+  missingDecorator,
+  getDefName
 } from './internals';
 
 function unsubscribe(property: any): void {
@@ -61,13 +63,49 @@ function decorateProvider(type: InjectableType<unknown>, options: UntilDestroyOp
   markAsDecorated(type);
 }
 
+/**
+ * https://github.com/ngneat/until-destroy/issues/78
+ * Some declared components or directives may be compiled asynchronously in JIT,
+ * especially those that're lazy-loaded. And thus may have their
+ * definition not accessible yet.
+ */
+function decorateDirectiveJIT(
+  type: DirectiveType<unknown> | ComponentType<unknown>,
+  options: UntilDestroyOptions
+) {
+  const defName = getDefName(type);
+  const getter = Object.getOwnPropertyDescriptor(type, defName)!.get!;
+
+  Object.defineProperty(type, defName, {
+    get() {
+      const def = getter();
+
+      if (missingDecorator(def)) {
+        (def as { onDestroy: () => void }).onDestroy = decorateNgOnDestroy(
+          def.onDestroy,
+          options
+        );
+        markAsDecorated(def);
+      }
+
+      return def;
+    }
+  });
+}
+
 function decorateDirective(
   type: DirectiveType<unknown> | ComponentType<unknown>,
   options: UntilDestroyOptions
-): void {
-  const def = getDef(type);
-  (def as any).onDestroy = decorateNgOnDestroy(def.onDestroy, options);
-  markAsDecorated(def);
+) {
+  const isJIT = type.hasOwnProperty('__annotations__');
+
+  if (isJIT) {
+    decorateDirectiveJIT(type, options);
+  } else {
+    const def = getDef(type);
+    (def as { onDestroy: () => void }).onDestroy = decorateNgOnDestroy(def.onDestroy, options);
+    markAsDecorated(def);
+  }
 }
 
 export function UntilDestroy(options: UntilDestroyOptions = {}): ClassDecorator {

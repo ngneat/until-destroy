@@ -10,3 +10,5 @@
 <app-issue-sixty-six *ngIf="issueSixtySixComponentShown"></app-issue-sixty-six>
 
 <button *ngFor="let button of buttons" (click)="button.action()">{{ button.label }}</button>
+
+<router-outlet></router-outlet>
