@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,8 @@ export class AppComponent {
   issueSixtyOneComponentShown = false;
 
   issueSixtySixComponentShown = false;
+
+  constructor(private router: Router) {}
 
   buttons = [
     {
@@ -42,6 +45,10 @@ export class AppComponent {
     {
       label: 'Toggle app-issue-sixty-six component',
       action: () => (this.issueSixtySixComponentShown = !this.issueSixtySixComponentShown)
+    },
+    {
+      label: 'Go to /issue-78',
+      action: () => this.router.navigateByUrl('/issue-78')
     }
   ];
 }

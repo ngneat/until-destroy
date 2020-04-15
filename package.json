@@ -40,6 +40,7 @@
     "@angular/core": "9.0.1",
     "@angular/platform-browser": "9.0.1",
     "@angular/platform-browser-dynamic": "9.0.1",
+    "@angular/router": "^9.0.1",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
     "@types/jest": "^24.0.18",
