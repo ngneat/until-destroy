@@ -17,14 +17,15 @@ export const untilDestroyed = (
       } is using untilDestroyed but doesn't implement ${destroyMethodName}`
     );
   }
-  if (!componentInstance['__takeUntilDestroy']) {
-    componentInstance['__takeUntilDestroy'] = new Subject();
+  const subjectName = '__takeUntilDestroy_' + destroyMethodName;
+  if (!componentInstance[subjectName]) {
+    componentInstance[subjectName] = new Subject();
 
     componentInstance[destroyMethodName] = function() {
       isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
-      componentInstance['__takeUntilDestroy'].next(true);
-      componentInstance['__takeUntilDestroy'].complete();
+      componentInstance[subjectName].next(true);
+      componentInstance[subjectName].complete();
     };
   }
-  return source.pipe(takeUntil<T>(componentInstance['__takeUntilDestroy']));
+  return source.pipe(takeUntil<T>(componentInstance[subjectName]));
 };
