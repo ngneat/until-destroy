@@ -48,9 +48,27 @@ export class HomeComponent {
     fromEvent(document, 'mousemove').subscribe()
   ];
 
-  // You can still use the opertator
+  // You can still use the operator
   ngOnInit() {
     interval(1000).pipe(untilDestroyed(this));
+  }
+}
+```
+
+You can set the `blackList` property if you **don't** want to unsubscribe from one or more subscriptions.
+
+```ts
+@UntilDestroy({ checkProperties: true, blackList: ['subscription1'] })
+@Component({})
+export class HomeComponent {
+  // subscription1 will not be unsubscribed upon component destruction
+  subscription1: Subscription;
+  // subscription2 will be unsubscribed upon component destruction
+  subscription2: Subscription;
+
+  constructor() {
+    this.subscription1 = new Subject().subscribe();
+    this.subscription2 = new Subject().subscribe();
   }
 }
 ```
