@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  i18nPipeShown = false;
+
   intervalComponentShown = false;
 
   documentClickComponentShown = false;
@@ -22,6 +24,10 @@ export class AppComponent {
   constructor(private router: Router) {}
 
   buttons = [
+    {
+      label: 'Toggle ng-container with i18n pipe inside',
+      action: () => (this.i18nPipeShown = !this.i18nPipeShown)
+    },
     {
       label: 'Toggle app-interval component',
       action: () => (this.intervalComponentShown = !this.intervalComponentShown)

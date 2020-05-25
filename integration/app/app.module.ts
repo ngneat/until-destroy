@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { I18nPipe } from './i18n/i18n.pipe';
 import { HttpDirective } from './http/http.directive';
 import { IntervalComponent } from './interval/interval.component';
 import { ConnectionDirective } from './connection/connection.directive';
@@ -27,6 +28,7 @@ import { IssueSixtySixComponent } from './issue-sixty-six/issue-sixty-six.compon
   ],
   declarations: [
     AppComponent,
+    I18nPipe,
     HttpDirective,
     IntervalComponent,
     ConnectionDirective,

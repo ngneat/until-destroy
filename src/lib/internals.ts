@@ -1,11 +1,12 @@
 import {
   InjectableType,
-  ɵComponentType as ComponentType,
-  ɵDirectiveType as DirectiveType,
+  ɵPipeDef as PipeDef,
   ɵComponentDef as ComponentDef,
   ɵDirectiveDef as DirectiveDef
 } from '@angular/core';
 import { Subject } from 'rxjs';
+
+import { getDef, isInjectableType } from './ivy';
 
 export function isFunction(target: unknown) {
   return typeof target === 'function';
@@ -22,9 +23,6 @@ const DESTROY: unique symbol = Symbol('__destroy');
  */
 const DECORATOR_APPLIED: unique symbol = Symbol('__decoratorApplied');
 
-const NG_COMPONENT_DEF = 'ɵcmp';
-const NG_DIRECTIVE_DEF = 'ɵdir';
-
 /**
  * If we use the `untilDestroyed` operator multiple times inside the single
  * instance providing different `destroyMethodName`, then all streams will
@@ -40,14 +38,14 @@ export function getSymbol<T>(destroyMethodName?: keyof T): symbol {
   }
 }
 
-export function missingDecorator(
-  providerOrDef: InjectableType<unknown> | DirectiveDef<unknown> | ComponentDef<unknown>
+export function missingDecorator<T>(
+  providerOrDef: InjectableType<T> | PipeDef<T> | ComponentDef<T> | DirectiveDef<T>
 ): boolean {
   return !(providerOrDef as any)[DECORATOR_APPLIED];
 }
 
-export function markAsDecorated(
-  providerOrDef: InjectableType<unknown> | DirectiveDef<unknown> | ComponentDef<unknown>
+export function markAsDecorated<T>(
+  providerOrDef: InjectableType<T> | PipeDef<T> | ComponentDef<T> | DirectiveDef<T>
 ): void {
   (providerOrDef as any)[DECORATOR_APPLIED] = true;
 }
@@ -84,33 +82,4 @@ export function completeSubjectOnTheInstance(instance: any, symbol: symbol): voi
     // we will be able to create new subject on the same instance.
     instance[symbol] = null;
   }
-}
-
-/**
- * As directive and component definitions are considered private API,
- * so those properties are prefixed with Angular's marker for "private"
- */
-export function getDef<T>(
-  type: DirectiveType<T> | ComponentType<T>
-): DirectiveDef<T> | ComponentDef<T> {
-  return (
-    (type as ComponentType<T>)[NG_COMPONENT_DEF] ||
-    (type as DirectiveType<T>)[NG_DIRECTIVE_DEF]
-  );
-}
-
-export function getDefName<T>(type: DirectiveType<T> | ComponentType<T>) {
-  if (type.hasOwnProperty(NG_COMPONENT_DEF)) {
-    return NG_COMPONENT_DEF;
-  } else {
-    return NG_DIRECTIVE_DEF;
-  }
-}
-
-/**
- * Determines whether the provided `target` is some function
- * decorated with `@Injectable()`
- */
-export function isInjectableType(target: any): target is InjectableType<unknown> {
-  return !!target.ɵprov;
 }
