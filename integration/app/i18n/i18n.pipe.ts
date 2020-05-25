@@ -6,14 +6,16 @@ import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 @UntilDestroy()
 @Pipe({ name: 'i18n', pure: false })
 export class I18nPipe implements PipeTransform {
-  subscription = new Subject()
-    .pipe(
-      untilDestroyed(this),
-      finalize(() => {
-        console.log('I18nPipe subject has been unsubscribed');
-      })
-    )
-    .subscribe();
+  constructor() {
+    new Subject()
+      .pipe(
+        untilDestroyed(this),
+        finalize(() => {
+          console.log('I18nPipe subject has been unsubscribed');
+        })
+      )
+      .subscribe();
+  }
 
   transform(): string {
     return 'I have been piped';
