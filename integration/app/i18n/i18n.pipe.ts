@@ -10,9 +10,7 @@ export class I18nPipe implements PipeTransform {
     new Subject()
       .pipe(
         untilDestroyed(this),
-        finalize(() => {
-          console.log('I18nPipe subject has been unsubscribed');
-        })
+        finalize(() => console.log('I18nPipe subject has been unsubscribed'))
       )
       .subscribe();
   }
