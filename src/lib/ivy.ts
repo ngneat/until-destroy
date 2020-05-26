@@ -37,9 +37,9 @@ export function getDef<T>(
 }
 
 export function getDefName<T>(type: PipeType<T> | ComponentType<T> | DirectiveType<T>) {
-  if ((type as PipeType<T>).hasOwnProperty(NG_PIPE_DEF)) {
+  if (type.hasOwnProperty(NG_PIPE_DEF)) {
     return NG_PIPE_DEF;
-  } else if ((type as ComponentType<T>).hasOwnProperty(NG_COMP_DEF)) {
+  } else if (type.hasOwnProperty(NG_COMP_DEF)) {
     return NG_COMP_DEF;
   } else {
     return NG_DIR_DEF;
