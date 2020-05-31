@@ -1,4 +1,10 @@
-import { ɵivyEnabled as ivyEnabled, Component, Directive, Injectable } from '@angular/core';
+import {
+  ɵivyEnabled as ivyEnabled,
+  Component,
+  Directive,
+  Injectable,
+  Pipe
+} from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
@@ -77,6 +83,42 @@ describe('until-destroy runtime behavior', () => {
 
     // Assert
     expect(directive.disposed).toBeTruthy();
+  });
+
+  it('should unsubscribe from pipe property', () => {
+    // Arrange
+    let disposed = false;
+
+    @UntilDestroy({ checkProperties: true })
+    @Pipe({ name: 'mock', pure: false })
+    class MockPipe {
+      disposed = false;
+
+      subscription = new Subject().pipe(finalize(() => (disposed = true))).subscribe();
+
+      transform(): string {
+        return 'I have been piped';
+      }
+    }
+
+    @Component({
+      template: `
+        <div>{{ '' | mock }}</div>
+      `
+    })
+    class MockComponent {}
+
+    // Act
+    TestBed.configureTestingModule({
+      declarations: [MockComponent, MockPipe]
+    });
+
+    const fixture = TestBed.createComponent(MockComponent);
+    fixture.detectChanges();
+    fixture.destroy();
+
+    // Assert
+    expect(disposed).toBeTruthy();
   });
 
   it('should loop an array of subscriptions and unsubscribe', () => {

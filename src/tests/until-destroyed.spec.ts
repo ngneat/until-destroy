@@ -1,5 +1,7 @@
 import {
+  ɵPipeDef as PipeDef,
   ɵComponentDef as ComponentDef,
+  ɵɵdefinePipe as definePipe,
   ɵɵdefineComponent as defineComponent
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
@@ -167,6 +169,30 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
 
     const component = TestComponent.ɵfac();
     TestComponent.ɵcmp.onDestroy!.call(component);
+
+    expect(spy.complete).toHaveBeenCalledTimes(1);
+  });
+
+  it('should unsubscribe on pipe destroy', () => {
+    const spy = createObserver();
+
+    @UntilDestroy()
+    class TestPipe {
+      static ɵpipe: PipeDef<TestPipe> = definePipe({
+        name: 'test',
+        pure: false,
+        type: TestPipe
+      });
+
+      constructor() {
+        new Subject().pipe(untilDestroyed(this)).subscribe(spy);
+      }
+
+      static ɵfac = () => new TestPipe();
+    }
+
+    const pipe = TestPipe.ɵfac();
+    TestPipe.ɵpipe.onDestroy!.call(pipe);
 
     expect(spy.complete).toHaveBeenCalledTimes(1);
   });

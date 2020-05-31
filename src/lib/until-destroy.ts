@@ -3,20 +3,19 @@ import {
   ɵComponentType as ComponentType,
   ɵDirectiveType as DirectiveType
 } from '@angular/core';
+import { SubscriptionLike } from 'rxjs';
 
 import {
-  getDef,
   getSymbol,
   isFunction,
-  UntilDestroyOptions,
-  completeSubjectOnTheInstance,
-  isInjectableType,
   markAsDecorated,
   missingDecorator,
-  getDefName
+  UntilDestroyOptions,
+  completeSubjectOnTheInstance
 } from './internals';
+import { PipeType, getDef, getDefName, isInjectableType } from './ivy';
 
-function unsubscribe(property: any): void {
+function unsubscribe(property: SubscriptionLike | undefined): void {
   property && isFunction(property.unsubscribe) && property.unsubscribe();
 }
 
@@ -69,8 +68,8 @@ function decorateProvider(type: InjectableType<unknown>, options: UntilDestroyOp
  * especially those that're lazy-loaded. And thus may have their
  * definition not accessible yet.
  */
-function decorateDirectiveJIT(
-  type: DirectiveType<unknown> | ComponentType<unknown>,
+function decorateDeclarableJIT<T>(
+  type: PipeType<T> | ComponentType<T> | DirectiveType<T>,
   options: UntilDestroyOptions
 ) {
   const defName = getDefName(type);
@@ -93,14 +92,14 @@ function decorateDirectiveJIT(
   });
 }
 
-function decorateDirective(
-  type: DirectiveType<unknown> | ComponentType<unknown>,
+function decorateDeclarable<T>(
+  type: PipeType<T> | ComponentType<T> | DirectiveType<T>,
   options: UntilDestroyOptions
 ) {
   const isJIT = type.hasOwnProperty('__annotations__');
 
   if (isJIT) {
-    decorateDirectiveJIT(type, options);
+    decorateDeclarableJIT(type, options);
   } else {
     const def = getDef(type);
     (def as { onDestroy: () => void }).onDestroy = decorateNgOnDestroy(def.onDestroy, options);
@@ -113,7 +112,7 @@ export function UntilDestroy(options: UntilDestroyOptions = {}): ClassDecorator 
     if (isInjectableType(target)) {
       decorateProvider(target, options);
     } else {
-      decorateDirective(target, options);
+      decorateDeclarable(target, options);
     }
   };
 }
