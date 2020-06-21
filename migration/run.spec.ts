@@ -10,7 +10,7 @@ describe('Migration script', () => {
   });
 
   it('should replace "ngx-take-until-destroy" import with "@ngneat/until-destroy"', () => {
-    const result = transformCode(code);
+    const result = transformCode(code, 'several-imports.component.ts');
     expect(result).toContain(
       `import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';`
     );
@@ -18,17 +18,17 @@ describe('Migration script', () => {
   });
 
   it('should add @UntilDestroy decorator', () => {
-    const result = transformCode(code);
+    const result = transformCode(code, 'several-imports.component.ts');
     expect(result).toContain('@UntilDestroy()');
   });
 
   it('should add @UntilDestroy decorator before others', () => {
-    const result = transformCode(code);
+    const result = transformCode(code, 'several-imports.component.ts');
     expect(result).toContain(`@UntilDestroy()\n@Component({ template: '' })`);
   });
 
   it('should skip OnDestroy removing', () => {
-    const result = transformCode(code);
+    const result = transformCode(code, 'several-imports.component.ts');
     expect(result).toContain('ngOnDestroy()');
   });
 
@@ -38,19 +38,19 @@ describe('Migration script', () => {
     });
 
     it('should remove empty OnDestroy method', () => {
-      const result = transformCode(code, { removeOnDestroy: true });
+      const result = transformCode(code, 'several-imports.component.ts', true);
       expect(result).not.toContain('ngOnDestroy()');
     });
 
     it('should remove OnDestroy from implements', () => {
-      const result = transformCode(code, { removeOnDestroy: true });
+      const result = transformCode(code, 'several-imports.component.ts', true);
       expect(result).toContain(
         `export class SeveralImportsComponent extends BaseComponent implements OnChanges {`
       );
     });
 
     it('should remove OnDestroy import', () => {
-      const result = transformCode(code, { removeOnDestroy: true });
+      const result = transformCode(code, 'several-imports.component.ts', true);
       expect(result).toContain(`import { OnChanges, Component } from '@angular/core';`);
     });
   });
@@ -61,18 +61,18 @@ describe('Migration script', () => {
     });
 
     it('should remove empty OnDestroy method', () => {
-      const result = transformCode(code, { removeOnDestroy: true });
+      const result = transformCode(code, 'single-import.component.ts', true);
       expect(result).not.toContain('ngOnDestroy()');
     });
 
     it('should remove class implements', () => {
-      const result = transformCode(code, { removeOnDestroy: true });
+      const result = transformCode(code, 'single-import.component.ts', true);
       expect(result).toContain(`export class SingleImportComponent extends BaseComponent {`);
     });
 
     it('should remove OnDestroy import', () => {
-      const result = transformCode(code, { removeOnDestroy: true });
-      expect(result).not.toContain(`from '@angular/core';`);
+      const result = transformCode(code, 'single-import.component.ts', true);
+      expect(result).not.toContain(`'@angular/core'`);
     });
   });
 
@@ -82,7 +82,7 @@ describe('Migration script', () => {
     });
 
     it('should replace "ngx-take-until-destroy" import with "@ngneat/until-destroy"', () => {
-      const result = transformCode(code, { removeOnDestroy: true });
+      const result = transformCode(code, 'filled-onDestroy.service.ts', true);
       expect(result).toContain(
         `import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';`
       );
@@ -90,22 +90,22 @@ describe('Migration script', () => {
     });
 
     it('should add @UntilDestroy decorator', () => {
-      const result = transformCode(code, { removeOnDestroy: true });
+      const result = transformCode(code, 'filled-onDestroy.service.ts', true);
       expect(result).toContain('@UntilDestroy()');
     });
 
     it('should preserve OnDestroy method', () => {
-      const result = transformCode(code, { removeOnDestroy: true });
+      const result = transformCode(code, 'filled-onDestroy.service.ts', true);
       expect(result).toContain('ngOnDestroy()');
     });
 
     it('should preserve OnDestroy import', () => {
-      const result = transformCode(code, { removeOnDestroy: true });
+      const result = transformCode(code, 'filled-onDestroy.service.ts', true);
       expect(result).toContain(`import { OnDestroy } from '@angular/core';`);
     });
 
     it('should preserve OnDestroy implements', () => {
-      const result = transformCode(code, { removeOnDestroy: true });
+      const result = transformCode(code, 'filled-onDestroy.service.ts', true);
       expect(result).toContain(`export class FilledOnDestroyService implements OnDestroy {`);
     });
   });

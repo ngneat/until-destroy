@@ -2,9 +2,16 @@ const hasUntilDestroy = /import\s*{\s*[^}]*untilDestroyed[^}]*}\s*from\s*(["'])n
 
 const glob = require('glob');
 const fs = require('fs');
-const { Project } = require('ts-morph');
+const { Project, QuoteKind } = require('ts-morph');
 
 const base = `app`;
+
+const project = new Project({
+  useInMemoryFileSystem: true,
+  manipulationSettings: {
+    quoteKind: QuoteKind.Single
+  }
+});
 
 glob(`${base}/**/*.ts`, {}, function(_, files) {
   const removeOnDestroy = process.argv.includes('--removeOnDestroy');
@@ -13,7 +20,7 @@ glob(`${base}/**/*.ts`, {}, function(_, files) {
     fs.readFile(path, 'utf8', function(_, text) {
       if (!hasUntilDestroy.test(text)) return;
 
-      const result = transformCode(text, { removeOnDestroy });
+      const result = transformCode(text, path, removeOnDestroy);
 
       fs.writeFile(path, result, 'utf8', function(err) {
         if (err) return console.log(err);
@@ -25,25 +32,25 @@ glob(`${base}/**/*.ts`, {}, function(_, files) {
 
 /**
  * @param {string} code
+ * @param {string} filePath
  * @param {boolean} removeOnDestroy
  */
-function transformCode(code, removeOnDestroy) {
-  const sourceFile = new Project().createSourceFile(`code.ts`, str);
+function transformCode(code, filePath, removeOnDestroy = false) {
+  const sourceFile = project.createSourceFile(filePath, code, { overwrite: true });
   replaceOldImport(sourceFile);
 
-  const classes = sourceFile.getClasses() || [];
-  classes.forEach(clazz => {
-    addUntilDestroyDecorator(clazz);
+  sourceFile.getClasses().forEach(classDeclaration => {
+    addUntilDestroyDecorator(classDeclaration);
 
     if (removeOnDestroy) {
-      const ngOnDestroyMember = clazz.getMember('ngOnDestroy');
-      const isNgOnDestroyEmpty = Boolean(
-        ngOnDestroyMember && ngOnDestroyMember.getDescendantStatements().length
+      const ngOnDestroyDeclaration = classDeclaration.getMember('ngOnDestroy');
+      const ngOnDestroyIsNotEmpty = Boolean(
+        ngOnDestroyDeclaration && ngOnDestroyDeclaration.getDescendantStatements().length
       );
-      if (isNgOnDestroyEmpty) return;
-      ngOnDestroyMember.remove();
+      if (ngOnDestroyIsNotEmpty) return;
+      ngOnDestroyDeclaration.remove();
 
-      removeOnDestroyImplements(clazz);
+      removeOnDestroyImplements(classDeclaration);
       removeOnDestroyImport(sourceFile);
     }
   });
@@ -78,20 +85,26 @@ function addUntilDestroyDecorator(classDeclaration) {
  * @param {import('ts-morph').ClassDeclaration} classDeclaration
  */
 function removeOnDestroyImplements(classDeclaration) {
-  const onDestroyImpl = classDeclaration
+  const onDestroyImplementClause = classDeclaration
     .getImplements()
     .find(impl => impl.getText() === 'OnDestroy');
-  classDeclaration.removeImplements(onDestroyImpl);
+  onDestroyImplementClause && classDeclaration.removeImplements(onDestroyImplementClause);
 }
 
+/**
+ * @param {import('ts-morph').SourceFile} sourceFile
+ */
 function removeOnDestroyImport(sourceFile) {
   const importDeclaration = sourceFile.getImportDeclaration('@angular/core');
 
-  importDeclaration
-    .getImportClause()
-    .getNamedImports()
-    .find(node => node.getText() === 'OnDestroy')
-    .remove();
+  if (!importDeclaration) return;
+
+  const namedImports = importDeclaration.getImportClause().getNamedImports();
+  const onDestroyImportSpecifier = namedImports.find(node => node.getText() === 'OnDestroy');
+
+  if (!onDestroyImportSpecifier) return;
+
+  onDestroyImportSpecifier.remove();
 
   if (!importDeclaration.getImportClause()) {
     importDeclaration.remove();
