@@ -1,64 +1,88 @@
-const hasUntilDestroy = /import\s*{\s*[^}]*untilDestroyed[^}]*}\s*from\s*("|')ngx-take-until-destroy\1(?=[^]*untilDestroyed\(\w*\)[^]*)/;
-const catchImport = /import\s*{\s*[^}]*untilDestroyed[^}]*}\s*from\s*("|')ngx-take-until-destroy['|"];/;
-const catchOnDestroy = /\s*(public\s+)?ngOnDestroy\s*[(]\s*[)](\s*:\s*void)?\s*[{]\s*[}]/;
+const hasUntilDestroy = /import\s*{\s*[^}]*untilDestroyed[^}]*}\s*from\s*(["'])ngx-take-until-destroy\1(?=[^]*untilDestroyed\(\w*\)[^]*)/;
 
 const glob = require('glob');
 const fs = require('fs');
+const { Project } = require('ts-morph');
 
 const base = `app`;
 
-let removeOnDestroy = false;
-
 glob(`${base}/**/*.ts`, {}, function(_, files) {
-  if (process.argv.includes('--removeOnDestroy')) removeOnDestroy = true;
+  const removeOnDestroy = process.argv.includes('--removeOnDestroy');
 
   files.forEach(path => {
     fs.readFile(path, 'utf8', function(_, text) {
-      if (hasUntilDestroy.test(text)) {
-        console.log(`Replaced ${path}`);
-        let result = text
-          .replace(
-            /((?:@\w*\([^]*\)[\n\s\r\t]*)(?=([\n\s\r\t]*export[\s\r\t]*class))\2)/,
-            '@UntilDestroy()\n$1'
-          )
-          .replace(
-            catchImport,
-            `import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';`
-          );
+      if (!hasUntilDestroy.test(text)) return;
 
-        if (removeOnDestroy) result = cutOnDestroyHook(result);
-        fs.writeFile(path, result, 'utf8', function(err) {
-          if (err) return console.log(err);
-        });
-      }
+      const result = transformCode(text, { removeOnDestroy });
+
+      fs.writeFile(path, result, 'utf8', function(err) {
+        if (err) return console.log(err);
+        console.log(`Replaced ${path}`);
+      });
     });
   });
 });
 
-function cutOnDestroyHook(text) {
-  let result = text.replace(catchOnDestroy, '');
+function transformCode(str, { removeOnDestroy = false } = {}) {
+  const sourceFile = new Project().createSourceFile(`code.ts`, str);
+  replaceOldImport(sourceFile);
 
-  if (/ngOnDestroy\s*\(\s*\)/.test(result)) return result;
+  const classes = sourceFile.getClasses() || [];
+  classes.forEach(clazz => {
+    addUntilDestroyDecorator(clazz);
 
-  result = cutOnDestroyEntries(/\s*implements\s+([a-zA-Z,\s]*)\s*/, result, {
-    restReplacer: str => ` implements ${str} `,
-    emptyReplacer: ' '
+    if (removeOnDestroy) {
+      const ngOnDestroyMember = clazz.getMember('ngOnDestroy');
+      const isNgOnDestroyEmpty = Boolean(
+        ngOnDestroyMember && ngOnDestroyMember.getDescendantStatements().length
+      );
+      if (isNgOnDestroyEmpty) return;
+      ngOnDestroyMember.remove();
+
+      removeOnDestroyImplements(clazz);
+      removeOnDestroyImport(sourceFile);
+    }
   });
-  result = cutOnDestroyEntries(/import\s*{(.*)}\s*from\s*["']@angular\/core["'];\s*/, result, {
-    restReplacer: str => `import { ${str} } from '@angular/core';\n`,
-    emptyReplacer: ''
-  });
 
-  return result;
+  return sourceFile.getFullText();
 }
 
-function cutOnDestroyEntries(regex, code, { restReplacer, emptyReplacer }) {
-  const [, target] = regex.exec(code) || [];
-  if (!target) return code;
-
-  const list = target
-    .trim()
-    .split(/\s*[,]\s*/)
-    .filter(i => i != 'OnDestroy');
-  return code.replace(regex, list.length ? restReplacer(list.join(', ')) : emptyReplacer);
+function replaceOldImport(sourceFile) {
+  const oldImport = sourceFile.getImportDeclaration('ngx-take-until-destroy');
+  oldImport &&
+    oldImport.replaceWithText(
+      `import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';`
+    );
 }
+
+function addUntilDestroyDecorator(classDeclaration) {
+  const decorators = [
+    { name: 'UntilDestroy', arguments: [] },
+    ...classDeclaration.getStructure().decorators
+  ];
+  classDeclaration.getDecorators().forEach(d => d.remove());
+  classDeclaration.addDecorators(decorators);
+}
+
+function removeOnDestroyImplements(classDeclaration) {
+  const onDestroyImpl = classDeclaration
+    .getImplements()
+    .find(impl => impl.getText() === 'OnDestroy');
+  classDeclaration.removeImplements(onDestroyImpl);
+}
+
+function removeOnDestroyImport(sourceFile) {
+  const importDeclaration = sourceFile.getImportDeclaration('@angular/core');
+
+  importDeclaration
+    .getImportClause()
+    .getNamedImports()
+    .find(node => node.getText() === 'OnDestroy')
+    .remove();
+
+  if (!importDeclaration.getImportClause()) {
+    importDeclaration.remove();
+  }
+}
+
+module.exports.transformCode = transformCode;
