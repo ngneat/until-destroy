@@ -23,7 +23,11 @@ glob(`${base}/**/*.ts`, {}, function(_, files) {
   });
 });
 
-function transformCode(str, { removeOnDestroy = false } = {}) {
+/**
+ * @param {string} code
+ * @param {boolean} removeOnDestroy
+ */
+function transformCode(code, removeOnDestroy) {
   const sourceFile = new Project().createSourceFile(`code.ts`, str);
   replaceOldImport(sourceFile);
 
@@ -47,6 +51,9 @@ function transformCode(str, { removeOnDestroy = false } = {}) {
   return sourceFile.getFullText();
 }
 
+/**
+ * @param {import('ts-morph').SourceFile} sourceFile
+ */
 function replaceOldImport(sourceFile) {
   const oldImport = sourceFile.getImportDeclaration('ngx-take-until-destroy');
   oldImport &&
@@ -55,6 +62,9 @@ function replaceOldImport(sourceFile) {
     );
 }
 
+/**
+ * @param {import('ts-morph').ClassDeclaration} classDeclaration
+ */
 function addUntilDestroyDecorator(classDeclaration) {
   const decorators = [
     { name: 'UntilDestroy', arguments: [] },
@@ -64,6 +74,9 @@ function addUntilDestroyDecorator(classDeclaration) {
   classDeclaration.addDecorators(decorators);
 }
 
+/**
+ * @param {import('ts-morph').ClassDeclaration} classDeclaration
+ */
 function removeOnDestroyImplements(classDeclaration) {
   const onDestroyImpl = classDeclaration
     .getImplements()
