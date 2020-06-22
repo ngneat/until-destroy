@@ -1,11 +1,11 @@
+#!/usr/bin/env node
+
+import * as glob from 'glob';
+import * as fs from 'fs';
+import { ClassDeclaration, Project, QuoteKind, SourceFile } from 'ts-morph';
+
 const hasUntilDestroy = /import\s*{\s*[^}]*untilDestroyed[^}]*}\s*from\s*(["'])ngx-take-until-destroy\1(?=[^]*untilDestroyed\(\w*\)[^]*)/;
-
-const glob = require('glob');
-const fs = require('fs');
-const { Project, QuoteKind } = require('ts-morph');
-
 const base = `app`;
-
 const project = new Project({
   useInMemoryFileSystem: true,
   manipulationSettings: {
@@ -13,29 +13,23 @@ const project = new Project({
   }
 });
 
-glob(`${base}/**/*.ts`, {}, function(_, files) {
+glob(`${base}/**/*.ts`, {}, (_, files) => {
   const removeOnDestroy = process.argv.includes('--removeOnDestroy');
 
   files.forEach(path => {
-    fs.readFile(path, 'utf8', function(_, text) {
+    fs.readFile(path, 'utf8', (_, text) => {
       if (!hasUntilDestroy.test(text)) return;
 
       const result = transformCode(text, path, removeOnDestroy);
 
-      fs.writeFile(path, result, 'utf8', function(err) {
-        if (err) return console.log(err);
-        console.log(`Replaced ${path}`);
+      fs.writeFile(path, result, 'utf8', err => {
+        console.log(err || `Replaced ${path}`);
       });
     });
   });
 });
 
-/**
- * @param {string} code
- * @param {string} filePath
- * @param {boolean} removeOnDestroy
- */
-function transformCode(code, filePath, removeOnDestroy = false) {
+export function transformCode(code: string, filePath: string, removeOnDestroy = false) {
   const sourceFile = project.createSourceFile(filePath, code, { overwrite: true });
   replaceOldImport(sourceFile);
 
@@ -44,10 +38,13 @@ function transformCode(code, filePath, removeOnDestroy = false) {
 
     if (removeOnDestroy) {
       const ngOnDestroyDeclaration = classDeclaration.getMember('ngOnDestroy');
+      if (!ngOnDestroyDeclaration) return;
+
       const ngOnDestroyIsNotEmpty = Boolean(
-        ngOnDestroyDeclaration && ngOnDestroyDeclaration.getDescendantStatements().length
+        ngOnDestroyDeclaration.getDescendantStatements().length
       );
       if (ngOnDestroyIsNotEmpty) return;
+
       ngOnDestroyDeclaration.remove();
 
       removeOnDestroyImplements(classDeclaration);
@@ -58,10 +55,7 @@ function transformCode(code, filePath, removeOnDestroy = false) {
   return sourceFile.getFullText();
 }
 
-/**
- * @param {import('ts-morph').SourceFile} sourceFile
- */
-function replaceOldImport(sourceFile) {
+function replaceOldImport(sourceFile: SourceFile) {
   const oldImport = sourceFile.getImportDeclaration('ngx-take-until-destroy');
   oldImport &&
     oldImport.replaceWithText(
@@ -69,39 +63,32 @@ function replaceOldImport(sourceFile) {
     );
 }
 
-/**
- * @param {import('ts-morph').ClassDeclaration} classDeclaration
- */
-function addUntilDestroyDecorator(classDeclaration) {
+function addUntilDestroyDecorator(classDeclaration: ClassDeclaration) {
   const decorators = [
     { name: 'UntilDestroy', arguments: [] },
-    ...classDeclaration.getStructure().decorators
+    ...(classDeclaration.getStructure().decorators || [])
   ];
   classDeclaration.getDecorators().forEach(d => d.remove());
   classDeclaration.addDecorators(decorators);
 }
 
-/**
- * @param {import('ts-morph').ClassDeclaration} classDeclaration
- */
-function removeOnDestroyImplements(classDeclaration) {
+function removeOnDestroyImplements(classDeclaration: ClassDeclaration) {
   const onDestroyImplementClause = classDeclaration
     .getImplements()
     .find(impl => impl.getText() === 'OnDestroy');
   onDestroyImplementClause && classDeclaration.removeImplements(onDestroyImplementClause);
 }
 
-/**
- * @param {import('ts-morph').SourceFile} sourceFile
- */
-function removeOnDestroyImport(sourceFile) {
+function removeOnDestroyImport(sourceFile: SourceFile) {
   const importDeclaration = sourceFile.getImportDeclaration('@angular/core');
-
   if (!importDeclaration) return;
 
-  const namedImports = importDeclaration.getImportClause().getNamedImports();
-  const onDestroyImportSpecifier = namedImports.find(node => node.getText() === 'OnDestroy');
+  const importClause = importDeclaration.getImportClause();
+  if (!importClause) return;
 
+  const onDestroyImportSpecifier = importClause
+    .getNamedImports()
+    .find(node => node.getText() === 'OnDestroy');
   if (!onDestroyImportSpecifier) return;
 
   onDestroyImportSpecifier.remove();
@@ -110,5 +97,3 @@ function removeOnDestroyImport(sourceFile) {
     importDeclaration.remove();
   }
 }
-
-module.exports.transformCode = transformCode;

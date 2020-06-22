@@ -1,6 +1,6 @@
 import * as fs from 'fs';
-// @ts-ignore
-import { transformCode } from './run.js';
+
+import { transformCode } from './run';
 
 jest.mock('glob');
 

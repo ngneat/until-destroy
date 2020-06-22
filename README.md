@@ -141,12 +141,16 @@ export class Widget {
 
 ## Migration from View Engine to Ivy
 
-To make it easier for you to migrate, we've built a [script](https://github.com/NetanelBasal/ngx-take-until-destroy/blob/master/migration/run.js) that will update the imports path, and add the decorator for you. You need to run it manually on your project.
+To make it easier for you to migrate, we've built a script that will update the imports path, and add the decorator for you.
+
+```shell script
+npx @ngneat/until-destroy
+```
 
 You can use `--removeOnDestroy` flag for empty `OnDestroy` methods removing.
 
 ```shell script
-node run.js --removeOnDestroy
+npx @ngneat/until-destroy --removeOnDestroy
 ```
 
 ## Contributors ✨

@@ -23,6 +23,10 @@
     "Angular unsubscribe"
   ],
   "sideEffects": false,
+  "dependencies": {
+    "glob": "^7.1.6",
+    "ts-morph": "^7.1.2"
+  },
   "peerDependencies": {
     "@angular/core": ">=9.0.0",
     "rxjs": ">=6.4.0"
@@ -31,6 +35,13 @@
     "lib": {
       "entryFile": "index.ts"
     },
+    "whitelistedNonPeerDependencies": [
+      "glob",
+      "ts-morph"
+    ],
     "dest": "../dist"
+  },
+  "bin": {
+    "@ngneat/until-destroy": "migration/run.js"
   }
 }
