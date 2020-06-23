@@ -14,7 +14,7 @@
     "test:watch": "ng test --project until-destroy --runInBand --watch",
     "test:integration": "ng test --project integration --runInBand",
     "test:integration:watch": "ng test --project integration --runInBand --watch",
-    "build": "ng-packagr -p src/package.json && cpx README.md dist",
+    "build": "ng-packagr -p src/package.json && npm run build:migration && cpx README.md dist",
     "build:migration": "tsc --outDir dist/migration migration/run.ts",
     "build:integration": "ng build --project integration --prod",
     "serve:integration": "ng serve --project integration --port 8889",
