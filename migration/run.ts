@@ -93,6 +93,7 @@ function removeOnDestroyImport(sourceFile: SourceFile) {
 
   onDestroyImportSpecifier.remove();
 
+  /* The existence of importClause is checked twice because importDeclaration mutates after OnDestroy is removed. */
   if (!importDeclaration.getImportClause()) {
     importDeclaration.remove();
   }
