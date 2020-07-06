@@ -5,7 +5,8 @@ import * as fs from 'fs';
 import { ClassDeclaration, Project, QuoteKind, SourceFile } from 'ts-morph';
 
 const hasUntilDestroy = /import\s*{\s*[^}]*untilDestroyed[^}]*}\s*from\s*(["'])ngx-take-until-destroy\1(?=[^]*untilDestroyed\(\w*\)[^]*)/;
-const base = `app`;
+
+const base = process.argv[3] || './src/app';
 const project = new Project({
   useInMemoryFileSystem: true,
   manipulationSettings: {
