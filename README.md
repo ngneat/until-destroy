@@ -144,8 +144,10 @@ export class Widget {
 To make it easier for you to migrate, we've built a script that will update the imports path, and add the decorator for you.
 
 ```shell script
-npx @ngneat/until-destroy
+npx @ngneat/until-destroy --base my/path
 ```
+
+`base` defaults to `./src/app`.
 
 You can use `--removeOnDestroy` flag for empty `OnDestroy` methods removing.
 

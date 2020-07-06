@@ -5,7 +5,9 @@ import * as fs from 'fs';
 import { ClassDeclaration, Project, QuoteKind, SourceFile } from 'ts-morph';
 
 const hasUntilDestroy = /import\s*{\s*[^}]*untilDestroyed[^}]*}\s*from\s*(["'])ngx-take-until-destroy\1(?=[^]*untilDestroyed\(\w*\)[^]*)/;
-const base = `app`;
+
+const { base = 'src/app', removeOnDestroy } = require('minimist')(process.argv.slice(2));
+
 const project = new Project({
   useInMemoryFileSystem: true,
   manipulationSettings: {
@@ -14,8 +16,6 @@ const project = new Project({
 });
 
 glob(`${base}/**/*.ts`, {}, (_, files) => {
-  const removeOnDestroy = process.argv.includes('--removeOnDestroy');
-
   files.forEach(path => {
     fs.readFile(path, 'utf8', (_, text) => {
       if (!hasUntilDestroy.test(text)) return;

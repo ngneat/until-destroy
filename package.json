@@ -77,5 +77,8 @@
     "printWidth": 95,
     "endOfLine": "lf",
     "singleQuote": true
+  },
+  "dependencies": {
+    "minimist": "^1.2.5"
   }
 }
