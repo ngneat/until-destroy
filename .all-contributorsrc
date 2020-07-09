@@ -77,6 +77,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "0x6368656174",
+      "name": "Pavel Puchkov",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/4064875?v=4",
+      "profile": "http://itquasar.ru",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7

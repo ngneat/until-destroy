@@ -172,6 +172,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/kmathy"><img src="https://avatars3.githubusercontent.com/u/15690980?v=4" width="100px;" alt=""/><br /><sub><b>kmathy</b></sub></a><br /><a href="https://github.com/ngneat/until-destroy/commits?author=kmathy" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/FFKL"><img src="https://avatars1.githubusercontent.com/u/11336491?v=4" width="100px;" alt=""/><br /><sub><b>Dmitrii Korostelev</b></sub></a><br /><a href="https://github.com/ngneat/until-destroy/commits?author=FFKL" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="http://itquasar.ru"><img src="https://avatars2.githubusercontent.com/u/4064875?v=4" width="100px;" alt=""/><br /><sub><b>Pavel Puchkov</b></sub></a><br /><a href="https://github.com/ngneat/until-destroy/commits?author=0x6368656174" title="Code">💻</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-enable -->
