@@ -43,7 +43,5 @@
     ],
     "dest": "../dist"
   },
-  "bin": {
-    "@ngneat/until-destroy": "migration/run.js"
-  }
+  "bin": "migration/run.js"
 }
