@@ -155,10 +155,10 @@ You can use `--removeOnDestroy` flag for empty `OnDestroy` methods removing.
 npx @ngneat/until-destroy --removeOnDestroy
 ```
 
-## Potential pitfalls
+## Potential Pitfalls
 
-- The order of decorators are important, make sure to put `@UntilDestroy()` before the `@Component` decorator.
-- If in unit test a component is overridden with [`overrideComponent`](https://angular.io/api/core/testing/TestBed#overrideComponent), it overrides metadata and component definitions. To reapply the decorator, invoke `UntilDestroy()(YourComponent);`. See [here](https://github.com/ngneat/until-destroy/issues/91#issuecomment-626470446) for an example.
+- The order of decorators is important, make sure to put `@UntilDestroy()` before the `@Component()` decorator.
+- When using [`overrideComponent`](https://angular.io/api/core/testing/TestBed#overrideComponent) in unit tests remember that it overrides metadata and component definition. Invoke `UntilDestroy()(YourComponent);` to reapply the decorator. See [here](https://github.com/ngneat/until-destroy/issues/91#issuecomment-626470446) for an example.
 
 ## Contributors ✨
 
