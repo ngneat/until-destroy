@@ -26,13 +26,15 @@ export interface PipeType<T> extends Type<T> {
 
 // As directive and component definitions are considered private API,
 // so those properties are prefixed with Angular's marker for "private".
+// An abstract component is not decorated by angular, so we should return the prototype.
 export function getDef<T>(
   type: PipeType<T> | ComponentType<T> | DirectiveType<T>
 ): PipeDef<T> | DirectiveDef<T> | ComponentDef<T> {
   return (
     (type as PipeType<T>)[NG_PIPE_DEF] ||
     (type as ComponentType<T>)[NG_COMP_DEF] ||
-    (type as DirectiveType<T>)[NG_DIR_DEF]
+    (type as DirectiveType<T>)[NG_DIR_DEF] ||
+    type.prototype
   );
 }
 

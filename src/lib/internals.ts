@@ -41,7 +41,14 @@ export function getSymbol<T>(destroyMethodName?: keyof T): symbol {
 export function missingDecorator<T>(
   providerOrDef: InjectableType<T> | PipeDef<T> | ComponentDef<T> | DirectiveDef<T>
 ): boolean {
-  return !(providerOrDef as any)[DECORATOR_APPLIED];
+  // If doesn't have proto the function will be called with null
+  if (!providerOrDef) {
+    return true;
+  }
+  // Before assume that the component is not decorated, check the proto to look for abstract component decorated
+  return (providerOrDef as any)[DECORATOR_APPLIED]
+    ? false
+    : missingDecorator((providerOrDef as any)?.type?.prototype?.__proto__);
 }
 
 export function markAsDecorated<T>(
