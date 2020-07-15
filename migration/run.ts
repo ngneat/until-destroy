@@ -64,12 +64,7 @@ function replaceOldImport(sourceFile: SourceFile) {
 }
 
 function addUntilDestroyDecorator(classDeclaration: ClassDeclaration) {
-  const decorators = [
-    { name: 'UntilDestroy', arguments: [] },
-    ...(classDeclaration.getStructure().decorators || [])
-  ];
-  classDeclaration.getDecorators().forEach(d => d.remove());
-  classDeclaration.addDecorators(decorators);
+  classDeclaration.insertDecorator(0, { name: 'UntilDestroy', arguments: [] });
 }
 
 function removeOnDestroyImplements(classDeclaration: ClassDeclaration) {

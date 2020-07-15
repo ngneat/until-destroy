@@ -65,6 +65,11 @@ describe('Migration script', () => {
       expect(result).not.toContain('ngOnDestroy()');
     });
 
+    it('should place @UntilDestroy decorator to a new line after the comment', () => {
+      const result = transformCode(code, 'single-import.component.ts', true);
+      expect(result).toContain(`// test comment\n@UntilDestroy()`);
+    });
+
     it('should remove class implements', () => {
       const result = transformCode(code, 'single-import.component.ts', true);
       expect(result).toContain(`export class SingleImportComponent extends BaseComponent {`);
