@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { getDef, isInjectableType } from './ivy';
+import { getDef, isInjectableType, getDirectiveDef } from './ivy';
 
 export function isFunction(target: unknown) {
   return typeof target === 'function';
@@ -41,14 +41,29 @@ export function getSymbol<T>(destroyMethodName?: keyof T): symbol {
 export function missingDecorator<T>(
   providerOrDef: InjectableType<T> | PipeDef<T> | ComponentDef<T> | DirectiveDef<T>
 ): boolean {
-  // If doesn't have proto the function will be called with null
-  if (!providerOrDef) {
-    return true;
-  }
-  // Before assume that the component is not decorated, check the proto to look for abstract component decorated
-  return (providerOrDef as any)[DECORATOR_APPLIED]
-    ? false
-    : missingDecorator((providerOrDef as any)?.type?.prototype?.__proto__);
+  return !(providerOrDef as any)[DECORATOR_APPLIED];
+}
+
+/**
+ * When we inherit from an abstract component that is defined with @Directive() decorator empty
+ * as is proposed by Angular, the child component will have a DirectiveDef referencing the parent
+ * and we have to check if has the decorator applied.
+ */
+export function missingParentDecorator<T>(
+  providerOrDef: InjectableType<T> | PipeDef<T> | ComponentDef<T> | DirectiveDef<T>
+): boolean {
+  return !getDirectiveDef((providerOrDef as any).type)[DECORATOR_APPLIED];
+}
+
+/**
+ *
+ * When we inherit from an abstract component that is not decorated with @Directive()
+ * we have to check if the prototype has the decorator applied.
+ */
+export function missingPrototypeDecorator<T>(
+  providerOrDef: InjectableType<T> | PipeDef<T> | ComponentDef<T> | DirectiveDef<T>
+): boolean {
+  return (providerOrDef as any)?.type?.prototype?.__proto__[DECORATOR_APPLIED];
 }
 
 export function markAsDecorated<T>(
@@ -67,7 +82,11 @@ export function ensureClassIsDecorated(instance: any): never | void {
   const constructor = instance.constructor;
   const providerOrDef = isInjectableType(constructor) ? constructor : getDef(constructor);
 
-  if (missingDecorator(providerOrDef)) {
+  if (
+    missingDecorator(providerOrDef) &&
+    missingParentDecorator(providerOrDef) &&
+    missingPrototypeDecorator(providerOrDef)
+  ) {
     throw new Error(
       'untilDestroyed operator cannot be used inside directives or ' +
         'components or providers that are not decorated with UntilDestroy decorator'
