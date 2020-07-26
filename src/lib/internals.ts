@@ -6,8 +6,6 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { getDef, isInjectableType } from './ivy';
-
 export function isFunction(target: unknown) {
   return typeof target === 'function';
 }
@@ -58,13 +56,12 @@ export interface UntilDestroyOptions {
 
 export function ensureClassIsDecorated(instance: any): never | void {
   const constructor = instance.constructor;
-  const providerOrDef = isInjectableType(constructor) ? constructor : getDef(constructor);
 
-  if (missingDecorator(providerOrDef)) {
-    throw new Error(
-      'untilDestroyed operator cannot be used inside directives or ' +
-        'components or providers that are not decorated with UntilDestroy decorator'
-    );
+  if (missingDecorator(constructor)) {
+    // throw new Error(
+    //   'untilDestroyed operator cannot be used inside directives or ' +
+    //     'components or providers that are not decorated with UntilDestroy decorator'
+    // );
   }
 }
 
