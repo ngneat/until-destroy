@@ -5,9 +5,11 @@ import {
 import { interval, Subject } from 'rxjs';
 
 import { UntilDestroy } from '..';
+import { callNgOnDestroy } from './utils';
 
 describe('UntilDestroy decorator alone', () => {
   it('should unsubscribe from the subscription property', () => {
+    // Arrange
     @UntilDestroy({ checkProperties: true })
     class TestComponent {
       static ɵcmp: ComponentDef<TestComponent> = defineComponent({
@@ -23,16 +25,16 @@ describe('UntilDestroy decorator alone', () => {
       static ɵfac = () => new TestComponent();
     }
 
+    // Act & assert
     const component = TestComponent.ɵfac();
 
     expect(component.subscription.closed).toBeFalsy();
-
-    TestComponent.ɵcmp.onDestroy!.call(component);
-
+    callNgOnDestroy(component);
     expect(component.subscription.closed).toBeTruthy();
   });
 
   it('should not unsubscribe from the blacklisted subscription', () => {
+    // Arrange
     @UntilDestroy({ blackList: ['subjectSubscription'], checkProperties: true })
     class TestComponent {
       static ɵcmp: ComponentDef<TestComponent> = defineComponent({
@@ -49,12 +51,13 @@ describe('UntilDestroy decorator alone', () => {
       static ɵfac = () => new TestComponent();
     }
 
+    // Act & assert
     const component = TestComponent.ɵfac();
 
     expect(component.intervalSubscription.closed).toBeFalsy();
     expect(component.subjectSubscription.closed).toBeFalsy();
 
-    TestComponent.ɵcmp.onDestroy!.call(component);
+    callNgOnDestroy(component);
 
     expect(component.intervalSubscription.closed).toBeTruthy();
     expect(component.subjectSubscription.closed).toBeFalsy();
@@ -63,6 +66,7 @@ describe('UntilDestroy decorator alone', () => {
   });
 
   it('should unsubscribe from the array of subscriptions', () => {
+    // Arrange
     @UntilDestroy({ arrayName: 'subscriptions' })
     class TestComponent {
       static ɵcmp: ComponentDef<TestComponent> = defineComponent({
@@ -78,13 +82,14 @@ describe('UntilDestroy decorator alone', () => {
       static ɵfac = () => new TestComponent();
     }
 
+    // Act & assert
     const component = TestComponent.ɵfac();
 
     component.subscriptions.forEach(subscription => {
       expect(subscription.closed).toBeFalsy();
     });
 
-    TestComponent.ɵcmp.onDestroy!.call(component);
+    callNgOnDestroy(component);
 
     component.subscriptions.forEach(subscription => {
       expect(subscription.closed).toBeTruthy();

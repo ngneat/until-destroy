@@ -5,13 +5,14 @@ import {
 } from '@angular/core';
 import { SubscriptionLike } from 'rxjs';
 
+import { PipeType, isPipe } from './ivy';
 import {
   getSymbol,
   isFunction,
   UntilDestroyOptions,
-  completeSubjectOnTheInstance
+  completeSubjectOnTheInstance,
+  markAsDecorated
 } from './internals';
-import { PipeType, isPipe, getPipeDef } from './ivy';
 
 function unsubscribe(property: SubscriptionLike | undefined): void {
   property && isFunction(property.unsubscribe) && property.unsubscribe();
@@ -23,7 +24,7 @@ function unsubscribeIfPropertyIsArrayLike(property: any[]): void {
 
 function decorateNgOnDestroy(
   ngOnDestroy: (() => void) | null | undefined,
-  { arrayName, checkProperties, blackList }: UntilDestroyOptions
+  options: UntilDestroyOptions
 ) {
   return function(this: any) {
     // Invoke the original `ngOnDestroy` if it exists
@@ -34,14 +35,14 @@ function decorateNgOnDestroy(
     completeSubjectOnTheInstance(this, getSymbol());
 
     // Check if subscriptions are pushed to some array
-    if (arrayName) {
-      return unsubscribeIfPropertyIsArrayLike(this[arrayName]);
+    if (options.arrayName) {
+      return unsubscribeIfPropertyIsArrayLike(this[options.arrayName]);
     }
 
     // Loop through the properties and find subscriptions
-    if (checkProperties) {
+    if (options.checkProperties) {
       for (const property in this) {
-        if (blackList && blackList.includes(property)) {
+        if (options.blackList?.includes(property)) {
           continue;
         }
 
@@ -70,5 +71,7 @@ export function UntilDestroy(options: UntilDestroyOptions = {}): ClassDecorator 
     } else {
       decorateProviderDirectiveOrComponent(type, options);
     }
+
+    markAsDecorated(type);
   };
 }

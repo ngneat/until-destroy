@@ -10,7 +10,3 @@ export interface PipeType<T> extends Type<T> {
 export function isPipe<T>(target: any): target is PipeType<T> {
   return !!target[NG_PIPE_DEF];
 }
-
-export function getPipeDef<T>(type: PipeType<T>): ɵPipeDef<T> {
-  return type.ɵpipe;
-}
