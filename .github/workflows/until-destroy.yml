@@ -27,6 +27,8 @@ jobs:
         # `npm ci` because it will hit the `postinstall` hook
         # that will run `ngcc` compiler accordingly.
         if: steps.npm-cache.outputs.cache-hit != 'true'
+        env:
+          HUSKY_SKIP_INSTALL: 'true'
         run: npm ci
 
       - name: Run unit tests

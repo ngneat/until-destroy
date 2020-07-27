@@ -21,6 +21,8 @@ export class AppComponent {
 
   issueSixtySixComponentShown = false;
 
+  issueNinetySevenComponentShown = false;
+
   constructor(private router: Router) {}
 
   buttons = [
@@ -51,6 +53,11 @@ export class AppComponent {
     {
       label: 'Toggle app-issue-sixty-six component',
       action: () => (this.issueSixtySixComponentShown = !this.issueSixtySixComponentShown)
+    },
+    {
+      label: 'Toggle app-issue-ninety-seven component',
+      action: () =>
+        (this.issueNinetySevenComponentShown = !this.issueNinetySevenComponentShown)
     },
     {
       label: 'Go to /issue-78',

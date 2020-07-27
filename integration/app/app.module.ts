@@ -11,6 +11,7 @@ import { ConnectionDirective } from './connection/connection.directive';
 import { DocumentClickComponent } from './document-click/document-click.component';
 import { IssueSixtyOneComponent } from './issue-sixty-one/issue-sixty-one.component';
 import { IssueSixtySixComponent } from './issue-sixty-six/issue-sixty-six.component';
+import { IssueNinetySevenComponent } from './issuer-ninety-seven/issuer-ninety-seven.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { IssueSixtySixComponent } from './issue-sixty-six/issue-sixty-six.compon
     ConnectionDirective,
     DocumentClickComponent,
     IssueSixtyOneComponent,
-    IssueSixtySixComponent
+    IssueSixtySixComponent,
+    IssueNinetySevenComponent
   ],
   bootstrap: [AppComponent]
 })

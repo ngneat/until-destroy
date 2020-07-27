@@ -7,6 +7,7 @@ import {
 import { Subject, Subscription } from 'rxjs';
 
 import { UntilDestroy, untilDestroyed } from '..';
+import { callNgOnDestroy } from './utils';
 
 function createObserver() {
   return {
@@ -168,7 +169,7 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
     }
 
     const component = TestComponent.ɵfac();
-    TestComponent.ɵcmp.onDestroy!.call(component);
+    callNgOnDestroy(component);
 
     expect(spy.complete).toHaveBeenCalledTimes(1);
   });
@@ -209,7 +210,7 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
       });
     }
 
-    const ownPropertySymbols = Object.getOwnPropertySymbols(TestComponent.ɵcmp);
+    const ownPropertySymbols = Object.getOwnPropertySymbols(TestComponent.prototype);
     const decoratorAppliedSymbol = ownPropertySymbols.find(
       symbol => symbol.toString() === 'Symbol(__decoratorApplied)'
     );
@@ -217,7 +218,7 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
     expect(decoratorAppliedSymbol).toBeDefined();
   });
 
-  it('should throw if directive/component not decorator with UntilDestroy', () => {
+  it('should throw if directive/component not decorated with UntilDestroy', () => {
     class TestComponent {
       static ɵcmp: ComponentDef<TestComponent> = defineComponent({
         vars: 0,

@@ -1,12 +1,7 @@
-import {
-  InjectableType,
-  ɵPipeDef as PipeDef,
-  ɵComponentDef as ComponentDef,
-  ɵDirectiveDef as DirectiveDef
-} from '@angular/core';
+import { InjectableType, ɵDirectiveType, ɵComponentType } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { getDef, isInjectableType } from './ivy';
+import { PipeType } from './ivy';
 
 export function isFunction(target: unknown) {
   return typeof target === 'function';
@@ -38,16 +33,12 @@ export function getSymbol<T>(destroyMethodName?: keyof T): symbol {
   }
 }
 
-export function missingDecorator<T>(
-  providerOrDef: InjectableType<T> | PipeDef<T> | ComponentDef<T> | DirectiveDef<T>
-): boolean {
-  return !(providerOrDef as any)[DECORATOR_APPLIED];
-}
-
 export function markAsDecorated<T>(
-  providerOrDef: InjectableType<T> | PipeDef<T> | ComponentDef<T> | DirectiveDef<T>
+  type: InjectableType<T> | PipeType<T> | ɵDirectiveType<T> | ɵComponentType<T>
 ): void {
-  (providerOrDef as any)[DECORATOR_APPLIED] = true;
+  // Store this property on the prototype if it's an injectable class, component or directive.
+  // We will be able to handle class extension this way.
+  type.prototype[DECORATOR_APPLIED] = true;
 }
 
 export interface UntilDestroyOptions {
@@ -57,10 +48,7 @@ export interface UntilDestroyOptions {
 }
 
 export function ensureClassIsDecorated(instance: any): never | void {
-  const constructor = instance.constructor;
-  const providerOrDef = isInjectableType(constructor) ? constructor : getDef(constructor);
-
-  if (missingDecorator(providerOrDef)) {
+  if (missingDecorator(instance.constructor)) {
     throw new Error(
       'untilDestroyed operator cannot be used inside directives or ' +
         'components or providers that are not decorated with UntilDestroy decorator'
@@ -82,4 +70,10 @@ export function completeSubjectOnTheInstance(instance: any, symbol: symbol): voi
     // we will be able to create new subject on the same instance.
     instance[symbol] = null;
   }
+}
+
+function missingDecorator<T>(
+  type: InjectableType<T> | PipeType<T> | ɵDirectiveType<T> | ɵComponentType<T>
+): boolean {
+  return !(DECORATOR_APPLIED in type.prototype);
 }
