@@ -56,6 +56,7 @@
     "ng-packagr": "^10.0.0",
     "prettier": "^1.19.1",
     "rxjs": "^6.5.2",
+    "standard-changelog": "^2.0.24",
     "ts-morph": "^7.1.2",
     "typescript": "3.9.7",
     "zone.js": "0.10.3"
