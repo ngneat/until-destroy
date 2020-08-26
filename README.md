@@ -4,6 +4,21 @@
 
 ![@ngneat/until-destroy](https://github.com/ngneat/until-destroy/workflows/@ngneat/until-destroy/badge.svg)
 
+## Table of contents
+
+- [Updating to Version 8](#updating-to-version-8)
+- [Use with Ivy](#use-with-ivy)
+  - [Use with Non-Singleton Services](#use-with-non-singleton-services)
+- [Use with View Engine (Pre Ivy)](#use-with-view-engine-pre-ivy)
+  - [Use with Any Class](#use-with-any-class)
+- [Migration from View Engine to Ivy](#migration-from-view-engine-to-ivy)
+- [Potential Pitfalls](#potential-pitfalls)
+- [Contributors](#contributors-✨)
+
+## Updating to Version 8
+
+`@ngneat/until-destroy@8+` is compatible only with Angular starting from 10.0.5 version. If you have installed or updated the `@ngneat/until-destroy` to version 8 and noticed that unsubscribing does not work then you have to install the latest Angular version.
+
 ## Use with Ivy
 
 ```bash
