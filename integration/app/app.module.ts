@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { I18nPipe } from './i18n/i18n.pipe';
 import { HttpDirective } from './http/http.directive';
 import { IntervalComponent } from './interval/interval.component';
+import { IntervalUsingExtensionComponent } from './interval-using-extension/interval-using-extension.component';
 import { ConnectionDirective } from './connection/connection.directive';
 import { DocumentClickComponent } from './document-click/document-click.component';
 import { IssueSixtyOneComponent } from './issue-sixty-one/issue-sixty-one.component';
@@ -32,6 +33,7 @@ import { IssueNinetySevenComponent } from './issuer-ninety-seven/issuer-ninety-s
     I18nPipe,
     HttpDirective,
     IntervalComponent,
+    IntervalUsingExtensionComponent,
     ConnectionDirective,
     DocumentClickComponent,
     IssueSixtyOneComponent,

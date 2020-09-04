@@ -11,6 +11,8 @@ export class AppComponent {
 
   intervalComponentShown = false;
 
+  intervalExtensionComponentShown = false;
+
   documentClickComponentShown = false;
 
   httpDirectiveShown = false;
@@ -33,6 +35,10 @@ export class AppComponent {
     {
       label: 'Toggle app-interval component',
       action: () => (this.intervalComponentShown = !this.intervalComponentShown)
+    },
+    {
+      label: 'Toggle app-interval-extension component',
+      action: () => (this.intervalExtensionComponentShown = !this.intervalExtensionComponentShown)
     },
     {
       label: 'Toggle app-document-click component',

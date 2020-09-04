@@ -36,18 +36,45 @@ function overrideNonDirectiveInstanceMethod(
 }
 
 export function untilDestroyed<T>(instance: T, destroyMethodName?: keyof T) {
-  return <U>(source: Observable<U>) => {
-    const symbol = getSymbol<T>(destroyMethodName);
+  return <U>(source: Observable<U>) =>
+    untilDestroyedOfObservable(source, instance, destroyMethodName);
+}
 
-    // If `destroyMethodName` is passed then the developer applies
-    // this operator to something non-related to Angular DI system
-    if (typeof destroyMethodName === 'string') {
-      overrideNonDirectiveInstanceMethod(instance, destroyMethodName, symbol);
-    } else {
-      ensureClassIsDecorated(instance);
-      createSubjectOnTheInstance(instance, symbol);
-    }
+export function untilDestroyedOfObservable<T, U>(
+  source: Observable<U>,
+  instance: T,
+  destroyMethodName?: keyof T
+) {
+  const symbol = getSymbol<T>(destroyMethodName);
 
-    return source.pipe(takeUntil<U>((instance as any)[symbol]));
-  };
+  // If `destroyMethodName` is passed then the developer applies
+  // this operator to something non-related to Angular DI system
+  if (typeof destroyMethodName === 'string') {
+    overrideNonDirectiveInstanceMethod(instance, destroyMethodName, symbol);
+  } else {
+    ensureClassIsDecorated(instance);
+    createSubjectOnTheInstance(instance, symbol);
+  }
+  return source.pipe(takeUntil<U>((instance as any)[symbol]));
+}
+
+// Compose the operator:
+function untilDestroyedExtension<T, U>(
+  this: Observable<U>,
+  instance: T,
+  destroyMethodName?: keyof T
+): Observable<U> {
+  return untilDestroyedOfObservable(this, instance, destroyMethodName);
+}
+
+// Add the operator to the Observable prototype:
+
+Observable.prototype.untilDestroyed = untilDestroyedExtension;
+
+// Extend the TypeScript interface for Observable to include the operator:
+
+declare module 'rxjs/internal/Observable' {
+  interface Observable<T> {
+    untilDestroyed: typeof untilDestroyedExtension;
+  }
 }
