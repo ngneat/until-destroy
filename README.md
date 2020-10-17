@@ -6,7 +6,7 @@
 
 ## Table of contents
 
-- [Updating to Version 8](#updating-to-version-8)
+- [Angular 10 Compatibility](#angular-10-compatibility)
 - [Use with Ivy](#use-with-ivy)
   - [Use with Non-Singleton Services](#use-with-non-singleton-services)
 - [Use with View Engine (Pre Ivy)](#use-with-view-engine-pre-ivy)
@@ -15,9 +15,9 @@
 - [Potential Pitfalls](#potential-pitfalls)
 - [Contributors](#contributors-✨)
 
-## Updating to Version 8
+## Angular 10 Compatibility
 
-`@ngneat/until-destroy@8+` is compatible only with Angular starting from 10.0.5 version. If you have installed or updated the `@ngneat/until-destroy` to version 8 and noticed that unsubscribing does not work then you have to install the latest Angular version.
+`@ngneat/until-destroy@8+` is compatible only with Angular starting from 10.0.5 version. `@ngneat/until-destroy@7` is compatible with Angular versions below 10.0.5. If you have noticed that unsubscribing does not work after some update then check the version of Angular and `@ngneat/until-destroy` first of all.
 
 ## Use with Ivy
 
