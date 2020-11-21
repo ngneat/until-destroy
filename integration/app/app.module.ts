@@ -17,15 +17,18 @@ import { IssueNinetySevenComponent } from './issuer-ninety-seven/issuer-ninety-s
   imports: [
     BrowserModule,
     HttpClientModule,
-    RouterModule.forRoot([
-      {
-        path: 'issue-78',
-        loadChildren: () =>
-          import('./issue-seventy-eight/issue-seventy-eight.module').then(
-            m => m.IssueSeventyEight
-          )
-      }
-    ])
+    RouterModule.forRoot(
+      [
+        {
+          path: 'issue-78',
+          loadChildren: () =>
+            import('./issue-seventy-eight/issue-seventy-eight.module').then(
+              m => m.IssueSeventyEight
+            )
+        }
+      ],
+      { relativeLinkResolution: 'legacy' }
+    )
   ],
   declarations: [
     AppComponent,
