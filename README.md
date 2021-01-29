@@ -175,6 +175,11 @@ npx @ngneat/until-destroy --removeOnDestroy
 - The order of decorators is important, make sure to put `@UntilDestroy()` before the `@Component()` decorator.
 - When using [`overrideComponent`](https://angular.io/api/core/testing/TestBed#overrideComponent) in unit tests remember that it overrides metadata and component definition. Invoke `UntilDestroy()(YourComponent);` to reapply the decorator. See [here](https://github.com/ngneat/until-destroy/issues/91#issuecomment-626470446) for an example.
 
+## ESLint Rules
+- [prefer-takeuntil](https://github.com/cartant/eslint-plugin-rxjs-angular/blob/main/docs/rules/prefer-takeuntil.md#options)
+- [no-unsafe-takeuntil](https://github.com/cartant/eslint-plugin-rxjs/blob/main/docs/rules/no-unsafe-takeuntil.md#options)
+
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
