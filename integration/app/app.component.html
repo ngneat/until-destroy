@@ -1,20 +1,2 @@
-<ng-container *ngIf="i18nPipeShown">
-  <h1>{{ '' | i18n }}</h1>
-</ng-container>
-
-<app-interval *ngIf="intervalComponentShown"></app-interval>
-<app-interval *ngIf="intervalComponentShown"></app-interval>
-
-<app-document-click *ngIf="documentClickComponentShown"></app-document-click>
-
-<ng-container *ngIf="httpDirectiveShown" http></ng-container>
-<ng-container *ngIf="connectionDirectiveShown" connection></ng-container>
-
-<app-issue-sixty-one *ngIf="issueSixtyOneComponentShown"></app-issue-sixty-one>
-<app-issue-sixty-six *ngIf="issueSixtySixComponentShown"></app-issue-sixty-six>
-
-<app-issue-ninety-seven *ngIf="issueNinetySevenComponentShown"></app-issue-ninety-seven>
-
-<button *ngFor="let button of buttons" (click)="button.action()">{{ button.label }}</button>
-
+<app-navbar></app-navbar>
 <router-outlet></router-outlet>

@@ -1,0 +1,23 @@
+<div class="container is-flex is-flex-direction-column">
+  <div class="box">
+    <div class="content">
+      <p>
+        The purpose of this test is to ensure that streams are unsubscribed when directives are
+        destroyed.
+      </p>
+
+      <blockquote *ngIf="shown">
+        <ng-container *http="let response">{{ response }}</ng-container>
+      </blockquote>
+
+      <blockquote data-cy="http-directive-status">
+        Http directive subscription is unsubscribed:
+        {{ (httpDirectiveStatus$ | async)!.subscriptionIsUnsubscribed }}
+      </blockquote>
+    </div>
+  </div>
+
+  <button data-cy="toggle-http-directive" class="button" (click)="toggle()">
+    Toggle
+  </button>
+</div>
