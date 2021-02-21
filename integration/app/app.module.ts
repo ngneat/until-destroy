@@ -4,14 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { I18nPipe } from './i18n/i18n.pipe';
-import { HttpDirective } from './http/http.directive';
-import { IntervalComponent } from './interval/interval.component';
-import { ConnectionDirective } from './connection/connection.directive';
-import { DocumentClickComponent } from './document-click/document-click.component';
-import { IssueSixtyOneComponent } from './issue-sixty-one/issue-sixty-one.component';
-import { IssueSixtySixComponent } from './issue-sixty-six/issue-sixty-six.component';
-import { IssueNinetySevenComponent } from './issuer-ninety-seven/issuer-ninety-seven.component';
+import { NavbarModule } from './navbar/navbar.module';
 
 @NgModule({
   imports: [
@@ -20,27 +13,51 @@ import { IssueNinetySevenComponent } from './issuer-ninety-seven/issuer-ninety-s
     RouterModule.forRoot(
       [
         {
-          path: 'issue-78',
+          path: 'pipe',
+          loadChildren: () => import('./pipe/pipe.module').then(m => m.PipeModule)
+        },
+        {
+          path: 'custom-method',
           loadChildren: () =>
-            import('./issue-seventy-eight/issue-seventy-eight.module').then(
-              m => m.IssueSeventyEight
+            import('./custom-method/custom-method.module').then(m => m.CustomMethodModule)
+        },
+        {
+          path: 'directive',
+          loadChildren: () =>
+            import('./directive/directive.module').then(m => m.DirectiveModule)
+        },
+        {
+          path: 'inheritance',
+          loadChildren: () =>
+            import('./inheritance/inheritance.module').then(m => m.InheritanceModule)
+        },
+        {
+          path: 'destroyable-provider',
+          loadChildren: () =>
+            import('./destroyable-provider/destroyable-provider.module').then(
+              m => m.DestroyableProviderModule
+            )
+        },
+        {
+          path: 'array-of-subscriptions',
+          loadChildren: () =>
+            import('./array-of-subscriptions/array-of-subscriptions.module').then(
+              m => m.ArrayOfSubscriptionsModule
+            )
+        },
+        {
+          path: 'multiple-custom-methods',
+          loadChildren: () =>
+            import('./multiple-custom-methods/multiple-custom-methods.module').then(
+              m => m.MultipleCustoMethodsModule
             )
         }
       ],
       { relativeLinkResolution: 'legacy' }
-    )
+    ),
+    NavbarModule
   ],
-  declarations: [
-    AppComponent,
-    I18nPipe,
-    HttpDirective,
-    IntervalComponent,
-    ConnectionDirective,
-    DocumentClickComponent,
-    IssueSixtyOneComponent,
-    IssueSixtySixComponent,
-    IssueNinetySevenComponent
-  ],
+  declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -1,0 +1,35 @@
+<div class="container is-flex is-flex-direction-column">
+  <div class="box">
+    <div class="content">
+      <p>
+        The purpose of this test is to ensure that it's possible to pass custom method to
+        `untilDestroyed` operator, that will be called upon destroy. Given such objectives:
+      </p>
+      <ol>
+        <li>`IntervalService` subscribes to `interval` stream and has a `destroy()` method</li>
+        <li>
+          `IntervalService` has an `interval$` stream which emits values forward from
+          `interval` stream
+        </li>
+        <li>`CustomMethodComponent` subscribes to `IntervalService.interval$`</li>
+        <li>
+          `CustomMethodComponent` calls `destroy()` on the `IntervalService` when the below
+          button is clicked
+        </li>
+      </ol>
+
+      <blockquote data-cy="interval-service-subscription-is-unsubscribed">
+        Interval service subscription is unsubscribed:
+        {{ intervalServiceSubscriptionIsUnsubscribed$ | async }}
+      </blockquote>
+
+      <blockquote data-cy="value-from-interval-service">
+        Value from interval service {{ valueFromIntervalService$ | async }}
+      </blockquote>
+    </div>
+  </div>
+
+  <button data-cy="destroy-service" class="button is-link is-light" (click)="destroyService()">
+    Destroy service
+  </button>
+</div>

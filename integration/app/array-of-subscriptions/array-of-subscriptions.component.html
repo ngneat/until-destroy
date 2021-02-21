@@ -1,0 +1,21 @@
+<div class="container is-flex is-flex-direction-column">
+  <div class="box">
+    <div class="content">
+      <p>
+        The purpose of this test is to ensure that subscriptions, stored in array, are
+        unsubscribed.
+      </p>
+
+      <app-document-click *ngIf="shown"></app-document-click>
+
+      <blockquote data-cy="document-click-status">
+        Document click subscription is unsubscribed:
+        {{ documentClickSubscriptionIsUnsubscribed$ | async }}
+      </blockquote>
+    </div>
+  </div>
+
+  <button data-cy="toggle-document-click" class="button is-link is-light" (click)="toggle()">
+    Toggle
+  </button>
+</div>

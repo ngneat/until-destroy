@@ -1,0 +1,22 @@
+<div class="container is-flex is-flex-direction-column">
+  <div class="box">
+    <div class="content">
+      <p>
+        The purpose of this test is to ensure that streams are unsubscribed when
+        `ngOnDestroy()` is called on providers that are bound to components and directives
+        (that are declared in `providers` property of components and directives).
+      </p>
+
+      <ng-container *ngIf="shown" connection></ng-container>
+
+      <blockquote data-cy="provider-status" *ngIf="providerStatus$ | async as providerStatus">
+        Provider subject is unsubscribed {{ providerStatus.subjectIsUnsubscribed }} and
+        subscription is unsubscribed {{ providerStatus.subscriptionIsUnsubscribed }}
+      </blockquote>
+    </div>
+  </div>
+
+  <button data-cy="toggle-provider" class="button is-link is-light" (click)="toggle()">
+    Toggle
+  </button>
+</div>

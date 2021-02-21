@@ -1,0 +1,10 @@
+<div class="column">
+  <div class="menu">
+    <p class="menu-label"><b>Examples</b></p>
+    <ul class="menu-list">
+      <li *ngFor="let link of links">
+        <a [routerLink]="link.url" routerLinkActive="is-active">{{ link.title }}</a>
+      </li>
+    </ul>
+  </div>
+</div>
