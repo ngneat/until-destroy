@@ -16,7 +16,7 @@ const DESTROY: unique symbol = Symbol('__destroy');
 /**
  * Applied to definitions and informs that class is decorated
  */
-const DECORATOR_APPLIED: unique symbol = Symbol('__decoratorApplied');
+export const DECORATOR_APPLIED: unique symbol = Symbol('__decoratorApplied');
 
 /**
  * If we use the `untilDestroyed` operator multiple times inside the single
@@ -47,15 +47,6 @@ export interface UntilDestroyOptions {
   checkProperties?: boolean;
 }
 
-export function ensureClassIsDecorated(instance: any): never | void {
-  if (missingDecorator(instance.constructor)) {
-    throw new Error(
-      'untilDestroyed operator cannot be used inside directives or ' +
-        'components or providers that are not decorated with UntilDestroy decorator'
-    );
-  }
-}
-
 export function createSubjectOnTheInstance(instance: any, symbol: symbol): void {
   if (!instance[symbol]) {
     instance[symbol] = new Subject<void>();
@@ -70,10 +61,4 @@ export function completeSubjectOnTheInstance(instance: any, symbol: symbol): voi
     // we will be able to create new subject on the same instance.
     instance[symbol] = null;
   }
-}
-
-function missingDecorator<T>(
-  type: InjectableType<T> | PipeType<T> | ɵDirectiveType<T> | ɵComponentType<T>
-): boolean {
-  return !(DECORATOR_APPLIED in type.prototype);
 }
