@@ -1,4 +1,4 @@
-import { Directive, ɵɵdirectiveInject } from '@angular/core';
+import { Directive } from '@angular/core';
 
 import { ConnectionService } from './connection.service';
 
@@ -7,7 +7,5 @@ import { ConnectionService } from './connection.service';
   providers: [ConnectionService]
 })
 export class ConnectionDirective {
-  constructor() {
-    ɵɵdirectiveInject(ConnectionService);
-  }
+  constructor(connectionService: ConnectionService) {}
 }
