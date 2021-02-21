@@ -86,7 +86,6 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@ngneat/tailwind": "^6.0.3",
     "minimist": "^1.2.5",
     "tslib": "^2.0.0"
   }

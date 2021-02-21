@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { Issue66Component } from './issue-66/issue-66.component';
 import { MultipleCustoMethodsComponent } from './multiple-custom-methods.component';
 
 @NgModule({
@@ -15,6 +14,6 @@ import { MultipleCustoMethodsComponent } from './multiple-custom-methods.compone
       }
     ])
   ],
-  declarations: [Issue66Component, MultipleCustoMethodsComponent]
+  declarations: [MultipleCustoMethodsComponent]
 })
 export class MultipleCustoMethodsModule {}

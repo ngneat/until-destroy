@@ -1,9 +1,10 @@
-<nav class="navbar is-white">
-  <div class="navbar-menu">
-    <div class="navbar-start">
-      <a class="navbar-item" *ngFor="let link of links" [routerLink]="link.url">{{
-        link.title
-      }}</a>
-    </div>
+<div class="column">
+  <div class="menu">
+    <p class="menu-label"><b>Examples</b></p>
+    <ul class="menu-list">
+      <li *ngFor="let link of links">
+        <a [routerLink]="link.url" routerLinkActive="is-active">{{ link.title }}</a>
+      </li>
+    </ul>
   </div>
-</nav>
+</div>
