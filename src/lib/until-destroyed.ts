@@ -2,12 +2,16 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
+  DECORATOR_APPLIED,
   getSymbol,
   isFunction,
   createSubjectOnTheInstance,
-  completeSubjectOnTheInstance,
-  ensureClassIsDecorated
+  completeSubjectOnTheInstance
 } from './internals';
+
+// This will be provided through AngukTerser global definitions by Angular CLI. This will
+// help to tree-shake away the code unneeded for production bundles.
+declare const ngDevMode: boolean;
 
 function overrideNonDirectiveInstanceMethod(
   instance: any,
@@ -16,7 +20,7 @@ function overrideNonDirectiveInstanceMethod(
 ): void {
   const originalDestroy = instance[destroyMethodName];
 
-  if (isFunction(originalDestroy) === false) {
+  if (ngDevMode && isFunction(originalDestroy) === false) {
     throw new Error(
       `${instance.constructor.name} is using untilDestroyed but doesn't implement ${destroyMethodName}`
     );
@@ -25,7 +29,7 @@ function overrideNonDirectiveInstanceMethod(
   createSubjectOnTheInstance(instance, symbol);
 
   instance[destroyMethodName] = function() {
-    isFunction(originalDestroy) && originalDestroy.apply(this, arguments);
+    originalDestroy.apply(this, arguments);
     completeSubjectOnTheInstance(this, symbol);
     // We have to re-assign this property back to the original value.
     // If the `untilDestroyed` operator is called for the same instance
@@ -44,10 +48,22 @@ export function untilDestroyed<T>(instance: T, destroyMethodName?: keyof T) {
     if (typeof destroyMethodName === 'string') {
       overrideNonDirectiveInstanceMethod(instance, destroyMethodName, symbol);
     } else {
-      ensureClassIsDecorated(instance);
+      ngDevMode && ensureClassIsDecorated(instance);
       createSubjectOnTheInstance(instance, symbol);
     }
 
     return source.pipe(takeUntil<U>((instance as any)[symbol]));
   };
+}
+
+function ensureClassIsDecorated(instance: InstanceType<any>): never | void {
+  const prototype = Object.getPrototypeOf(instance);
+  const missingDecorator = !(DECORATOR_APPLIED in prototype);
+
+  if (missingDecorator) {
+    throw new Error(
+      'untilDestroyed operator cannot be used inside directives or ' +
+        'components or providers that are not decorated with UntilDestroy decorator'
+    );
+  }
 }
