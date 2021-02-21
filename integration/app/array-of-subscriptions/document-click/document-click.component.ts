@@ -18,7 +18,7 @@ export class DocumentClickComponent {
   subscriptions: Subscription[] = [];
 
   constructor(loggerFactory: LoggerFactory, @Host() host: ArrayOfSubscriptionsComponent) {
-    host.documentClickSubscriptionIsUnsubscribed$.next(false);
+    host.documentClickUnsubscribed$.next(false);
 
     const logger = loggerFactory.createLogger('DocumentClickComponent', '#b100aa');
 
@@ -28,7 +28,7 @@ export class DocumentClickComponent {
           pluck<KeyboardEvent, number>('clientX'),
           finalize(() => {
             logger.log('fromEvent has been unsubscribed');
-            host.documentClickSubscriptionIsUnsubscribed$.next(true);
+            host.documentClickUnsubscribed$.next(true);
           })
         )
         .subscribe(clientX => {

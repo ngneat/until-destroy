@@ -18,12 +18,14 @@
         </li>
       </ol>
 
-      <blockquote data-cy="interval-service-subscription-is-unsubscribed">
-        Interval service subscription is unsubscribed:
-        {{ intervalServiceSubscriptionIsUnsubscribed$ | async }}
-      </blockquote>
+      <div
+        data-cy="interval-service-status"
+        [class]="intervalServiceUnsubscribedClass$ | async"
+      >
+        {{ intervalServiceUnsubscribedText$ | async }}
+      </div>
 
-      <blockquote data-cy="value-from-interval-service">
+      <blockquote>
         Value from interval service {{ valueFromIntervalService$ | async }}
       </blockquote>
     </div>

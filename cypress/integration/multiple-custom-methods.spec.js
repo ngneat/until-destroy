@@ -8,26 +8,14 @@ context('multiple custom methods', () => {
       cy.get('[data-cy="start-first"]').click();
       cy.get('[data-cy="start-second"]').click();
 
-      cy.get('[data-cy="issue-66-status-first-stream"]').should(
-        'contain.text',
-        'first stream started true and first stream stopped false'
-      );
-      cy.get('[data-cy="issue-66-status-second-stream"]').should(
-        'contain.text',
-        'second stream started true and second stream stopped false'
-      );
+      cy.get('[data-cy="issue-66-status-first-stream"]').shouldHaveDangerClass();
+      cy.get('[data-cy="issue-66-status-second-stream"]').shouldHaveDangerClass();
 
       cy.get('[data-cy="stop-first"]').click();
       cy.get('[data-cy="stop-second"]').click();
 
-      cy.get('[data-cy="issue-66-status-first-stream"]').should(
-        'contain.text',
-        'first stream started false and first stream stopped true'
-      );
-      cy.get('[data-cy="issue-66-status-second-stream"]').should(
-        'contain.text',
-        'second stream started false and second stream stopped true'
-      );
+      cy.get('[data-cy="issue-66-status-first-stream"]').shouldHaveSuccessClass();
+      cy.get('[data-cy="issue-66-status-second-stream"]').shouldHaveSuccessClass();
     };
 
     repetable();

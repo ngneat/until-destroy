@@ -2,10 +2,10 @@
 
 context('pipe', () => {
   it('should click the button and show that pipe has unsubscribed from subscription', () => {
-    cy.visit('/pipe');
-
-    cy.get('[data-cy="toggle-pipe"]').click();
-
-    cy.get('[data-cy="pipe-unsubscribed"]').should('contain.text', 'Pipe unsubscribed: true');
+    cy.visit('/pipe')
+      .get('[data-cy="toggle-pipe"]')
+      .click()
+      .get('[data-cy="pipe-status"]')
+      .shouldHaveSuccessClass();
   });
 });

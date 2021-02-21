@@ -21,17 +21,14 @@
         </button>
       </blockquote>
 
-      <blockquote *ngIf="issue66Status$ | async as issue66Status">
-        Issue#66 status:
-        <div data-cy="issue-66-status-first-stream">
-          first stream started {{ issue66Status.firstStreamStarted }} and first stream stopped
-          {{ issue66Status.firstStreamStopped }}
-        </div>
-        <div data-cy="issue-66-status-second-stream">
-          second stream started {{ issue66Status.secondStreamStarted }} and second stream
-          stopped {{ issue66Status.secondStreamStopped }}
-        </div>
-      </blockquote>
+      <p>Issue#66 status:</p>
+
+      <div data-cy="issue-66-status-first-stream" [class]="firstStreamStatusClass$ | async">
+        {{ firstStreamStatusText$ | async }}
+      </div>
+      <div data-cy="issue-66-status-second-stream" [class]="secondStreamStatusClass$ | async">
+        {{ secondStreamStatusText$ | async }}
+      </div>
     </div>
   </div>
 </div>

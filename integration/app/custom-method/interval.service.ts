@@ -9,17 +9,17 @@ export class IntervalService {
 
   constructor(
     loggerFactory: LoggerFactory,
-    intervalServiceSubscriptionIsUnsubscribed$: BehaviorSubject<boolean>
+    intervalServiceUnsubscribed$: BehaviorSubject<boolean>
   ) {
     const logger = loggerFactory.createLogger('IntervalService', '#7d00a5');
 
-    intervalServiceSubscriptionIsUnsubscribed$.next(false);
+    intervalServiceUnsubscribed$.next(false);
 
     interval(1000)
       .pipe(
         untilDestroyed(this, 'destroy'),
         finalize(() => {
-          intervalServiceSubscriptionIsUnsubscribed$.next(true);
+          intervalServiceUnsubscribed$.next(true);
           logger.log('interval has been unsubscribed');
         })
       )

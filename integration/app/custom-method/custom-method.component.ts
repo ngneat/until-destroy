@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BehaviorSubject, fromEvent } from 'rxjs';
-import { pluck, debounceTime, finalize } from 'rxjs/operators';
+import { pluck, debounceTime, finalize, map } from 'rxjs/operators';
 
 import { IntervalService } from './interval.service';
 import { LoggerFactory } from '../logger/logger.factory';
+import { NotificationClass, NotificationText } from '../enums/notification.enum';
 
 @UntilDestroy({ checkProperties: true })
 @Component({
@@ -25,11 +26,23 @@ export class CustomMethodComponent implements OnDestroy {
       this.logger.log(`Mouse clientX position is ${clientX}`);
     });
 
-  intervalServiceSubscriptionIsUnsubscribed$ = new BehaviorSubject<boolean>(false);
+  intervalServiceUnsubscribed$ = new BehaviorSubject<boolean>(false);
+
+  intervalServiceUnsubscribedClass$ = this.intervalServiceUnsubscribed$.pipe(
+    map(intervalServiceUnsubscribed =>
+      intervalServiceUnsubscribed ? NotificationClass.Success : NotificationClass.Danger
+    )
+  );
+
+  intervalServiceUnsubscribedText$ = this.intervalServiceUnsubscribed$.pipe(
+    map(intervalServiceUnsubscribed =>
+      intervalServiceUnsubscribed ? NotificationText.Unsubscribed : NotificationText.Subscribed
+    )
+  );
 
   private intervalService = new IntervalService(
     this.loggerFactory,
-    this.intervalServiceSubscriptionIsUnsubscribed$
+    this.intervalServiceUnsubscribed$
   );
 
   private logger = this.loggerFactory.createLogger('CustomMethodComponent', '#2452ff');

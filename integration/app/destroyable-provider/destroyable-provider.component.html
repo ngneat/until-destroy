@@ -9,10 +9,9 @@
 
       <ng-container *ngIf="shown" connection></ng-container>
 
-      <blockquote data-cy="provider-status" *ngIf="providerStatus$ | async as providerStatus">
-        Provider subject is unsubscribed {{ providerStatus.subjectIsUnsubscribed }} and
-        subscription is unsubscribed {{ providerStatus.subscriptionIsUnsubscribed }}
-      </blockquote>
+      <div data-cy="provider-status" [class]="providerStatusClass$ | async">
+        {{ providerStatusText$ | async }}
+      </div>
     </div>
   </div>
 

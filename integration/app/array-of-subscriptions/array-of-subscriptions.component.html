@@ -8,10 +8,9 @@
 
       <app-document-click *ngIf="shown"></app-document-click>
 
-      <blockquote data-cy="document-click-status">
-        Document click subscription is unsubscribed:
-        {{ documentClickSubscriptionIsUnsubscribed$ | async }}
-      </blockquote>
+      <div data-cy="document-click-status" [class]="documentClickUnsubscribedClass$ | async">
+        {{ documentClickUnsubscribedText$ | async }}
+      </div>
     </div>
   </div>
 

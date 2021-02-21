@@ -8,9 +8,9 @@
 
       <blockquote *ngIf="shown">{{ '' | i18n }}</blockquote>
 
-      <blockquote data-cy="pipe-unsubscribed">
-        Pipe unsubscribed: {{ pipeUnsubscribed$ | async }}
-      </blockquote>
+      <div data-cy="pipe-status" [class]="pipeUnsubscribedClass$ | async">
+        {{ pipeUnsubscribedText$ | async }}
+      </div>
     </div>
   </div>
 

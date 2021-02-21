@@ -19,14 +19,13 @@
       <app-issue-61 *ngIf="issue61Shown"></app-issue-61>
       <app-issue-97 *ngIf="issue97Shown"></app-issue-97>
 
-      <blockquote data-cy="issue-61-status" *ngIf="issue61Status$ | async as issue61Status">
-        Issue#61 directive unsubscribed {{ issue61Status.directiveUnsubscribed }} and component
-        unsubscribed {{ issue61Status.componentUnsubscribed }}
-      </blockquote>
+      <div data-cy="issue-61-status" [class]="issue61StatusClass$ | async">
+        Issue#61: {{ issue61StatusText$ | async }}
+      </div>
 
-      <blockquote data-cy="issue-97-status" *ngIf="issue97Status$ | async as issue97Status">
-        Issue#97 component unsubscribed {{ issue97Status.componentUnsubscribed }}
-      </blockquote>
+      <div data-cy="issue-97-status" [class]="issue97StatusClass$ | async">
+        Issue#97: {{ issue97StatusText$ | async }}
+      </div>
     </div>
   </div>
 

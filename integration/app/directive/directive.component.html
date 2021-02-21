@@ -10,10 +10,9 @@
         <ng-container *http="let response">{{ response }}</ng-container>
       </blockquote>
 
-      <blockquote data-cy="http-directive-status">
-        Http directive subscription is unsubscribed:
-        {{ (httpDirectiveStatus$ | async)!.subscriptionIsUnsubscribed }}
-      </blockquote>
+      <div data-cy="directive-status" [class]="directiveUnsubscribedClass$ | async">
+        {{ directiveUnsubscribedText$ | async }}
+      </div>
     </div>
   </div>
 

@@ -17,15 +17,13 @@ export class HttpDirective {
   subscription: Subscription;
 
   constructor(
-    private http: HttpClient,
+    http: HttpClient,
     loggerFactory: LoggerFactory,
     @Host() host: DirectiveComponent,
     viewContainerRef: ViewContainerRef,
     templateRef: TemplateRef<Context>
   ) {
-    host.httpDirectiveStatus$.next({
-      subscriptionIsUnsubscribed: false
-    });
+    host.directiveUnsubscribed$.next(false);
 
     const logger = loggerFactory.createLogger('HttpDirective', 'red');
 
@@ -34,15 +32,13 @@ export class HttpDirective {
     this.subscription = interval(1000)
       .pipe(
         switchMap(() =>
-          this.http
+          http
             .get<object[]>('https://jsonplaceholder.typicode.com/users')
             .pipe(catchError(() => of(<object[]>[])))
         ),
         finalize(() => {
           logger.log('interval has been unsubscribed');
-          host.httpDirectiveStatus$.next({
-            subscriptionIsUnsubscribed: true
-          });
+          host.directiveUnsubscribed$.next(true);
         })
       )
       .subscribe(response => {
