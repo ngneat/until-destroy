@@ -9,7 +9,7 @@ import {
   completeSubjectOnTheInstance
 } from './internals';
 
-// This will be provided through AngukTerser global definitions by Angular CLI. This will
+// This will be provided through Terser global definitions by Angular CLI. This will
 // help to tree-shake away the code unneeded for production bundles.
 declare const ngDevMode: boolean;
 
