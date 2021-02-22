@@ -2,7 +2,8 @@
 
 > A neat way to unsubscribe from observables when the component destroyed
 
-![@ngneat/until-destroy](https://github.com/ngneat/until-destroy/workflows/@ngneat/until-destroy/badge.svg)
+[![@ngneat/until-destroy](https://github.com/ngneat/until-destroy/workflows/@ngneat/until-destroy/badge.svg)](https://github.com/ngneat/until-destroy/actions/workflows/until-destroy.yml)
+[![npm](https://img.shields.io/npm/dm/@ngneat/until-destroy?style=plastic)](https://www.npmjs.com/package/@ngneat/until-destroy)
 
 ## Table of contents
 
@@ -176,9 +177,9 @@ npx @ngneat/until-destroy --removeOnDestroy
 - When using [`overrideComponent`](https://angular.io/api/core/testing/TestBed#overrideComponent) in unit tests remember that it overrides metadata and component definition. Invoke `UntilDestroy()(YourComponent);` to reapply the decorator. See [here](https://github.com/ngneat/until-destroy/issues/91#issuecomment-626470446) for an example.
 
 ## ESLint Rules
+
 - [prefer-takeuntil](https://github.com/cartant/eslint-plugin-rxjs-angular/blob/main/docs/rules/prefer-takeuntil.md#options)
 - [no-unsafe-takeuntil](https://github.com/cartant/eslint-plugin-rxjs/blob/main/docs/rules/no-unsafe-takeuntil.md#options)
-
 
 ## Contributors ✨
 
