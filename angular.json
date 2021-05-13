@@ -32,8 +32,13 @@
             "polyfills": "integration/polyfills.ts",
             "tsConfig": "integration/tsconfig.app.json",
             "preserveSymlinks": true,
-            "aot": true,
-            "assets": ["integration/assets"]
+            "assets": ["integration/assets"],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -47,7 +52,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,

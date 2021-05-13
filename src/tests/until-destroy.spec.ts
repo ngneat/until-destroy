@@ -12,13 +12,13 @@ describe('UntilDestroy decorator alone', () => {
     // Arrange
     @UntilDestroy({ checkProperties: true })
     class TestComponent {
-      static ɵcmp: ComponentDef<TestComponent> = defineComponent({
+      static ɵcmp = defineComponent({
         vars: 0,
         decls: 0,
         type: TestComponent,
         selectors: [[]],
         template: () => {}
-      });
+      }) as ComponentDef<TestComponent>;
 
       subscription = interval(1000).subscribe();
 
@@ -37,13 +37,13 @@ describe('UntilDestroy decorator alone', () => {
     // Arrange
     @UntilDestroy({ blackList: ['subjectSubscription'], checkProperties: true })
     class TestComponent {
-      static ɵcmp: ComponentDef<TestComponent> = defineComponent({
+      static ɵcmp = defineComponent({
         vars: 0,
         decls: 0,
         type: TestComponent,
         selectors: [[]],
         template: () => {}
-      });
+      }) as ComponentDef<TestComponent>;
 
       intervalSubscription = interval(1000).subscribe();
       subjectSubscription = new Subject().subscribe();
@@ -69,13 +69,13 @@ describe('UntilDestroy decorator alone', () => {
     // Arrange
     @UntilDestroy({ arrayName: 'subscriptions' })
     class TestComponent {
-      static ɵcmp: ComponentDef<TestComponent> = defineComponent({
+      static ɵcmp = defineComponent({
         vars: 0,
         decls: 0,
         type: TestComponent,
         selectors: [[]],
         template: () => {}
-      });
+      }) as ComponentDef<TestComponent>;
 
       subscriptions = [interval(1000).subscribe(), new Subject().subscribe()];
 
