@@ -153,13 +153,13 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
 
     @UntilDestroy()
     class TestComponent {
-      static ɵcmp: ComponentDef<TestComponent> = defineComponent({
+      static ɵcmp = defineComponent({
         vars: 0,
         decls: 0,
         type: TestComponent,
         selectors: [[]],
         template: () => {}
-      });
+      }) as ComponentDef<TestComponent>;
 
       constructor() {
         new Subject().pipe(untilDestroyed(this)).subscribe(spy);
@@ -179,11 +179,11 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
 
     @UntilDestroy()
     class TestPipe {
-      static ɵpipe: PipeDef<TestPipe> = definePipe({
+      static ɵpipe = definePipe({
         name: 'test',
         pure: false,
         type: TestPipe
-      });
+      }) as PipeDef<TestPipe>;
 
       constructor() {
         new Subject().pipe(untilDestroyed(this)).subscribe(spy);
@@ -201,13 +201,13 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
   it('should apply symbol to decorated class definition', () => {
     @UntilDestroy()
     class TestComponent {
-      static ɵcmp: ComponentDef<TestComponent> = defineComponent({
+      static ɵcmp = defineComponent({
         vars: 0,
         decls: 0,
         type: TestComponent,
         selectors: [[]],
         template: () => {}
-      });
+      }) as ComponentDef<TestComponent>;
     }
 
     const ownPropertySymbols = Object.getOwnPropertySymbols(TestComponent.prototype);
@@ -220,13 +220,13 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
 
   it('should throw if directive/component not decorated with UntilDestroy', () => {
     class TestComponent {
-      static ɵcmp: ComponentDef<TestComponent> = defineComponent({
+      static ɵcmp = defineComponent({
         vars: 0,
         decls: 0,
         type: TestComponent,
         selectors: [[]],
         template: () => {}
-      });
+      }) as ComponentDef<TestComponent>;
 
       subscription = new Subject().pipe(untilDestroyed(this)).subscribe();
 
