@@ -9,10 +9,26 @@
       "projectType": "library",
       "prefix": "until-destroy",
       "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "src/ng-package.json",
+            "tsConfig": "src/tsconfig.lib.json"
+          }
+        },
         "test": {
           "builder": "@angular-builders/jest:run",
           "options": {
             "no-cache": false
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
@@ -32,7 +48,9 @@
             "polyfills": "integration/polyfills.ts",
             "tsConfig": "integration/tsconfig.app.json",
             "preserveSymlinks": true,
-            "assets": ["integration/assets"],
+            "assets": [
+              "integration/assets"
+            ],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -41,6 +59,14 @@
             "namedChunks": true
           },
           "configurations": {
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -63,7 +89,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -78,6 +105,15 @@
         },
         "test": {
           "builder": "@angular-builders/jest:run"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "integration/**/*.ts",
+              "integration/**/*.html"
+            ]
+          }
         }
       }
     }

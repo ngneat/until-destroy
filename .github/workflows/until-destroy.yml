@@ -37,6 +37,9 @@ jobs:
           HUSKY_SKIP_INSTALL: 'true'
         run: npm ci
 
+      - name: Run ESLint
+        run: npm run lint
+
       - name: Run unit tests
         run: npm run test
 
