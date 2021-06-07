@@ -3,7 +3,8 @@ import {
   Component,
   Directive,
   Injectable,
-  Pipe
+  Pipe,
+  PipeTransform,
 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -37,7 +38,7 @@ describe('until-destroy runtime behavior', () => {
 
     // Act
     TestBed.configureTestingModule({
-      declarations: [MockComponent]
+      declarations: [MockComponent],
     });
 
     const fixture = TestBed.createComponent(MockComponent);
@@ -51,7 +52,7 @@ describe('until-destroy runtime behavior', () => {
   it('should unsubscribe from the directive property', () => {
     // Arrange
     @Component({
-      template: '<div test></div>'
+      template: '<div test></div>',
     })
     class MockComponent {}
 
@@ -71,7 +72,7 @@ describe('until-destroy runtime behavior', () => {
 
     // Act
     TestBed.configureTestingModule({
-      declarations: [MockComponent, MockDirective]
+      declarations: [MockComponent, MockDirective],
     });
 
     const fixture = TestBed.createComponent(MockComponent);
@@ -91,7 +92,7 @@ describe('until-destroy runtime behavior', () => {
 
     @UntilDestroy({ checkProperties: true })
     @Pipe({ name: 'mock', pure: false })
-    class MockPipe {
+    class MockPipe implements PipeTransform {
       disposed = false;
 
       subscription = new Subject().pipe(finalize(() => (disposed = true))).subscribe();
@@ -102,15 +103,13 @@ describe('until-destroy runtime behavior', () => {
     }
 
     @Component({
-      template: `
-        <div>{{ '' | mock }}</div>
-      `
+      template: ` <div>{{ '' | mock }}</div> `,
     })
     class MockComponent {}
 
     // Act
     TestBed.configureTestingModule({
-      declarations: [MockComponent, MockPipe]
+      declarations: [MockComponent, MockPipe],
     });
 
     const fixture = TestBed.createComponent(MockComponent);
@@ -135,13 +134,13 @@ describe('until-destroy runtime behavior', () => {
               this.disposed = true;
             })
           )
-          .subscribe()
+          .subscribe(),
       ];
     }
 
     // Act
     TestBed.configureTestingModule({
-      declarations: [MockComponent]
+      declarations: [MockComponent],
     });
 
     const fixture = TestBed.createComponent(MockComponent);
@@ -173,7 +172,7 @@ describe('until-destroy runtime behavior', () => {
 
     // Act
     TestBed.configureTestingModule({
-      declarations: [MockComponent]
+      declarations: [MockComponent],
     });
 
     const fixture = TestBed.createComponent(MockComponent);
@@ -202,7 +201,7 @@ describe('until-destroy runtime behavior', () => {
 
     @Component({
       template: '',
-      providers: [MockService]
+      providers: [MockService],
     })
     class MockComponent {
       constructor(mockService: MockService) {}
@@ -210,7 +209,7 @@ describe('until-destroy runtime behavior', () => {
 
     // Act
     TestBed.configureTestingModule({
-      declarations: [MockComponent]
+      declarations: [MockComponent],
     });
 
     const fixture = TestBed.createComponent(MockComponent);
@@ -243,7 +242,7 @@ describe('until-destroy runtime behavior', () => {
 
     @Component({
       template: '',
-      providers: [MockService]
+      providers: [MockService],
     })
     class MockComponent {
       constructor(mockService: MockService) {}
@@ -251,7 +250,7 @@ describe('until-destroy runtime behavior', () => {
 
     // Act
     TestBed.configureTestingModule({
-      declarations: [MockComponent]
+      declarations: [MockComponent],
     });
 
     const fixture = TestBed.createComponent(MockComponent);
@@ -298,7 +297,7 @@ describe('until-destroy runtime behavior', () => {
 
       // Act
       TestBed.configureTestingModule({
-        declarations: [MockComponent]
+        declarations: [MockComponent],
       });
 
       const fixture = TestBed.createComponent(MockComponent);
@@ -353,7 +352,7 @@ describe('until-destroy runtime behavior', () => {
       // Act
       TestBed.configureTestingModule({
         declarations: [IssueSixtySixComponent],
-        providers: [IssueSixtySixService]
+        providers: [IssueSixtySixService],
       });
 
       const fixture = TestBed.createComponent(IssueSixtySixComponent);
@@ -424,7 +423,7 @@ describe('until-destroy runtime behavior', () => {
       // Act
       TestBed.configureTestingModule({
         declarations: [IssueSixtySixComponent],
-        providers: [IssueSixtySixService]
+        providers: [IssueSixtySixService],
       });
 
       const fixture = TestBed.createComponent(IssueSixtySixComponent);

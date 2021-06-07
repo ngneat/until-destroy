@@ -32,16 +32,5 @@
     "@angular/core": ">=10.0.5",
     "rxjs": ">=6.4.0"
   },
-  "ngPackage": {
-    "lib": {
-      "entryFile": "index.ts"
-    },
-    "whitelistedNonPeerDependencies": [
-      "glob",
-      "minimist",
-      "ts-morph"
-    ],
-    "dest": "../dist"
-  },
   "bin": "migration/run.js"
 }

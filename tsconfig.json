@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@ngneat/until-destroy": ["src/public_api.ts"]
+      "@ngneat/until-destroy": ["src/index.ts"]
     },
     "target": "es5",
     "outDir": "dist/",
