@@ -1,6 +1,6 @@
 {
   "name": "@ngneat/until-destroy-migration",
-  "description": "RxJS operator that unsubscribes when Angular component is destroyed",
+  "description": "The script that helps to migrate from View Engine to Ivy",
   "version": "8.0.4",
   "repository": {
     "type": "git",
@@ -14,12 +14,6 @@
   "maintainers": [
     "Netanel Basal",
     "Artur Androsovych"
-  ],
-  "keywords": [
-    "Angular easy unsubscribe",
-    "RxJS easy unsubscribe",
-    "RxJS operator unsubscribe",
-    "Angular unsubscribe"
   ],
   "sideEffects": false,
   "dependencies": {

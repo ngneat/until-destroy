@@ -143,8 +143,7 @@
           "options": {
             "commands": [
               "tsc -p libs/until-destroy-migration/tsconfig.lib.json",
-              "cpx libs/until-destroy-migration/package.json dist/libs/until-destroy-migration",
-              "cpx libs/until-destroy-migration/README.md dist/libs/until-destroy-migration"
+              "cpx libs/until-destroy-migration/package.json dist/libs/until-destroy-migration"
             ]
           }
         },
