@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2019",
+    "types": ["node"]
+  },
+  "files": ["src/main.ts", "src/polyfills.ts"]
+}

@@ -1,0 +1,38 @@
+{
+  "npmScope": "ngneat",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*",
+    ".eslintrc.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "integration": {
+      "type": ["app"]
+    },
+    "until-destroy": {
+      "type": ["lib"],
+      "implicitDependencies": []
+    },
+    "until-destroy-migration": {
+      "tags": ["lib"],
+      "implicitDependencies": []
+    }
+  },
+  "affected": {
+    "defaultBase": "master"
+  }
+}

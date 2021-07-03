@@ -1,0 +1,31 @@
+{
+  "name": "@ngneat/until-destroy-migration",
+  "description": "RxJS operator that unsubscribes when Angular component is destroyed",
+  "version": "8.0.4",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngneat/until-destroy.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ngneat/until-destroy#readme",
+  "bugs": {
+    "url": "https://github.com/ngneat/until-destroy/issues"
+  },
+  "maintainers": [
+    "Netanel Basal",
+    "Artur Androsovych"
+  ],
+  "keywords": [
+    "Angular easy unsubscribe",
+    "RxJS easy unsubscribe",
+    "RxJS operator unsubscribe",
+    "Angular unsubscribe"
+  ],
+  "sideEffects": false,
+  "dependencies": {
+    "glob": "^7.1.6",
+    "minimist": "1.2.5",
+    "ts-morph": "^7.1.2"
+  },
+  "bin": "index.js"
+}

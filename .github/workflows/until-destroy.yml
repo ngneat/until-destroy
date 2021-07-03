@@ -16,41 +16,38 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: actions/cache@v1
-        id: npm-cache
+        id: yarn-cache
         with:
           path: |
             node_modules
             ~/.cache
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-npm
+          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn
 
       - uses: actions/setup-node@v1
         with:
           node-version: 14.15
 
       - name: Install dependencies
-        # If checksum for the `package-lock.json` hasn't changed then we shouldn't run
-        # `npm ci` because it will hit the `postinstall` hook
-        # that will run `ngcc` compiler accordingly.
-        if: steps.npm-cache.outputs.cache-hit != 'true'
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         env:
           HUSKY_SKIP_INSTALL: 'true'
-        run: npm ci
+        run: yarn --pure-lockfile --non-interactive --no-progress
 
       - name: Run ESLint
-        run: npm run lint
+        run: yarn lint
 
       - name: Run unit tests
-        run: npm run test
+        run: yarn test
 
       - name: Run integration tests
-        run: npm run test:integration
+        run: yarn test:integration
 
       - name: Build library
-        run: npm run build
+        run: yarn build
 
       - name: Build integration app in production mode
-        run: npm run build:integration
+        run: yarn build:integration
 
       - name: Run Cypress tests
-        run: npm run test:e2e:integration
+        run: yarn test:e2e:integration

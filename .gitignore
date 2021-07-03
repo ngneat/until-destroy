@@ -3,5 +3,5 @@ node_modules
 /dist-test
 .idea
 dist
-dist-integration
 .cache
+migrations.json

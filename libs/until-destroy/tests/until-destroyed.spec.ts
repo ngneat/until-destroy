@@ -6,8 +6,8 @@ import {
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 
-import { UntilDestroy, untilDestroyed } from '..';
 import { callNgOnDestroy } from './utils';
+import { UntilDestroy, untilDestroyed } from '../src';
 
 function createObserver() {
   return {

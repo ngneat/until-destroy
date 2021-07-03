@@ -29,6 +29,7 @@ function overrideNonDirectiveInstanceMethod(
   createSubjectOnTheInstance(instance, symbol);
 
   instance[destroyMethodName] = function() {
+    // eslint-disable-next-line prefer-rest-params
     originalDestroy.apply(this, arguments);
     completeSubjectOnTheInstance(this, symbol);
     // We have to re-assign this property back to the original value.
