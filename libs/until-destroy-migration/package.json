@@ -1,0 +1,25 @@
+{
+  "name": "@ngneat/until-destroy-migration",
+  "description": "The script that helps to migrate from View Engine to Ivy",
+  "version": "8.0.4",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngneat/until-destroy.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ngneat/until-destroy#readme",
+  "bugs": {
+    "url": "https://github.com/ngneat/until-destroy/issues"
+  },
+  "maintainers": [
+    "Netanel Basal",
+    "Artur Androsovych"
+  ],
+  "sideEffects": false,
+  "dependencies": {
+    "glob": "^7.1.6",
+    "minimist": "1.2.5",
+    "ts-morph": "^7.1.2"
+  },
+  "bin": "index.js"
+}

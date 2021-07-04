@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { interval, Subject } from 'rxjs';
 
-import { UntilDestroy } from '..';
+import { UntilDestroy } from '../src';
 import { callNgOnDestroy } from './utils';
 
 describe('UntilDestroy decorator alone', () => {

@@ -157,19 +157,29 @@ export class Widget {
 
 ## Migration from View Engine to Ivy
 
-To make it easier for you to migrate, we've built a script that will update the imports path, and add the decorator for you.
+To make it easier for you to migrate, we've built a script that will update the imports path and add the decorator for you. The script is shipped as a separate package. Run the following command to install it:
+
+```sh
+npm i --save-dev @ngneat/until-destroy-migration
+# Or if you use yarn
+yarn add -D @ngneat/until-destroy-migration
+```
+
+Then run the following command:
 
 ```shell script
-npx @ngneat/until-destroy --base my/path
+npx @ngneat/until-destroy-migration --base my/path
 ```
 
 `base` defaults to `./src/app`.
 
-You can use `--removeOnDestroy` flag for empty `OnDestroy` methods removing.
+You can use the `--removeOnDestroy` flag for empty `OnDestroy` methods removing.
 
 ```shell script
-npx @ngneat/until-destroy --removeOnDestroy
+npx @ngneat/until-destroy-migration --removeOnDestroy
 ```
+
+You can remove the package once the migration is done.
 
 ## Potential Pitfalls
 

@@ -1,23 +1,24 @@
+ 
 {
-  "extends": "../tsconfig.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "target": "es2015",
     "module": "es2015",
-    "lib": ["dom", "es2017"],
-    "declaration": true,
     "inlineSources": true,
+    "declarationMap": false,
     "importHelpers": true,
-    "declarationMap": false
+    "lib": ["dom", "es2018"],
+    "types": ["node"]
   },
   "angularCompilerOptions": {
     "enableIvy": false,
+    "annotateForClosureCompiler": true,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
     "fullTemplateTypeCheck": true,
-    "enableResourceInlining": true,
     "strictInjectionParameters": true,
-    "annotateForClosureCompiler": true
+    "enableResourceInlining": true
   },
-  "exclude": ["**/*.spec.ts"],
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts"],
+  "exclude": ["**/*.spec.ts"]
 }

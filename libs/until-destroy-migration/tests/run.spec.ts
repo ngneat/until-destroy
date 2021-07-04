@@ -1,12 +1,12 @@
 import * as fs from 'fs';
 
-import { transformCode } from './run';
+import { transformCode } from '../src';
 
 jest.mock('glob');
 
 describe('Migration script', () => {
   const code = fs.readFileSync(`${__dirname}/fixtures/several-imports.component.ts`, {
-    encoding: 'utf-8'
+    encoding: 'utf-8',
   });
 
   it('should replace "ngx-take-until-destroy" import with "@ngneat/until-destroy"', () => {
@@ -34,7 +34,7 @@ describe('Migration script', () => {
 
   describe('Component with several "@angular/core" imports', () => {
     const code = fs.readFileSync(`${__dirname}/fixtures/several-imports.component.ts`, {
-      encoding: 'utf-8'
+      encoding: 'utf-8',
     });
 
     it('should remove empty OnDestroy method', () => {
@@ -57,7 +57,7 @@ describe('Migration script', () => {
 
   describe('Component with single OnDestroy import from "@angular/core"', () => {
     const code = fs.readFileSync(`${__dirname}/fixtures/single-import.component.ts`, {
-      encoding: 'utf-8'
+      encoding: 'utf-8',
     });
 
     it('should remove empty OnDestroy method', () => {
@@ -83,7 +83,7 @@ describe('Migration script', () => {
 
   describe('Service with filled OnDestroy method', () => {
     const code = fs.readFileSync(`${__dirname}/fixtures/filled-onDestroy.service.ts`, {
-      encoding: 'utf-8'
+      encoding: 'utf-8',
     });
 
     it('should replace "ngx-take-until-destroy" import with "@ngneat/until-destroy"', () => {

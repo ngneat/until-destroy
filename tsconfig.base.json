@@ -2,7 +2,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@ngneat/until-destroy": ["src/index.ts"]
+      "@ngneat/until-destroy": ["libs/until-destroy/src/index.ts"],
+      "@ngneat/until-destroy-migration": ["libs/until-destroy-migration/src/index.ts"]
     },
     "target": "es5",
     "outDir": "dist/",
