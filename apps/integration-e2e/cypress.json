@@ -1,0 +1,11 @@
+{
+  "video": false,
+  "chromeWebSecurity": false,
+  "modifyObstructiveCode": false,
+  "fileServerFolder": ".",
+  "fixturesFolder": "./src/fixtures",
+  "integrationFolder": "./src/integration",
+  "pluginsFile": "./src/plugins/index",
+  "supportFile": "./src/support/commands",
+  "screenshotsFolder": "../../dist/cypress/apps/integration-e2e/screenshots"
+}

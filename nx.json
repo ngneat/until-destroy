@@ -21,10 +21,15 @@
   },
   "projects": {
     "integration": {
-      "type": ["app"]
+      "tags": ["app"],
+      "implicitDependencies": ["until-destroy"]
+    },
+    "integration-e2e": {
+      "tags": ["app"],
+      "implicitDependencies": ["integration"]
     },
     "until-destroy": {
-      "type": ["lib"],
+      "tags": ["lib"],
       "implicitDependencies": []
     },
     "until-destroy-migration": {

@@ -1,29 +1,35 @@
 #!/usr/bin/env node
 
-import * as glob from 'glob';
 import * as fs from 'fs';
+import * as glob from 'glob';
+import * as minimist from 'minimist';
 import { ClassDeclaration, Project, QuoteKind, SourceFile } from 'ts-morph';
 
-const hasUntilDestroy = /import\s*{\s*[^}]*untilDestroyed[^}]*}\s*from\s*(["'])ngx-take-until-destroy\1(?=[^]*untilDestroyed\(\w*\)[^]*)/;
+const { base = 'src/app', removeOnDestroy } = minimist(process.argv.slice(2));
 
-const { base = 'src/app', removeOnDestroy } = require('minimist')(process.argv.slice(2));
+const hasUntilDestroy =
+  /import\s*{\s*[^}]*untilDestroyed[^}]*}\s*from\s*(["'])ngx-take-until-destroy\1(?=[^]*untilDestroyed\(\w*\)[^]*)/;
 
 const project = new Project({
   useInMemoryFileSystem: true,
   manipulationSettings: {
-    quoteKind: QuoteKind.Single
-  }
+    quoteKind: QuoteKind.Single,
+  },
 });
 
 glob(`${base}/**/*.ts`, {}, (_, files) => {
-  files.forEach(path => {
+  files.forEach((path) => {
     fs.readFile(path, 'utf8', (_, text) => {
       if (!hasUntilDestroy.test(text)) return;
 
       const result = transformCode(text, path, removeOnDestroy);
 
-      fs.writeFile(path, result, 'utf8', err => {
-        console.log(err || `Replaced ${path}`);
+      fs.writeFile(path, result, 'utf8', (error: NodeJS.ErrnoException | null) => {
+        if (error) {
+          console.error(error);
+        } else {
+          console.log(`Replaced ${path}`);
+        }
       });
     });
   });
@@ -33,7 +39,7 @@ export function transformCode(code: string, filePath: string, removeOnDestroy = 
   const sourceFile = project.createSourceFile(filePath, code, { overwrite: true });
   replaceOldImport(sourceFile);
 
-  sourceFile.getClasses().forEach(classDeclaration => {
+  sourceFile.getClasses().forEach((classDeclaration) => {
     addUntilDestroyDecorator(classDeclaration);
 
     if (removeOnDestroy) {
@@ -70,7 +76,7 @@ function addUntilDestroyDecorator(classDeclaration: ClassDeclaration) {
 function removeOnDestroyImplements(classDeclaration: ClassDeclaration) {
   const onDestroyImplementClause = classDeclaration
     .getImplements()
-    .find(impl => impl.getText() === 'OnDestroy');
+    .find((impl) => impl.getText() === 'OnDestroy');
   onDestroyImplementClause && classDeclaration.removeImplements(onDestroyImplementClause);
 }
 
@@ -83,12 +89,12 @@ function removeOnDestroyImport(sourceFile: SourceFile) {
 
   const onDestroyImportSpecifier = importClause
     .getNamedImports()
-    .find(node => node.getText() === 'OnDestroy');
+    .find((node) => node.getText() === 'OnDestroy');
   if (!onDestroyImportSpecifier) return;
 
   onDestroyImportSpecifier.remove();
 
-  /* The existence of importClause is checked twice because importDeclaration mutates after OnDestroy is removed. */
+  // The existence of the `importClause` is checked twice because the `importDeclaration` mutates after `OnDestroy` is removed.
   if (!importDeclaration.getImportClause()) {
     importDeclaration.remove();
   }
