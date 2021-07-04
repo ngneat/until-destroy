@@ -5,6 +5,7 @@
     "target": "es2015",
     "module": "es2015",
     "inlineSources": true,
+    "declaration": true,
     "declarationMap": false,
     "importHelpers": true,
     "lib": ["dom", "es2018"],

@@ -7,14 +7,19 @@
   "defaultProject": "until-destroy",
   "schematics": {
     "@nrwl/angular:application": {
+      "style": "scss",
       "linter": "eslint",
-      "unitTestRunner": "jest"
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
     },
     "@nrwl/angular:library": {
+      "style": "scss",
       "linter": "eslint",
       "unitTestRunner": "jest"
     },
-    "@nrwl/angular:component": {}
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
   },
   "projects": {
     "integration": {
@@ -99,6 +104,27 @@
               "apps/integration/src/**/*.ts",
               "apps/integration/src/**/*.html"
             ]
+          }
+        }
+      }
+    },
+    "integration-e2e": {
+      "projectType": "application",
+      "root": "apps/integration-e2e",
+      "sourceRoot": "apps/integration-e2e/src",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/integration-e2e/cypress.json",
+            "tsConfig": "apps/integration-e2e/tsconfig.e2e.json",
+            "devServerTarget": "integration:serve"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/integration-e2e/**/*.{js,ts}"]
           }
         }
       }
