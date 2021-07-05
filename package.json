@@ -8,7 +8,7 @@
     "postinstall": "ngcc && node ./decorate-angular-cli.js && husky install",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors init",
-    "release": "cd src && standard-version --infile ../CHANGELOG.md",
+    "release": "cd libs/until-destroy && standard-version --infile ../../CHANGELOG.md --skip.bump --skip.commit --skip.tag",
     "lint": "nx workspace-lint && nx lint until-destroy",
     "test": "nx run-many --target test --projects until-destroy,until-destroy-migration --run-in-band",
     "test:watch": "nx test until-destroy --run-in-band --watch-all",

@@ -1,11 +1,40 @@
 # [0.0.0](https://github.com/ngneat/until-destroy/compare/v8.0.1...v0.0.0) (2020-08-23)
 
+## [8.1.1](https://github.com/ngneat/until-destroy/compare/v8.1.0...v8.1.1) (2021-07-06)
+
+### Bug Fixes
+
+- use the `package` builder except `ng-packagr-lite` ([8251a28](https://github.com/ngneat/until-destroy/commit/8251a2872faa842734501ab7a88d8c64841f7ecc))
+
+# [8.1.0](https://github.com/ngneat/until-destroy/compare/v8.0.4...v8.1.0) (2021-07-05)
+
+### Features
+
+- split migration script into a separate library `@ngneat/until-destroy-migration` ([de0397c](https://github.com/ngneat/until-destroy/commit/de0397ccd3ae3ba76e5c61848eab95d883c4c1cd))
+
+## [8.0.4](https://github.com/ngneat/until-destroy/compare/v8.0.3...v8.0.4) (2021-02-23)
+
+### Performance
+
+- use `ngDevMode` to tree-shake errors ([066db5e](https://github.com/ngneat/until-destroy/commit/066db5e58253c7ed60c09b978dfd46ec3cb47797))
+
+## [8.0.3](https://github.com/ngneat/until-destroy/compare/v8.0.2...v8.0.3) (2020-10-17)
+
+### chore
+
+- switch to `standard-version` ([f03793a](https://github.com/ngneat/until-destroy/commit/f03793ac550d6286e2b37123ad79fefde737bbbd))
+
+## [8.0.2](https://github.com/ngneat/until-destroy/compare/v8.0.1...v8.0.2) (2020-08-27)
+
+### Features
+
+- generate changelog ([d8d4a52](https://github.com/ngneat/until-destroy/commit/d8d4a5219e7b6dee4b788fcf128ed1aa4fa5ef01))
+
 ## [8.0.1](https://github.com/ngneat/until-destroy/compare/v8.0.0...v8.0.1) (2020-07-29)
 
 ### Bug Fixes
 
-- require a specific Angular version ([fd4bc41
-  ](https://github.com/ngneat/until-destroy/commit/fd4bc413d78452986e3e015feaeae9792c922c4e))
+- require a specific Angular version ([fd4bc41](https://github.com/ngneat/until-destroy/commit/fd4bc413d78452986e3e015feaeae9792c922c4e))
 
 # [8.0.0](https://github.com/ngneat/until-destroy/compare/v7.3.2...v8.0.0) (2020-07-27)
 
