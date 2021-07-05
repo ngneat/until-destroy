@@ -135,7 +135,7 @@
       "sourceRoot": "libs/until-destroy/src",
       "architect": {
         "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
+          "builder": "@nrwl/angular:package",
           "options": {
             "tsConfig": "libs/until-destroy/tsconfig.lib.json",
             "project": "libs/until-destroy/ng-package.json"
