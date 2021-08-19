@@ -2,7 +2,7 @@
   "$schema": "../../node_modules/ng-packagr/package.schema.json",
   "name": "@ngneat/until-destroy",
   "description": "RxJS operator that unsubscribes when Angular component is destroyed",
-  "version": "8.1.1",
+  "version": "8.1.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ngneat/until-destroy.git"
