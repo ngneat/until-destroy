@@ -10,7 +10,7 @@ import { ArrayOfSubscriptionsComponent } from '../array-of-subscriptions.compone
 @Component({
   selector: 'app-document-click',
   templateUrl: './document-click.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentClickComponent {
   clientX$ = new BehaviorSubject<number>(0);
@@ -23,9 +23,9 @@ export class DocumentClickComponent {
     const logger = loggerFactory.createLogger('DocumentClickComponent', '#b100aa');
 
     this.subscriptions.push(
-      fromEvent<KeyboardEvent>(document, 'click')
+      fromEvent<MouseEvent>(document, 'click')
         .pipe(
-          pluck<KeyboardEvent, number>('clientX'),
+          pluck('clientX'),
           finalize(() => {
             logger.log('fromEvent has been unsubscribed');
             host.documentClickUnsubscribed$.next(true);
