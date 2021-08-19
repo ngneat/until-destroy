@@ -11,7 +11,7 @@ import { NotificationClass, NotificationText } from '../enums/notification.enum'
 @Component({
   selector: 'app-custom-method',
   templateUrl: './custom-method.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomMethodComponent implements OnDestroy {
   valueFromIntervalService$ = new BehaviorSubject<number>(0);
@@ -19,7 +19,7 @@ export class CustomMethodComponent implements OnDestroy {
   subscription = fromEvent<MouseEvent>(document, 'mousemove')
     .pipe(
       debounceTime(200),
-      pluck<MouseEvent, number>('clientX'),
+      pluck('clientX'),
       finalize(() => this.logger.log('fromEvent has been unsubscribed'))
     )
     .subscribe(clientX => {

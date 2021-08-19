@@ -25,6 +25,6 @@
   "sideEffects": false,
   "peerDependencies": {
     "@angular/core": ">=10.0.5",
-    "rxjs": ">=6.4.0"
+    "rxjs": "^6.4.0 | ^7.0.0"
   }
 }
