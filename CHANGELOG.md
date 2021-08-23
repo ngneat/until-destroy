@@ -1,5 +1,17 @@
 # [0.0.0](https://github.com/ngneat/until-destroy/compare/v8.0.1...v0.0.0) (2020-08-23)
 
+## [8.1.3](https://github.com/ngneat/until-destroy/compare/v8.1.2...v8.1.3) (2021-08-19)
+
+### chore
+
+- fix peer dependency mistake ([827d20b](https://github.com/ngneat/until-destroy/commit/827d20b33e962ea225199fea78d327aeb5599f5c))
+
+## [8.1.2](https://github.com/ngneat/until-destroy/compare/v8.1.1...v8.1.2) (2021-08-19)
+
+### chore
+
+- support RxJS@7 ([461face](https://github.com/ngneat/until-destroy/commit/461face5bf50732aae228c98765ea475f4e96ffc))
+
 ## [8.1.1](https://github.com/ngneat/until-destroy/compare/v8.1.0...v8.1.1) (2021-07-06)
 
 ### Bug Fixes
