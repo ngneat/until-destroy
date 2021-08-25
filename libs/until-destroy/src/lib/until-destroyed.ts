@@ -4,9 +4,8 @@ import { takeUntil } from 'rxjs/operators';
 import {
   DECORATOR_APPLIED,
   getSymbol,
-  isFunction,
   createSubjectOnTheInstance,
-  completeSubjectOnTheInstance
+  completeSubjectOnTheInstance,
 } from './internals';
 
 // This will be provided through Terser global definitions by Angular CLI. This will
@@ -20,7 +19,7 @@ function overrideNonDirectiveInstanceMethod(
 ): void {
   const originalDestroy = instance[destroyMethodName];
 
-  if (ngDevMode && isFunction(originalDestroy) === false) {
+  if (ngDevMode && typeof originalDestroy !== 'function') {
     throw new Error(
       `${instance.constructor.name} is using untilDestroyed but doesn't implement ${destroyMethodName}`
     );
@@ -28,7 +27,7 @@ function overrideNonDirectiveInstanceMethod(
 
   createSubjectOnTheInstance(instance, symbol);
 
-  instance[destroyMethodName] = function() {
+  instance[destroyMethodName] = function () {
     // eslint-disable-next-line prefer-rest-params
     originalDestroy.apply(this, arguments);
     completeSubjectOnTheInstance(this, symbol);

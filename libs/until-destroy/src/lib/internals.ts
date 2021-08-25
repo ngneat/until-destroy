@@ -3,10 +3,6 @@ import { Subject } from 'rxjs';
 
 import { PipeType } from './ivy';
 
-export function isFunction(target: unknown) {
-  return typeof target === 'function';
-}
-
 /**
  * Applied to instances and stores `Subject` instance when
  * no custom destroy method is provided.
