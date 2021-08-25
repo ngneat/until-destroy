@@ -1,5 +1,11 @@
 # [0.0.0](https://github.com/ngneat/until-destroy/compare/v8.0.1...v0.0.0) (2020-08-23)
 
+## [8.1.4](https://github.com/ngneat/until-destroy/compare/v8.1.3...v8.1.4) (2021-08-25)
+
+### Bug Fixes
+
+- unsubscribe only from actual subscriptions ([56914f2](https://github.com/ngneat/until-destroy/commit/56914f2b5a78520b08680d1b5dba36293d61816d))
+
 ## [8.1.3](https://github.com/ngneat/until-destroy/compare/v8.1.2...v8.1.3) (2021-08-19)
 
 ### chore
