@@ -1,6 +1,6 @@
 import {
   ɵComponentDef as ComponentDef,
-  ɵɵdefineComponent as defineComponent
+  ɵɵdefineComponent as defineComponent,
 } from '@angular/core';
 import { interval, Subject } from 'rxjs';
 
@@ -17,7 +17,7 @@ describe('UntilDestroy decorator alone', () => {
         decls: 0,
         type: TestComponent,
         selectors: [[]],
-        template: () => {}
+        template: () => {},
       }) as ComponentDef<TestComponent>;
 
       subscription = interval(1000).subscribe();
@@ -42,7 +42,7 @@ describe('UntilDestroy decorator alone', () => {
         decls: 0,
         type: TestComponent,
         selectors: [[]],
-        template: () => {}
+        template: () => {},
       }) as ComponentDef<TestComponent>;
 
       intervalSubscription = interval(1000).subscribe();
@@ -74,7 +74,7 @@ describe('UntilDestroy decorator alone', () => {
         decls: 0,
         type: TestComponent,
         selectors: [[]],
-        template: () => {}
+        template: () => {},
       }) as ComponentDef<TestComponent>;
 
       subscriptions = [interval(1000).subscribe(), new Subject().subscribe()];
@@ -94,5 +94,31 @@ describe('UntilDestroy decorator alone', () => {
     component.subscriptions.forEach(subscription => {
       expect(subscription.closed).toBeTruthy();
     });
+  });
+
+  it('should unsubscribe only from actual subscriptions', () => {
+    // Arrange
+    @UntilDestroy({ checkProperties: true })
+    class TestComponent {
+      static ɵcmp = defineComponent({
+        vars: 0,
+        decls: 0,
+        type: TestComponent,
+        selectors: [[]],
+        template: () => {},
+      }) as ComponentDef<TestComponent>;
+
+      subject$ = new Subject<never>();
+
+      static ɵfac = () => new TestComponent();
+    }
+
+    // Act & assert
+    const component = TestComponent.ɵfac();
+
+    expect(component.subject$.closed).toBe(false);
+    callNgOnDestroy(component);
+    // The `Subject` also has the `unsubscribe()` method, but it's not a subscription.
+    expect(component.subject$.closed).toBe(false);
   });
 });

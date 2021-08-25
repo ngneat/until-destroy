@@ -1,21 +1,22 @@
 import {
   InjectableType,
   ɵComponentType as ComponentType,
-  ɵDirectiveType as DirectiveType
+  ɵDirectiveType as DirectiveType,
 } from '@angular/core';
-import { SubscriptionLike } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { PipeType, isPipe } from './ivy';
 import {
   getSymbol,
-  isFunction,
   UntilDestroyOptions,
   completeSubjectOnTheInstance,
-  markAsDecorated
+  markAsDecorated,
 } from './internals';
 
-function unsubscribe(property: SubscriptionLike | undefined): void {
-  property && isFunction(property.unsubscribe) && property.unsubscribe();
+function unsubscribe(property: unknown): void {
+  if (property instanceof Subscription) {
+    property.unsubscribe();
+  }
 }
 
 function unsubscribeIfPropertyIsArrayLike(property: any[]): void {
@@ -26,7 +27,7 @@ function decorateNgOnDestroy(
   ngOnDestroy: (() => void) | null | undefined,
   options: UntilDestroyOptions
 ) {
-  return function(this: any) {
+  return function (this: any) {
     // Invoke the original `ngOnDestroy` if it exists
     ngOnDestroy && ngOnDestroy.call(this);
 
