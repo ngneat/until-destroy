@@ -1,7 +1,3 @@
-module.exports = {
-  projects: [
-    '<rootDir>/apps/demos',
-    '<rootDir>/libs/until-destroy',
-    '<rootDir>/libs/until-destroy-migration',
-  ],
-};
+const { getJestProjects } = require('@nrwl/jest');
+
+module.exports = { projects: getJestProjects() };

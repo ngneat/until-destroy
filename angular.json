@@ -104,7 +104,8 @@
               "apps/integration/src/**/*.ts",
               "apps/integration/src/**/*.html"
             ]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         }
       }
     },
@@ -125,7 +126,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/integration-e2e/**/*.{js,ts}"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         }
       }
     },
@@ -155,7 +157,8 @@
               "libs/until-destroy/src/**/*.ts",
               "libs/until-destroy/src/**/*.html"
             ]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         }
       }
     },
@@ -187,7 +190,8 @@
               "libs/until-destroy-migration/src/**/*.ts",
               "libs/until-destroy-migration/src/**/*.html"
             ]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         }
       }
     }
