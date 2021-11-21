@@ -5,6 +5,35 @@
 [![@ngneat/until-destroy](https://github.com/ngneat/until-destroy/workflows/@ngneat/until-destroy/badge.svg)](https://github.com/ngneat/until-destroy/actions/workflows/until-destroy.yml)
 [![npm](https://img.shields.io/npm/dm/@ngneat/until-destroy?style=plastic)](https://www.npmjs.com/package/@ngneat/until-destroy)
 
+## Compatibility with Angular Versions
+
+<table>
+  <thead>
+    <tr>
+      <th>@ngneat/until-destroy</th>
+      <th>Angular</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        8.x
+      </td>
+      <td>
+        >= 10.0.5 < 13
+      </td>
+    </tr>
+    <tr>
+      <td>
+        9.x
+      </td>
+      <td>
+        >= 13
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 ## Table of contents
 
 - [Angular 10 Compatibility](#angular-10-compatibility)
@@ -35,9 +64,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 @Component({})
 export class InboxComponent {
   ngOnInit() {
-    interval(1000)
-      .pipe(untilDestroyed(this))
-      .subscribe();
+    interval(1000).pipe(untilDestroyed(this)).subscribe();
   }
 }
 ```
@@ -61,7 +88,7 @@ You can set the `arrayName` property if you want to unsubscribe from each subscr
 export class HomeComponent {
   subscriptions = [
     fromEvent(document, 'click').subscribe(),
-    fromEvent(document, 'mousemove').subscribe()
+    fromEvent(document, 'mousemove').subscribe(),
   ];
 
   // You can still use the operator
@@ -96,14 +123,12 @@ export class HomeComponent {
 @Injectable()
 export class InboxService {
   constructor() {
-    interval(1000)
-      .pipe(untilDestroyed(this))
-      .subscribe();
+    interval(1000).pipe(untilDestroyed(this)).subscribe();
   }
 }
 
 @Component({
-  providers: [InboxService]
+  providers: [InboxService],
 })
 export class InboxComponent {
   constructor(inboxService: InboxService) {}
@@ -145,9 +170,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 
 export class Widget {
   constructor() {
-    interval(1000)
-      .pipe(untilDestroyed(this, 'destroy'))
-      .subscribe(console.log);
+    interval(1000).pipe(untilDestroyed(this, 'destroy')).subscribe(console.log);
   }
 
   // The name needs to be the same as the second parameter

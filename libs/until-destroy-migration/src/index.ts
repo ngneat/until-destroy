@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 import * as fs from 'fs';
-import * as glob from 'glob';
 import * as minimist from 'minimist';
 import { ClassDeclaration, Project, QuoteKind, SourceFile } from 'ts-morph';
+
+const glob = require('glob');
 
 const { base = 'src/app', removeOnDestroy } = minimist(process.argv.slice(2));
 
@@ -17,8 +18,8 @@ const project = new Project({
   },
 });
 
-glob(`${base}/**/*.ts`, {}, (_, files) => {
-  files.forEach((path) => {
+glob(`${base}/**/*.ts`, {}, (_: NodeJS.ErrnoException, files: string[]) => {
+  files.forEach(path => {
     fs.readFile(path, 'utf8', (_, text) => {
       if (!hasUntilDestroy.test(text)) return;
 
@@ -39,7 +40,7 @@ export function transformCode(code: string, filePath: string, removeOnDestroy = 
   const sourceFile = project.createSourceFile(filePath, code, { overwrite: true });
   replaceOldImport(sourceFile);
 
-  sourceFile.getClasses().forEach((classDeclaration) => {
+  sourceFile.getClasses().forEach(classDeclaration => {
     addUntilDestroyDecorator(classDeclaration);
 
     if (removeOnDestroy) {
@@ -76,7 +77,7 @@ function addUntilDestroyDecorator(classDeclaration: ClassDeclaration) {
 function removeOnDestroyImplements(classDeclaration: ClassDeclaration) {
   const onDestroyImplementClause = classDeclaration
     .getImplements()
-    .find((impl) => impl.getText() === 'OnDestroy');
+    .find(impl => impl.getText() === 'OnDestroy');
   onDestroyImplementClause && classDeclaration.removeImplements(onDestroyImplementClause);
 }
 
@@ -89,7 +90,7 @@ function removeOnDestroyImport(sourceFile: SourceFile) {
 
   const onDestroyImportSpecifier = importClause
     .getNamedImports()
-    .find((node) => node.getText() === 'OnDestroy');
+    .find(node => node.getText() === 'OnDestroy');
   if (!onDestroyImportSpecifier) return;
 
   onDestroyImportSpecifier.remove();

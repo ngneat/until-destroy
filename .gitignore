@@ -1,3 +1,4 @@
+/.angular/cache
 node_modules
 .vscode
 /dist-test
