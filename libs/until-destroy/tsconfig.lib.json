@@ -1,4 +1,3 @@
- 
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -12,7 +11,7 @@
     "types": ["node"]
   },
   "angularCompilerOptions": {
-    "enableIvy": false,
+    "compilationMode": "partial",
     "annotateForClosureCompiler": true,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
@@ -21,5 +20,5 @@
     "enableResourceInlining": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["**/*.spec.ts"]
+  "exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }

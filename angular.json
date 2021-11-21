@@ -1,26 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "cli": {
-    "defaultCollection": "@nrwl/angular"
-  },
-  "defaultProject": "until-destroy",
-  "schematics": {
-    "@nrwl/angular:application": {
-      "style": "scss",
-      "linter": "eslint",
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "cypress"
-    },
-    "@nrwl/angular:library": {
-      "style": "scss",
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nrwl/angular:component": {
-      "style": "scss"
-    }
-  },
   "projects": {
     "integration": {
       "projectType": "application",
@@ -107,7 +87,9 @@
           },
           "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": ["app"],
+      "implicitDependencies": ["until-destroy"]
     },
     "integration-e2e": {
       "projectType": "application",
@@ -129,7 +111,9 @@
           },
           "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": ["app"],
+      "implicitDependencies": ["integration"]
     },
     "until-destroy": {
       "projectType": "library",
@@ -160,7 +144,9 @@
           },
           "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": ["lib"],
+      "implicitDependencies": []
     },
     "until-destroy-migration": {
       "projectType": "library",
@@ -193,7 +179,9 @@
           },
           "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": ["lib"],
+      "implicitDependencies": []
     }
   }
 }
