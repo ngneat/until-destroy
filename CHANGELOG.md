@@ -1,5 +1,11 @@
 # [0.0.0](https://github.com/ngneat/until-destroy/compare/v8.0.1...v0.0.0) (2020-08-23)
 
+# [9.0.0](https://github.com/ngneat/until-destroy/compare/v8.1.4...v9.0.0) (2020-11-22)
+
+### Features
+
+- upgrade to Angular 13 ([d4bc2a0](https://github.com/ngneat/until-destroy/commit/d4bc2a0c5d19c2f3aeb40beb2388de9eb360b4e7))
+
 ## [8.1.4](https://github.com/ngneat/until-destroy/compare/v8.1.3...v8.1.4) (2021-08-25)
 
 ### Bug Fixes
