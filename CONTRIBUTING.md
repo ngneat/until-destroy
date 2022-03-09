@@ -7,37 +7,37 @@
 Start by installing all dependencies:
 
 ```bash
-yarn
+npm ci
 ```
 
 Run the tests:
 
 ```bash
-yarn test
+npm test
 ```
 
 Run the tests in watch mode:
 
 ```bash
-yarn test:watch
+npm run test:watch
 ```
 
 Run the playground app:
 
 ```bash
-yarn serve:integration
+npm run serve:integration
 ```
 
 Run the playground integration tests:
 
 ```bash
-yarn test:integration
+npm run test:integration
 ```
 
 ## Building
 
 ```bash
-yarn build
+npm run build
 ```
 
 ## <a name="rules"></a> Coding Rules

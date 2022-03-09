@@ -102,6 +102,5 @@
     "endOfLine": "lf",
     "singleQuote": true,
     "arrowParens": "avoid"
-  },
-  "packageManager": "yarn@3.1.0"
+  }
 }
