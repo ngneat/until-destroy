@@ -1,12 +1,15 @@
 import { ChangeDetectionStrategy, Component, Host } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
-import { pluck, finalize } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, fromEvent, Subject, Subscription } from 'rxjs';
+import { pluck, finalize, take } from 'rxjs/operators';
 
 import { LoggerFactory } from '../../logger/logger.factory';
 import { ArrayOfSubscriptionsComponent } from '../array-of-subscriptions.component';
 
-@UntilDestroy({ arrayName: 'subscriptions' })
+@UntilDestroy({
+  checkProperties: true,
+  arrayName: 'subscriptions',
+})
 @Component({
   selector: 'app-document-click',
   templateUrl: './document-click.component.html',
@@ -15,20 +18,37 @@ import { ArrayOfSubscriptionsComponent } from '../array-of-subscriptions.compone
 export class DocumentClickComponent {
   clientX$ = new BehaviorSubject<number>(0);
 
+  subscription: Subscription;
   subscriptions: Subscription[] = [];
+
+  private standaloneSubjectHasBeenUnsubsibed$ = new Subject<true>();
+  private subjectWithinArrayHasBeneUnsubscribed$ = new Subject<true>();
 
   constructor(loggerFactory: LoggerFactory, @Host() host: ArrayOfSubscriptionsComponent) {
     host.documentClickUnsubscribed$.next(false);
 
-    const logger = loggerFactory.createLogger('DocumentClickComponent', '#b100aa');
+    const logger = loggerFactory.createLogger('DocumentClickComponent', '#ed33b9');
+
+    this.subscription = fromEvent<MouseEvent>(document, 'click')
+      .pipe(
+        pluck('clientX'),
+        finalize(() => {
+          logger.log('standalone fromEvent has been unsubscribed');
+          this.standaloneSubjectHasBeenUnsubsibed$.next(true);
+        })
+      )
+      .subscribe(clientX => {
+        logger.log(`You've clicked on the document and clientX is ${clientX}`);
+        this.clientX$.next(clientX);
+      });
 
     this.subscriptions.push(
       fromEvent<MouseEvent>(document, 'click')
         .pipe(
           pluck('clientX'),
           finalize(() => {
-            logger.log('fromEvent has been unsubscribed');
-            host.documentClickUnsubscribed$.next(true);
+            logger.log('fromEvent within array has been unsubscribed');
+            this.subjectWithinArrayHasBeneUnsubscribed$.next(true);
           })
         )
         .subscribe(clientX => {
@@ -36,5 +56,14 @@ export class DocumentClickComponent {
           this.clientX$.next(clientX);
         })
     );
+
+    combineLatest([
+      this.standaloneSubjectHasBeenUnsubsibed$,
+      this.subjectWithinArrayHasBeneUnsubscribed$,
+    ])
+      .pipe(take(1))
+      .subscribe(() => {
+        host.documentClickUnsubscribed$.next(true);
+      });
   }
 }

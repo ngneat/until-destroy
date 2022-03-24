@@ -19,7 +19,7 @@ function unsubscribe(property: unknown): void {
   }
 }
 
-function unsubscribeIfPropertyIsArrayLike(property: any[]): void {
+function unsubscribeIfPropertyIsArrayLike(property: unknown[]): void {
   Array.isArray(property) && property.forEach(unsubscribe);
 }
 
@@ -37,7 +37,7 @@ function decorateNgOnDestroy(
 
     // Check if subscriptions are pushed to some array
     if (options.arrayName) {
-      return unsubscribeIfPropertyIsArrayLike(this[options.arrayName]);
+      unsubscribeIfPropertyIsArrayLike(this[options.arrayName]);
     }
 
     // Loop through the properties and find subscriptions

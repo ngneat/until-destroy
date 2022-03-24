@@ -7,37 +7,37 @@
 Start by installing all dependencies:
 
 ```bash
-npm ci
+pnpm install --frozen-lockfile
 ```
 
 Run the tests:
 
 ```bash
-npm test
+pnpm test
 ```
 
 Run the tests in watch mode:
 
 ```bash
-npm run test:watch
+pnpm test:watch
 ```
 
 Run the playground app:
 
 ```bash
-npm run serve:integration
+pnpm serve:integration
 ```
 
 Run the playground integration tests:
 
 ```bash
-npm run test:integration
+pnpm test:integration
 ```
 
 ## Building
 
 ```bash
-npm run build
+pnpm build
 ```
 
 ## <a name="rules"></a> Coding Rules
