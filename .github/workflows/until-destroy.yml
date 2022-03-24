@@ -13,41 +13,45 @@ jobs:
       fail-fast: true
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: actions/cache@v1
-        id: yarn-cache
+        id: pnpm-cache
         with:
           path: |
-            node_modules
+            ~/.pnpm-store
             ~/.cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('./yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('./pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14.15
+          node-version: '15'
+
+      - uses: pnpm/action-setup@v2.2.1
+        with:
+          version: 5.17.3
 
       - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        if: steps.pnpm-cache.outputs.cache-hit != 'true'
         env:
           HUSKY_SKIP_INSTALL: 'true'
-        run: yarn --pure-lockfile --non-interactive --no-progress
+        run: pnpm install --frozen-lockfile
 
       - name: Run ESLint
-        run: yarn lint
+        run: pnpm lint
 
       - name: Run unit tests
-        run: yarn test
+        run: pnpm test
 
       - name: Run integration tests
-        run: yarn test:integration
+        run: pnpm test:integration
 
       - name: Build library
-        run: yarn build
+        run: pnpm build
 
       - name: Build integration app in production mode
-        run: yarn build:integration
+        run: pnpm build:integration
 
       - name: Run Cypress tests
-        run: yarn test:e2e:integration
+        run: pnpm test:e2e:integration
