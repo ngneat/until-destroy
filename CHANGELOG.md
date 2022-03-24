@@ -1,5 +1,11 @@
 # [0.0.0](https://github.com/ngneat/until-destroy/compare/v8.0.1...v0.0.0) (2020-08-23)
 
+## [9.0.1](https://github.com/ngneat/until-destroy/compare/v9.0.0...v9.0.1) (2022-03-24)
+
+### Bug Fixes
+
+- respect both `checkProperties` and `arrayName` options ([d5d6495](https://github.com/ngneat/until-destroy/commit/d5d64955cdeeeec4083715c15db16eb632d8b78f))
+
 # [9.0.0](https://github.com/ngneat/until-destroy/compare/v8.1.4...v9.0.0) (2020-11-22)
 
 ### Features
