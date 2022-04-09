@@ -1,5 +1,11 @@
 # [0.0.0](https://github.com/ngneat/until-destroy/compare/v8.0.1...v0.0.0) (2020-08-23)
 
+## [9.0.2](https://github.com/ngneat/until-destroy/compare/v9.0.1...v9.0.2) (2022-04-09)
+
+### Bug Fixes
+
+- upgrade minimist to `1.2.6` to resolve the prototype pollution bug ([96dd7ae](https://github.com/ngneat/until-destroy/commit/96dd7ae627e5d95612d67225ae3366868018d458))
+
 ## [9.0.1](https://github.com/ngneat/until-destroy/compare/v9.0.0...v9.0.1) (2022-03-24)
 
 ### Bug Fixes
