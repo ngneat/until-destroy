@@ -18,7 +18,7 @@
   "sideEffects": false,
   "dependencies": {
     "glob": "^7.1.6",
-    "minimist": "1.2.5",
+    "minimist": "1.2.6",
     "ts-morph": "^7.1.2"
   },
   "bin": "index.js"
