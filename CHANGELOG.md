@@ -1,5 +1,11 @@
 # [0.0.0](https://github.com/ngneat/until-destroy/compare/v8.0.1...v0.0.0) (2020-08-23)
 
+# [9.1.0](https://github.com/ngneat/until-destroy/compare/v9.0.2...v9.1.0)
+
+- add subject unsubscribed checker ([93199cf](https://github.com/ngneat/until-destroy/commit/93199cfbb7cd01c72fc8f0531c81c15ae2baef50))
+
+### Features
+
 ## [9.0.2](https://github.com/ngneat/until-destroy/compare/v9.0.1...v9.0.2) (2022-04-09)
 
 ### Bug Fixes
