@@ -7,15 +7,16 @@ import { NotificationClass, NotificationText } from '../enums/notification.enum'
 @Component({
   selector: 'app-inheritance',
   templateUrl: './inheritance.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InheritanceComponent {
   issue61Shown = true;
   issue97Shown = true;
+  issue175Shown = true;
 
   issue61Status$ = new BehaviorSubject({
     directiveUnsubscribed: false,
-    componentUnsubscribed: false
+    componentUnsubscribed: false,
   });
 
   issue61StatusClass$ = this.issue61Status$.pipe(
@@ -39,7 +40,7 @@ export class InheritanceComponent {
   );
 
   issue97Status$ = new BehaviorSubject({
-    componentUnsubscribed: false
+    componentUnsubscribed: false,
   });
 
   issue97StatusClass$ = this.issue97Status$.pipe(
@@ -54,11 +55,29 @@ export class InheritanceComponent {
     )
   );
 
+  issue175Status$ = new BehaviorSubject({ componentUnsubscribed: false });
+
+  issue175StatusClass$ = this.issue175Status$.pipe(
+    map(({ componentUnsubscribed }) =>
+      componentUnsubscribed ? NotificationClass.Success : NotificationClass.Danger
+    )
+  );
+
+  issue175StatusText$ = this.issue175Status$.pipe(
+    map(({ componentUnsubscribed }) =>
+      componentUnsubscribed ? NotificationText.Unsubscribed : NotificationText.Subscribed
+    )
+  );
+
   toggleIssue61(): void {
     this.issue61Shown = !this.issue61Shown;
   }
 
   toggleIssue97(): void {
     this.issue97Shown = !this.issue97Shown;
+  }
+
+  toggleIssue175(): void {
+    this.issue175Shown = !this.issue175Shown;
   }
 }
