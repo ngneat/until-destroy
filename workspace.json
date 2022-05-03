@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "projects": {
+    "integration": "apps/integration",
+    "integration-e2e": "apps/integration-e2e",
+    "until-destroy": "libs/until-destroy",
+    "until-destroy-migration": "libs/until-destroy-migration"
+  }
+}

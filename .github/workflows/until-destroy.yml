@@ -53,5 +53,8 @@ jobs:
       - name: Build integration app in production mode
         run: pnpm build:integration
 
+      - name: Build integration app in production mode with RxJS@6
+        run: pnpm nx run integration:build-rxjs-6
+
       - name: Run Cypress tests
         run: pnpm test:e2e:integration

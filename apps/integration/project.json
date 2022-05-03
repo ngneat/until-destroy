@@ -1,0 +1,140 @@
+{
+  "projectType": "application",
+  "root": "apps/integration",
+  "sourceRoot": "apps/integration/src",
+  "prefix": "app",
+  "architect": {
+    "build": {
+      "builder": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/apps/integration",
+        "index": "apps/integration/src/index.html",
+        "main": "apps/integration/src/main.ts",
+        "polyfills": "apps/integration/src/polyfills.ts",
+        "tsConfig": "apps/integration/tsconfig.app.json",
+        "preserveSymlinks": true,
+        "assets": [],
+        "vendorChunk": true,
+        "extractLicenses": false,
+        "buildOptimizer": false,
+        "sourceMap": true,
+        "optimization": false,
+        "namedChunks": true
+      },
+      "configurations": {
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/integration/src/environments/environment.ts",
+              "with": "apps/integration/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            }
+          ]
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "build-rxjs-6": {
+      "builder": "@angular-builders/custom-webpack:browser",
+      "options": {
+        "customWebpackConfig": {
+          "path": "apps/integration/webpack.config.js"
+        },
+        "outputPath": "dist/apps/integration",
+        "index": "apps/integration/src/index.html",
+        "main": "apps/integration/src/main.ts",
+        "polyfills": "apps/integration/src/polyfills.ts",
+        "tsConfig": "apps/integration/tsconfig.app.json",
+        "preserveSymlinks": true,
+        "assets": [],
+        "vendorChunk": true,
+        "extractLicenses": false,
+        "buildOptimizer": false,
+        "sourceMap": true,
+        "optimization": false,
+        "namedChunks": true
+      },
+      "configurations": {
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/integration/src/environments/environment.ts",
+              "with": "apps/integration/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            }
+          ]
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "builder": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "browserTarget": "integration:build"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "integration:build:production"
+        }
+      }
+    },
+    "test": {
+      "builder": "@nrwl/jest:jest",
+      "options": {
+        "passWithNoTests": true,
+        "jestConfig": "apps/integration/jest.config.js"
+      }
+    },
+    "lint": {
+      "builder": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/integration/src/**/*.ts", "apps/integration/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": ["app"],
+  "implicitDependencies": ["until-destroy"]
+}
