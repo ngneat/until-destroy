@@ -1,5 +1,11 @@
 # [0.0.0](https://github.com/ngneat/until-destroy/compare/v8.0.1...v0.0.0) (2020-08-23)
 
+## [9.1.1](https://github.com/ngneat/until-destroy/compare/v9.1.0...v9.1.1)
+
+### Bug Fixes
+
+- do not import operators from `rxjs` ([90afb61](https://github.com/ngneat/until-destroy/pull/191/commits/90afb61c54c270a819b6b7f7eae4b2b8d5842e4b))
+
 # [9.1.0](https://github.com/ngneat/until-destroy/compare/v9.0.2...v9.1.0)
 
 - add subject unsubscribed checker ([93199cf](https://github.com/ngneat/until-destroy/commit/93199cfbb7cd01c72fc8f0531c81c15ae2baef50))
