@@ -6,17 +6,12 @@ import {
 import { Subscription } from 'rxjs';
 
 import { PipeType, isPipe } from './ivy';
-import { createSubjectUnsubscribedChecker } from './checker';
 import {
   getSymbol,
   UntilDestroyOptions,
   completeSubjectOnTheInstance,
   markAsDecorated,
 } from './internals';
-
-// This will be provided through Terser global definitions by Angular CLI. This will
-// help to tree-shake away the code unneeded for production bundles.
-declare const ngDevMode: boolean;
 
 function unsubscribe(property: unknown): void {
   if (property instanceof Subscription) {
@@ -71,9 +66,6 @@ function decoratePipe<T>(type: PipeType<T>, options: UntilDestroyOptions): void 
 }
 
 export function UntilDestroy(options: UntilDestroyOptions = {}): ClassDecorator {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore The TS compiler throws 'typeof SubjectUnsubscribedChecker' is assignable to the constraint of type
-  // 'TFunction', but 'TFunction' could be instantiated with a different subtype of constraint 'Function'.
   return (type: any) => {
     if (isPipe(type)) {
       decoratePipe(type, options);
@@ -82,9 +74,5 @@ export function UntilDestroy(options: UntilDestroyOptions = {}): ClassDecorator 
     }
 
     markAsDecorated(type);
-
-    if (ngDevMode) {
-      return createSubjectUnsubscribedChecker(type);
-    }
   };
 }

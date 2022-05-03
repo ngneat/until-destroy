@@ -12,7 +12,6 @@ import { NotificationClass, NotificationText } from '../enums/notification.enum'
 export class InheritanceComponent {
   issue61Shown = true;
   issue97Shown = true;
-  issue175Shown = true;
 
   issue61Status$ = new BehaviorSubject({
     directiveUnsubscribed: false,
@@ -55,29 +54,11 @@ export class InheritanceComponent {
     )
   );
 
-  issue175Status$ = new BehaviorSubject({ componentUnsubscribed: false });
-
-  issue175StatusClass$ = this.issue175Status$.pipe(
-    map(({ componentUnsubscribed }) =>
-      componentUnsubscribed ? NotificationClass.Success : NotificationClass.Danger
-    )
-  );
-
-  issue175StatusText$ = this.issue175Status$.pipe(
-    map(({ componentUnsubscribed }) =>
-      componentUnsubscribed ? NotificationText.Unsubscribed : NotificationText.Subscribed
-    )
-  );
-
   toggleIssue61(): void {
     this.issue61Shown = !this.issue61Shown;
   }
 
   toggleIssue97(): void {
     this.issue97Shown = !this.issue97Shown;
-  }
-
-  toggleIssue175(): void {
-    this.issue175Shown = !this.issue175Shown;
   }
 }
