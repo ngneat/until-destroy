@@ -11,20 +11,13 @@
           with `@UntilDestroy()` but directive is not
         </li>
         <li>
-          `Issue97Component` extends from `Issue97Directive`. Directive is decorated with
+          `Issue97Component` extends from the `Issue97Directive`. Directive is decorated with
           `@UntilDestroy()` but component is not
-        </li>
-        <li>
-          `Issue175Component` extends from the `Issue175Directive`. Directive is decorated with
-          `@UntilDestroy()` and the `Issue175Component` implements its own `ngOnDestroy()`
-          method. The `Issue175Directive.ngOnDestroy()` will not be called, because
-          `Issue175Component.ngOnDestroy()` does not call `super.ngOnDestroy()`.
         </li>
       </ol>
 
       <app-issue-61 *ngIf="issue61Shown"></app-issue-61>
       <app-issue-97 *ngIf="issue97Shown"></app-issue-97>
-      <app-issue-175 *ngIf="issue175Shown"></app-issue-175>
 
       <div data-cy="issue-61-status" [class]="issue61StatusClass$ | async">
         Issue#61: {{ issue61StatusText$ | async }}
@@ -32,10 +25,6 @@
 
       <div data-cy="issue-97-status" [class]="issue97StatusClass$ | async">
         Issue#97: {{ issue97StatusText$ | async }}
-      </div>
-
-      <div data-cy="issue-175-status" [class]="issue175StatusClass$ | async">
-        Issue#175: {{ issue175StatusText$ | async }}
       </div>
     </div>
   </div>
@@ -45,12 +34,5 @@
   </button>
   <button data-cy="toggle-issue-97" class="button is-link is-light" (click)="toggleIssue97()">
     Toggle issue#97
-  </button>
-  <button
-    data-cy="toggle-issue-175"
-    class="button is-link is-light"
-    (click)="toggleIssue175()"
-  >
-    Toggle issue#175
   </button>
 </div>
