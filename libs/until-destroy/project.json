@@ -1,0 +1,33 @@
+{
+  "projectType": "library",
+  "root": "libs/until-destroy",
+  "sourceRoot": "libs/until-destroy/src",
+  "architect": {
+    "build": {
+      "builder": "@nrwl/angular:package",
+      "options": {
+        "tsConfig": "libs/until-destroy/tsconfig.lib.json",
+        "project": "libs/until-destroy/ng-package.json"
+      }
+    },
+    "test": {
+      "builder": "@nrwl/jest:jest",
+      "options": {
+        "passWithNoTests": true,
+        "jestConfig": "libs/until-destroy/jest.config.js"
+      }
+    },
+    "lint": {
+      "builder": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/until-destroy/src/**/*.ts",
+          "libs/until-destroy/src/**/*.html"
+        ]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": ["lib"],
+  "implicitDependencies": []
+}

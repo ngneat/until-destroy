@@ -5,6 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "ng": "nx",
+    "nx": "nx",
     "postinstall": "node ./decorate-angular-cli.js && husky install",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors init",
@@ -34,6 +36,7 @@
     "Angular unsubscribe"
   ],
   "devDependencies": {
+    "@angular-builders/custom-webpack": "13.1.0",
     "@angular-devkit/build-angular": "13.3.0",
     "@angular-eslint/builder": "13.1.0",
     "@angular-eslint/eslint-plugin": "13.1.0",
@@ -82,6 +85,7 @@
     "postcss-url": "^10.1.1",
     "prettier": "2.6.0",
     "rxjs": "7.5.5",
+    "rxjs-6": "npm:rxjs@^6.6.7",
     "serve": "^12.0.0",
     "standard-version": "^9.0.0",
     "start-server-and-test": "^1.12.0",
