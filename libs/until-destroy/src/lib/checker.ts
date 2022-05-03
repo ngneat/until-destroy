@@ -8,16 +8,13 @@ import {
 import { isPlatformServer } from '@angular/common';
 import {
   asapScheduler,
-  catchError,
   EMPTY,
-  filter,
   from,
-  mergeMap,
   MonoTypeOperatorFunction,
   Observable,
-  observeOn,
   Subject,
 } from 'rxjs';
+import { catchError, filter, mergeMap, observeOn } from 'rxjs/operators';
 
 import { getSymbol } from './internals';
 
