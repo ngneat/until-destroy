@@ -5,6 +5,8 @@ import {
   Injectable,
   Pipe,
   PipeTransform,
+  OnDestroy,
+  ɵgetLContext,
 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -441,6 +443,80 @@ describe('until-destroy runtime behavior', () => {
 
       fixture.componentInstance.stopSecond();
       expect(issueSixtySixService.secondSubjectUnsubscribed).toBeTruthy();
+    });
+  });
+
+  describe('https://github.com/ngneat/until-destroy/issues/175', () => {
+    it('should warn to the console that the destroy$ subject still has observers after the view has been removed', async () => {
+      // Arrange
+      @UntilDestroy()
+      @Directive()
+      abstract class IssueOneHundredSeventyFiveDirective {
+        constructor() {
+          new Subject().pipe(untilDestroyed(this)).subscribe();
+        }
+      }
+
+      @Component({ selector: 'issue-175', template: '' })
+      class IssueOneHundredSeventyFiveComponent
+        extends IssueOneHundredSeventyFiveDirective
+        implements OnDestroy
+      {
+        ngOnDestroy(): void {}
+      }
+
+      @Component({
+        template: '<issue-175 *ngIf="shown"></issue-175>',
+      })
+      class TestComponent {
+        shown = false;
+      }
+
+      const spy = jest.spyOn(console, 'warn').mockImplementation();
+
+      // Act
+      TestBed.configureTestingModule({
+        declarations: [TestComponent, IssueOneHundredSeventyFiveComponent],
+      });
+
+      const fixture = TestBed.createComponent(TestComponent);
+      // Note: we explicitly create a dedicated component for this case because we
+      // want to ensure that the `__ngContext__` is related to the dedicated component
+      // and not the host component.
+      fixture.componentInstance.shown = true;
+      fixture.detectChanges();
+
+      const element = fixture.debugElement.query(By.css('issue-175'));
+      expect(element).toBeDefined();
+
+      // The `lView` is being read within a microtask, so let's wait.
+      // Note: we cannot use `fakeAsync` since checker spawns tasks outside of the Angular zone.
+      await Promise.resolve();
+
+      const lContext = ɵgetLContext(element.nativeElement);
+      const lCleanup = lContext?.lView[7];
+      const untilDestroyedLCleanup = lCleanup?.find(
+        (fn: VoidFunction) => fn.name === 'untilDestroyedLCleanup'
+      );
+      // Let's ensure that the cleanup function has been registered.
+      expect(untilDestroyedLCleanup).toEqual(expect.any(Function));
+
+      fixture.componentInstance.shown = false;
+      fixture.detectChanges();
+
+      // The subject is checked within a microtask, so let's wait.
+      await Promise.resolve();
+
+      try {
+        // Assert
+        expect(spy).toHaveBeenCalledWith(
+          expect.stringMatching(
+            /The IssueOneHundredSeventyFiveComponent still has subscriptions that haven't been unsubscribed./
+          )
+        );
+      } finally {
+        spy.mockRestore();
+      }
     });
   });
 });
