@@ -30,6 +30,15 @@
           "sourceMap": true,
           "namedChunks": true
         },
+        "development-jit": {
+          "aot": false,
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        },
         "production": {
           "fileReplacements": [
             {
@@ -115,10 +124,17 @@
         "browserTarget": "integration:build"
       },
       "configurations": {
+        "development": {
+          "browserTarget": "integration:build:development"
+        },
+        "development-jit": {
+          "browserTarget": "integration:build:development-jit"
+        },
         "production": {
           "browserTarget": "integration:build:production"
         }
-      }
+      },
+      "defaultConfiguration": "development"
     },
     "test": {
       "builder": "@nrwl/jest:jest",

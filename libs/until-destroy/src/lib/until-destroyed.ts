@@ -1,6 +1,7 @@
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { setupSubjectUnsubscribedChecker } from './checker';
 import {
   DECORATOR_APPLIED,
   getSymbol,
@@ -52,7 +53,10 @@ export function untilDestroyed<T>(instance: T, destroyMethodName?: keyof T) {
       createSubjectOnTheInstance(instance, symbol);
     }
 
-    return source.pipe(takeUntil<U>((instance as any)[symbol]));
+    const destroy$: Subject<void> = (instance as any)[symbol];
+    ngDevMode && setupSubjectUnsubscribedChecker(instance, destroy$);
+
+    return source.pipe(takeUntil<U>(destroy$));
   };
 }
 
