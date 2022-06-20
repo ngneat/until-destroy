@@ -1,6 +1,6 @@
-import { ɵglobal, ɵgetLContext } from '@angular/core';
-import { asapScheduler, EMPTY, from, Subject } from 'rxjs';
-import { catchError, mergeMap, observeOn } from 'rxjs/operators';
+import { ɵglobal, ɵgetLContext, ɵLContext } from '@angular/core';
+import { EMPTY, from, Observable, Subject } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 // `LView` is an array where each index matches the specific data structure.
 // The 7th element in an `LView` is an array of cleanup listeners. They are
@@ -23,7 +23,16 @@ export function setupSubjectUnsubscribedChecker(instance: any, destroy$: Subject
     from(Promise.resolve())
       .pipe(
         mergeMap(() => {
-          const lContext = ɵgetLContext(instance);
+          let lContext: ɵLContext | null;
+
+          try {
+            // The `ɵgetLContext` might not work for a pipe, because it's not a component nor a directive,
+            // which means there's no `RNode` for an instance.
+            lContext = ɵgetLContext(instance);
+          } catch {
+            lContext = null;
+          }
+
           const lView = lContext?.lView;
 
           if (lView == null) {
@@ -37,13 +46,14 @@ export function setupSubjectUnsubscribedChecker(instance: any, destroy$: Subject
             // We leave the Angular zone, so RxJS will also call subsequent `next` functions
             // outside of the Angular zone, which is done to avoid scheduling a microtask (through
             // `asapScheduler`) within the Angular zone.
-            runOutsideAngular(() => cleanupHasBeenExecuted$.next());
-            cleanupHasBeenExecuted$.complete();
+            runOutsideAngular(() => {
+              cleanupHasBeenExecuted$.next();
+              cleanupHasBeenExecuted$.complete();
+            });
           });
           return cleanupHasBeenExecuted$;
         }),
-        observeOn(asapScheduler),
-        catchError(() => EMPTY)
+        observeOnPromise()
       )
       .subscribe(() => {
         // Note: The `observed` property is available only in RxJS@7.2.0, which will throw
@@ -58,6 +68,19 @@ export function setupSubjectUnsubscribedChecker(instance: any, destroy$: Subject
   );
 
   instance[CheckerHasBeenSet] = true;
+}
+
+// We can't use `observeOn(asapScheduler)` because this might break the app's change detection.
+// RxJS schedulers coalesce tasks and then flush the queue, which means our task might be scheduled
+// within the root zone, and then all of the tasks (that were set up by developers in the Angular zone)
+// will also be flushed in the root zone.
+function observeOnPromise<T>() {
+  return (source: Observable<T>) =>
+    new Observable(observer =>
+      source.subscribe({
+        next: value => Promise.resolve().then(() => observer.next(value)),
+      })
+    );
 }
 
 function runOutsideAngular<T>(fn: () => T): T {
