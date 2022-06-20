@@ -1,10 +1,10 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
-  "root": "libs/until-destroy-migration",
   "sourceRoot": "libs/until-destroy-migration/src",
-  "architect": {
+  "targets": {
     "build": {
-      "builder": "@nrwl/workspace:run-commands",
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
         "commands": [
           "tsc -p libs/until-destroy-migration/tsconfig.lib.json",
@@ -13,14 +13,14 @@
       }
     },
     "test": {
-      "builder": "@nrwl/jest:jest",
+      "executor": "@nrwl/jest:jest",
       "options": {
         "passWithNoTests": true,
         "jestConfig": "libs/until-destroy-migration/jest.config.js"
       }
     },
     "lint": {
-      "builder": "@nrwl/linter:eslint",
+      "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/until-destroy-migration/src/**/*.ts",

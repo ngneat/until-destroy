@@ -23,9 +23,6 @@
   "affected": {
     "defaultBase": "master"
   },
-  "cli": {
-    "defaultCollection": "@nrwl/angular"
-  },
   "defaultProject": "until-destroy",
   "generators": {
     "@nrwl/angular:application": {
@@ -42,5 +39,6 @@
     "@nrwl/angular:component": {
       "style": "scss"
     }
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/nx-schema.json"
 }

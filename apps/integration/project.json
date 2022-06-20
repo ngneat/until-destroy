@@ -1,11 +1,11 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "root": "apps/integration",
   "sourceRoot": "apps/integration/src",
   "prefix": "app",
-  "architect": {
+  "targets": {
     "build": {
-      "builder": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:browser",
       "options": {
         "outputPath": "dist/apps/integration",
         "index": "apps/integration/src/index.html",
@@ -65,7 +65,7 @@
       "defaultConfiguration": "production"
     },
     "build-rxjs-6": {
-      "builder": "@angular-builders/custom-webpack:browser",
+      "executor": "@angular-builders/custom-webpack:browser",
       "options": {
         "customWebpackConfig": {
           "path": "apps/integration/webpack.config.js"
@@ -119,7 +119,7 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "builder": "@angular-devkit/build-angular:dev-server",
+      "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
         "browserTarget": "integration:build"
       },
@@ -137,14 +137,14 @@
       "defaultConfiguration": "development"
     },
     "test": {
-      "builder": "@nrwl/jest:jest",
+      "executor": "@nrwl/jest:jest",
       "options": {
         "passWithNoTests": true,
         "jestConfig": "apps/integration/jest.config.js"
       }
     },
     "lint": {
-      "builder": "@nrwl/linter:eslint",
+      "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": ["apps/integration/src/**/*.ts", "apps/integration/src/**/*.html"]
       },

@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "esnext",
-    "target": "es2019",
+    "target": "es2020",
     "types": ["node"]
   },
   "files": ["src/main.ts", "src/polyfills.ts"]
