@@ -1,4 +1,8 @@
-# [0.0.0](https://github.com/ngneat/until-destroy/compare/v8.0.1...v0.0.0) (2020-08-23)
+## [9.2.1](https://github.com/ngneat/until-destroy/compare/v9.2.0...v9.2.1)
+
+### Bug Fixes
+
+- do not use RxJS scheduler since this may flush the queue within the root zone ([03d2604](https://github.com/ngneat/until-destroy/commit/03d2604df12cfdb85ad307f2a50db4c67a13dbed))
 
 # [9.2.0](https://github.com/ngneat/until-destroy/compare/v9.1.1...v9.2.0)
 
