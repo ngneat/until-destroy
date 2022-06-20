@@ -1,24 +1,24 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
-  "root": "libs/until-destroy",
   "sourceRoot": "libs/until-destroy/src",
-  "architect": {
+  "targets": {
     "build": {
-      "builder": "@nrwl/angular:package",
+      "executor": "@nrwl/angular:package",
       "options": {
         "tsConfig": "libs/until-destroy/tsconfig.lib.json",
         "project": "libs/until-destroy/ng-package.json"
       }
     },
     "test": {
-      "builder": "@nrwl/jest:jest",
+      "executor": "@nrwl/jest:jest",
       "options": {
         "passWithNoTests": true,
         "jestConfig": "libs/until-destroy/jest.config.js"
       }
     },
     "lint": {
-      "builder": "@nrwl/linter:eslint",
+      "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/until-destroy/src/**/*.ts",

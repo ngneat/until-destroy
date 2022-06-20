@@ -34,8 +34,6 @@ jobs:
 
       - name: Install dependencies
         if: steps.pnpm-cache.outputs.cache-hit != 'true'
-        env:
-          HUSKY_SKIP_INSTALL: 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Run ESLint

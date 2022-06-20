@@ -494,7 +494,7 @@ describe('until-destroy runtime behavior', () => {
       await Promise.resolve();
 
       const lContext = ɵgetLContext(element.nativeElement);
-      const lCleanup = lContext?.lView[7];
+      const lCleanup = lContext?.lView?.[/* CLEANUP */ 7];
       const untilDestroyedLCleanup = lCleanup?.find(
         (fn: VoidFunction) => fn.name === 'untilDestroyedLCleanup'
       );
