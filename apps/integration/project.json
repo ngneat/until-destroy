@@ -140,7 +140,7 @@
       "executor": "@nrwl/jest:jest",
       "options": {
         "passWithNoTests": true,
-        "jestConfig": "apps/integration/jest.config.js"
+        "jestConfig": "apps/integration/jest.config.ts"
       }
     },
     "lint": {

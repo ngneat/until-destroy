@@ -16,7 +16,7 @@
       "executor": "@nrwl/jest:jest",
       "options": {
         "passWithNoTests": true,
-        "jestConfig": "libs/until-destroy-migration/jest.config.js"
+        "jestConfig": "libs/until-destroy-migration/jest.config.ts"
       }
     },
     "lint": {

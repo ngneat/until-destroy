@@ -4,5 +4,6 @@
     "module": "commonjs",
     "outDir": "../../dist/libs/until-destroy-migration"
   },
-  "files": ["src/index.ts"]
+  "files": ["src/index.ts"],
+  "exclude": ["jest.config.ts"]
 }
