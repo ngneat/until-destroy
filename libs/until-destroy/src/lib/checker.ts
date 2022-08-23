@@ -1,5 +1,5 @@
 import { ɵglobal, ɵgetLContext, ɵLContext } from '@angular/core';
-import { EMPTY, from, Observable, Subject } from 'rxjs';
+import { EMPTY, from, Subject } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 // `LView` is an array where each index matches the specific data structure.
@@ -15,7 +15,7 @@ export function setupSubjectUnsubscribedChecker(instance: any, destroy$: Subject
   // Note: this code will not be shipped into production since it's guarded with `ngDevMode`,
   // this means it'll exist only in development mode.
 
-  if (instance[CheckerHasBeenSet]) {
+  if (instance[CheckerHasBeenSet] || isAngularInTestMode()) {
     return;
   }
 
@@ -53,7 +53,11 @@ export function setupSubjectUnsubscribedChecker(instance: any, destroy$: Subject
           });
           return cleanupHasBeenExecuted$;
         }),
-        observeOnPromise()
+        // We can't use `observeOn(asapScheduler)` because this might break the app's change detection.
+        // RxJS schedulers coalesce tasks and then flush the queue, which means our task might be scheduled
+        // within the root zone, and then all of the tasks (that were set up by developers in the Angular zone)
+        // will also be flushed in the root zone.
+        mergeMap(() => Promise.resolve())
       )
       .subscribe(() => {
         // Note: The `observed` property is available only in RxJS@7.2.0, which will throw
@@ -70,17 +74,29 @@ export function setupSubjectUnsubscribedChecker(instance: any, destroy$: Subject
   instance[CheckerHasBeenSet] = true;
 }
 
-// We can't use `observeOn(asapScheduler)` because this might break the app's change detection.
-// RxJS schedulers coalesce tasks and then flush the queue, which means our task might be scheduled
-// within the root zone, and then all of the tasks (that were set up by developers in the Angular zone)
-// will also be flushed in the root zone.
-function observeOnPromise<T>() {
-  return (source: Observable<T>) =>
-    new Observable(observer =>
-      source.subscribe({
-        next: value => Promise.resolve().then(() => observer.next(value)),
-      })
-    );
+function isAngularInTestMode(): boolean {
+  // Gets whether the code is currently running in a test environment.
+  // We don't use `declare const` because it might cause conflicts with the real typings.
+  return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    (typeof __karma__ !== 'undefined' && !!__karma__) ||
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    (typeof jasmine !== 'undefined' && !!jasmine) ||
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    (typeof jest !== 'undefined' && !!jest) ||
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    (typeof Mocha !== 'undefined' && !!Mocha) ||
+    // Jest is not defined in ESM mode since it must be access only by importing from `@jest/globals`.
+    // There's no way to check if we're in Jest ESM mode or not, but we can check if the `process` is defined.
+    // Note: it's required to check for `[object process]` because someone might be running unit tests with
+    // Webpack and shimming `process`.
+    (typeof process !== 'undefined' &&
+      Object.prototype.toString.call(process) === '[object process]')
+  );
 }
 
 function runOutsideAngular<T>(fn: () => T): T {
