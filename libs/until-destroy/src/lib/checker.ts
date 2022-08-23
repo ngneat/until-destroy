@@ -78,12 +78,16 @@ function isAngularInTestMode(): boolean {
   // Gets whether the code is currently running in a test environment.
   // We don't use `declare const` because it might cause conflicts with the real typings.
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     (typeof __karma__ !== 'undefined' && !!__karma__) ||
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     (typeof jasmine !== 'undefined' && !!jasmine) ||
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     (typeof jest !== 'undefined' && !!jest) ||
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     (typeof Mocha !== 'undefined' && !!Mocha) ||
     // Jest is not defined in ESM mode since it must be access only by importing from `@jest/globals`.
