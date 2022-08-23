@@ -1,3 +1,9 @@
+## [9.2.2](https://github.com/ngneat/until-destroy/compare/v9.2.1...v9.2.2)
+
+### Bug Fixes
+
+- do not run checker in unit tests ([fa675cb](https://github.com/ngneat/until-destroy/commit/fa675cb1e7814c6926ba06e11edb2f9f98c6cec9))
+
 ## [9.2.1](https://github.com/ngneat/until-destroy/compare/v9.2.0...v9.2.1)
 
 ### Bug Fixes
