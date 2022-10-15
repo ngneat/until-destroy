@@ -8,14 +8,14 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: true
 
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v3
         id: pnpm-cache
         with:
           path: |
@@ -28,9 +28,9 @@ jobs:
         with:
           node-version: '15'
 
-      - uses: pnpm/action-setup@v2.2.1
+      - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 5.17.3
+          version: 6
 
       - name: Install dependencies
         if: steps.pnpm-cache.outputs.cache-hit != 'true'
