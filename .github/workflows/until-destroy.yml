@@ -30,7 +30,7 @@ jobs:
 
       - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 6
+          version: 7.13.4
 
       - name: Install dependencies
         if: steps.pnpm-cache.outputs.cache-hit != 'true'
