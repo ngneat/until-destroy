@@ -2,8 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "esnext",
-    "target": "es2020",
-    "types": ["node"]
+    "target": "ES2022",
+    "types": ["node"],
+    "useDefineForClassFields": false
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
   "exclude": ["jest.config.ts"]

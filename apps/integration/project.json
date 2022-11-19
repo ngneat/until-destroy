@@ -152,5 +152,6 @@
     }
   },
   "tags": ["app"],
-  "implicitDependencies": ["until-destroy"]
+  "implicitDependencies": ["until-destroy"],
+  "name": "integration"
 }
