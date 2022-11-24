@@ -36,5 +36,6 @@
     }
   },
   "tags": ["app"],
-  "implicitDependencies": ["integration"]
+  "implicitDependencies": ["integration"],
+  "name": "integration-e2e"
 }

@@ -31,5 +31,6 @@
     }
   },
   "tags": ["lib"],
-  "implicitDependencies": []
+  "implicitDependencies": [],
+  "name": "until-destroy-migration"
 }
