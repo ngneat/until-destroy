@@ -13,6 +13,8 @@ import {
 // help to tree-shake away the code unneeded for production bundles.
 declare const ngDevMode: boolean;
 
+const NG_DEV_MODE = typeof ngDevMode === 'undefined' || ngDevMode;
+
 function overrideNonDirectiveInstanceMethod(
   instance: any,
   destroyMethodName: string,
@@ -20,7 +22,7 @@ function overrideNonDirectiveInstanceMethod(
 ): void {
   const originalDestroy = instance[destroyMethodName];
 
-  if (ngDevMode && typeof originalDestroy !== 'function') {
+  if (NG_DEV_MODE && typeof originalDestroy !== 'function') {
     throw new Error(
       `${instance.constructor.name} is using untilDestroyed but doesn't implement ${destroyMethodName}`
     );
@@ -49,12 +51,12 @@ export function untilDestroyed<T>(instance: T, destroyMethodName?: keyof T) {
     if (typeof destroyMethodName === 'string') {
       overrideNonDirectiveInstanceMethod(instance, destroyMethodName, symbol);
     } else {
-      ngDevMode && ensureClassIsDecorated(instance);
+      NG_DEV_MODE && ensureClassIsDecorated(instance);
       createSubjectOnTheInstance(instance, symbol);
     }
 
     const destroy$: Subject<void> = (instance as any)[symbol];
-    ngDevMode && setupSubjectUnsubscribedChecker(instance, destroy$);
+    NG_DEV_MODE && setupSubjectUnsubscribedChecker(instance, destroy$);
 
     return source.pipe(takeUntil<U>(destroy$));
   };
