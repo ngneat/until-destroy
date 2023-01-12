@@ -1,3 +1,9 @@
+## [9.2.3](https://github.com/ngneat/until-destroy/compare/v9.2.2...v9.2.3)
+
+### Bug Fixes
+
+- check if `ngDevMode` is defined ([b344f46](https://github.com/ngneat/until-destroy/commit/b344f465ec62ceb4f0c08724833bdabe2bf58c3f))
+
 ## [9.2.2](https://github.com/ngneat/until-destroy/compare/v9.2.1...v9.2.2)
 
 ### Bug Fixes
