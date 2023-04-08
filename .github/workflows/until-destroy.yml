@@ -8,21 +8,26 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
 
     steps:
       - uses: actions/checkout@v3
 
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
       - uses: actions/cache@v3
         id: pnpm-cache
         with:
-          path: |
-            ~/.pnpm-store
-            ~/.cache
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('./pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-pnpm
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - uses: actions/setup-node@v3
         with:
@@ -33,7 +38,6 @@ jobs:
           version: 7.13.4
 
       - name: Install dependencies
-        if: steps.pnpm-cache.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Run ESLint
