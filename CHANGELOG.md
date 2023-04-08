@@ -1,3 +1,9 @@
+# [10.0.0-beta.0](https://github.com/ngneat/until-destroy/compare/v10.0.0-beta.0...v9.2.3)
+
+### Bug Fixes
+
+- support non-experimental decorators ([5a5bd66](https://github.com/ngneat/until-destroy/commit/5a5bd669daca16d525e63080114048ee0030b8db))
+
 ## [9.2.3](https://github.com/ngneat/until-destroy/compare/v9.2.2...v9.2.3)
 
 ### Bug Fixes
