@@ -1,5 +1,6 @@
 import {
   InjectableType,
+  TypeDecorator,
   ɵComponentType as ComponentType,
   ɵDirectiveType as DirectiveType,
 } from '@angular/core';
@@ -65,7 +66,7 @@ function decoratePipe<T>(type: PipeType<T>, options: UntilDestroyOptions): void 
   def.onDestroy = decorateNgOnDestroy(def.onDestroy, options);
 }
 
-export function UntilDestroy(options: UntilDestroyOptions = {}): ClassDecorator {
+export function UntilDestroy(options: UntilDestroyOptions = {}): TypeDecorator {
   return (type: any) => {
     if (isPipe(type)) {
       decoratePipe(type, options);
