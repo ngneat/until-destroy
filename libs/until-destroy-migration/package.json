@@ -1,7 +1,7 @@
 {
   "name": "@ngneat/until-destroy-migration",
   "description": "The script that helps to migrate from View Engine to Ivy",
-  "version": "9.2.3",
+  "version": "10.0.0-beta.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ngneat/until-destroy.git"
