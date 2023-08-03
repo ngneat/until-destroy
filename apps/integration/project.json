@@ -1,4 +1,5 @@
 {
+  "name": "integration",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/integration/src",
@@ -137,14 +138,14 @@
       "defaultConfiguration": "development"
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "options": {
         "passWithNoTests": true,
         "jestConfig": "apps/integration/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["apps/integration/src/**/*.ts", "apps/integration/src/**/*.html"]
       },
@@ -152,6 +153,5 @@
     }
   },
   "tags": ["app"],
-  "implicitDependencies": ["until-destroy"],
-  "name": "integration"
+  "implicitDependencies": ["until-destroy"]
 }

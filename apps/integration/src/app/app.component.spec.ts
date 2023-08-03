@@ -1,5 +1,4 @@
 import {
-  ɵivyEnabled as ivyEnabled,
   Component,
   Directive,
   Injectable,
@@ -16,12 +15,6 @@ import { finalize } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 describe('until-destroy runtime behavior', () => {
-  it('ivy has to be enabled', () => {
-    // This assertion has to be performed as we have to
-    // be sure that we're running these tests with the Ivy engine
-    expect(ivyEnabled).toBeTruthy();
-  });
-
   it('should unsubscribe from the component property', () => {
     // Arrange
     @UntilDestroy({ checkProperties: true })

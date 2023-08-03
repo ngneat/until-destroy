@@ -1,10 +1,11 @@
 {
+  "name": "integration-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "apps/integration-e2e/src",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/cypress:cypress",
+      "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "apps/integration-e2e/cypress.json",
         "tsConfig": "apps/integration-e2e/tsconfig.e2e.json",
@@ -12,7 +13,7 @@
       }
     },
     "e2e-development": {
-      "executor": "@nrwl/cypress:cypress",
+      "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "apps/integration-e2e/cypress.json",
         "tsConfig": "apps/integration-e2e/tsconfig.e2e.json",
@@ -20,7 +21,7 @@
       }
     },
     "e2e-development-jit": {
-      "executor": "@nrwl/cypress:cypress",
+      "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "apps/integration-e2e/cypress.json",
         "tsConfig": "apps/integration-e2e/tsconfig.e2e.json",
@@ -28,7 +29,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["apps/integration-e2e/**/*.{js,ts}"]
       },
@@ -36,6 +37,5 @@
     }
   },
   "tags": ["app"],
-  "implicitDependencies": ["integration"],
-  "name": "integration-e2e"
+  "implicitDependencies": ["integration"]
 }

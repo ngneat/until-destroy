@@ -3,12 +3,7 @@ module.exports = {
   displayName: 'integration',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  globals: {
-    'ts-jest': {
-      stringifyContentPathRegex: '\\.(html|svg)$',
-      tsconfig: '<rootDir>/tsconfig.spec.json',
-    },
-  },
+  globals: {},
   coverageDirectory: '../../coverage/apps/integration',
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
@@ -16,7 +11,13 @@ module.exports = {
     'jest-preset-angular/build/serializers/html-comment',
   ],
   transform: {
-    '^.+.(ts|mjs|js|html)$': 'jest-preset-angular',
+    '^.+.(ts|mjs|js|html)$': [
+      'jest-preset-angular',
+      {
+        stringifyContentPathRegex: '\\.(html|svg)$',
+        tsconfig: '<rootDir>/tsconfig.spec.json',
+      },
+    ],
   },
   transformIgnorePatterns: ['node_modules/(?!.*.mjs$)'],
 };
