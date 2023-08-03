@@ -1,4 +1,5 @@
 {
+  "name": "until-destroy-migration",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/until-destroy-migration/src",
@@ -13,14 +14,14 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "options": {
         "passWithNoTests": true,
         "jestConfig": "libs/until-destroy-migration/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/until-destroy-migration/src/**/*.ts",
@@ -31,6 +32,5 @@
     }
   },
   "tags": ["lib"],
-  "implicitDependencies": [],
-  "name": "until-destroy-migration"
+  "implicitDependencies": []
 }

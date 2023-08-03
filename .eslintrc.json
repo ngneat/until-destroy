@@ -1,18 +1,27 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nrwl/nx", "ban"],
+  "plugins": ["@nx", "ban"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
         "ban/ban": [
           "error",
-          { "name": "fit", "message": "The fit is forbidden" },
-          { "name": "debugger", "message": "The debugger is forbidden" },
-          { "name": "fdescribe", "message": "The fdescribe is forbidden" }
+          {
+            "name": "fit",
+            "message": "The fit is forbidden"
+          },
+          {
+            "name": "debugger",
+            "message": "The debugger is forbidden"
+          },
+          {
+            "name": "fdescribe",
+            "message": "The fdescribe is forbidden"
+          }
         ],
-        "@nrwl/nx/enforce-module-boundaries": [
+        "@nx/enforce-module-boundaries": [
           "error",
           {
             "enforceBuildableLibDependency": true,
@@ -29,7 +38,7 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript"],
+      "extends": ["plugin:@nx/typescript"],
       "parserOptions": {
         "project": "./tsconfig.*?.json"
       },
@@ -37,7 +46,7 @@
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
+      "extends": ["plugin:@nx/javascript"],
       "rules": {}
     }
   ]

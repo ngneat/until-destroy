@@ -1,24 +1,26 @@
 {
+  "name": "until-destroy",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/until-destroy/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/angular:package",
+      "executor": "@nx/angular:package",
       "options": {
         "tsConfig": "libs/until-destroy/tsconfig.lib.json",
-        "project": "libs/until-destroy/ng-package.json"
+        "project": "libs/until-destroy/ng-package.json",
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "options": {
         "passWithNoTests": true,
         "jestConfig": "libs/until-destroy/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/until-destroy/src/**/*.ts",
@@ -29,6 +31,5 @@
     }
   },
   "tags": ["lib"],
-  "implicitDependencies": [],
-  "name": "until-destroy"
+  "implicitDependencies": []
 }
