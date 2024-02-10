@@ -7,3 +7,5 @@ dist
 .cache
 migrations.json
 .pnpm-debug.log
+
+.nx/cache

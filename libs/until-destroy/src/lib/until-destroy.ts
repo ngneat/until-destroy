@@ -68,6 +68,15 @@ function decoratePipe<T>(type: PipeType<T>, options: UntilDestroyOptions): void 
 
 export function UntilDestroy(options: UntilDestroyOptions = {}): TypeDecorator {
   return (type: any) => {
+    if (type['ɵfac']) {
+      const original = type['ɵfac'];
+      type.ɵfac = function (...args: any[]) {
+        const instance = original.apply(this, args);
+        debugger;
+        return instance;
+      };
+    }
+
     if (isPipe(type)) {
       decoratePipe(type, options);
     } else {

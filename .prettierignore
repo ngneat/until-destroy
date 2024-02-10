@@ -1,2 +1,4 @@
 .cache
 dist
+
+/.nx/cache

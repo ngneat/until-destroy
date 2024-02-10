@@ -15,18 +15,11 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "passWithNoTests": true,
         "jestConfig": "libs/until-destroy/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "libs/until-destroy/src/**/*.ts",
-          "libs/until-destroy/src/**/*.html"
-        ]
-      },
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
     }
   },

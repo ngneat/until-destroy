@@ -122,17 +122,17 @@
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
-        "browserTarget": "integration:build"
+        "buildTarget": "integration:build"
       },
       "configurations": {
         "development": {
-          "browserTarget": "integration:build:development"
+          "buildTarget": "integration:build:development"
         },
         "development-jit": {
-          "browserTarget": "integration:build:development-jit"
+          "buildTarget": "integration:build:development-jit"
         },
         "production": {
-          "browserTarget": "integration:build:production"
+          "buildTarget": "integration:build:production"
         }
       },
       "defaultConfiguration": "development"
@@ -140,15 +140,11 @@
     "test": {
       "executor": "@nx/jest:jest",
       "options": {
-        "passWithNoTests": true,
         "jestConfig": "apps/integration/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "lintFilePatterns": ["apps/integration/src/**/*.ts", "apps/integration/src/**/*.html"]
-      },
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
     }
   },
