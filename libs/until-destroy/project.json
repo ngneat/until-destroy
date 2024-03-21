@@ -8,8 +8,7 @@
       "executor": "@nx/angular:package",
       "options": {
         "tsConfig": "libs/until-destroy/tsconfig.lib.json",
-        "project": "libs/until-destroy/ng-package.json",
-        "updateBuildableProjectDepsInPackageJson": true
+        "project": "libs/until-destroy/ng-package.json"
       }
     },
     "test": {

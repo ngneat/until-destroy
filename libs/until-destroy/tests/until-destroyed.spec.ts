@@ -2,7 +2,7 @@ import {
   ɵPipeDef as PipeDef,
   ɵComponentDef as ComponentDef,
   ɵɵdefinePipe as definePipe,
-  ɵɵdefineComponent as defineComponent
+  ɵɵdefineComponent as defineComponent,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 
@@ -13,7 +13,7 @@ function createObserver() {
   return {
     next: jest.fn(),
     error: jest.fn(),
-    complete: jest.fn()
+    complete: jest.fn(),
   };
 }
 
@@ -97,9 +97,7 @@ describe('untilDestroyed operator with non-directive/component classes', () => {
       const spy = createObserver();
 
       class Test {
-        // Here we explicitly set `@ts-ignore` since the compiler will throw
-        // because of non-existing method.
-        // @ts-ignore
+        // @ts-expect-error the compiler will throw because the method doesn't exist.
         dummy = new Subject().pipe(untilDestroyed(this, 'destroy')).subscribe(spy);
       }
 
@@ -158,7 +156,7 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
         decls: 0,
         type: TestComponent,
         selectors: [[]],
-        template: () => {}
+        template: () => {},
       }) as ComponentDef<TestComponent>;
 
       constructor() {
@@ -182,7 +180,7 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
       static ɵpipe = definePipe({
         name: 'test',
         pure: false,
-        type: TestPipe
+        type: TestPipe,
       }) as PipeDef<TestPipe>;
 
       constructor() {
@@ -206,7 +204,7 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
         decls: 0,
         type: TestComponent,
         selectors: [[]],
-        template: () => {}
+        template: () => {},
       }) as ComponentDef<TestComponent>;
     }
 
@@ -225,7 +223,7 @@ describe('UntilDestroy decorator and untilDestroyed operator', () => {
         decls: 0,
         type: TestComponent,
         selectors: [[]],
-        template: () => {}
+        template: () => {},
       }) as ComponentDef<TestComponent>;
 
       subscription = new Subject().pipe(untilDestroyed(this)).subscribe();

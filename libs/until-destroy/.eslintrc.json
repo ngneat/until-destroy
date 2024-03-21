@@ -10,6 +10,7 @@
       ],
       "rules": {
         "@angular-eslint/no-output-native": ["off"],
+        "@typescript-eslint/no-empty-function": ["off"],
         "@typescript-eslint/no-non-null-assertion": ["off"],
         "@nx/enforce-module-boundaries": [
           "error",

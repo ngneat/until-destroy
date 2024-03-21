@@ -5,9 +5,6 @@
       "options": {}
     }
   },
-  "affected": {
-    "defaultBase": "master"
-  },
   "defaultProject": "until-destroy",
   "generators": {
     "@nx/angular:application": {
@@ -58,10 +55,6 @@
     "e2e-development-jit": {
       "inputs": ["default", "^production"]
     },
-    "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
-      "cache": true
-    },
     "@nx/jest:jest": {
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
       "cache": true,
@@ -74,7 +67,13 @@
           "codeCoverage": true
         }
       }
+    },
+    "@nx/eslint:lint": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
+      "cache": true
     }
   },
-  "parallel": 1
+  "parallel": 1,
+  "useInferencePlugins": false,
+  "defaultBase": "master"
 }
